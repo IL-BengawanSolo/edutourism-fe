@@ -1,15 +1,19 @@
 import SearchBar from "@/components/SearchBar.jsx";
 import React from "react";
 import DestinationCard from "@/components/DestinationCard.jsx";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
+import useFetchDestinations from "@/api/useFetchDestinations.js";
 
 const Destination = () => {
+  const { destinations } = useFetchDestinations();
+
+  console.log(destinations);
+
   return (
-    <div className="mt-0.5 mx-auto w-full max-w-10/12">
+    <div className="mx-auto mt-0.5 w-full max-w-10/12">
       {/* Search Bar */}
-      <section className="sticky top-0 z-10 bg-neutral-bg py-6">
+      <section className="bg-neutral-bg sticky top-0 z-10 py-6">
         <SearchBar />
       </section>
 
@@ -26,9 +30,9 @@ const Destination = () => {
         </div>
 
         {/* Map */}
-        <div className="col-span-1 sticky top-28 h-[calc(100vh-1rem)]">
+        <div className="sticky top-28 col-span-1 h-[calc(100vh-1rem)]">
           <MapContainer
-            center={[-7.5675595,110.7954161]}
+            center={[-7.5675595, 110.7954161]}
             zoom={13}
             scrollWheelZoom={false}
           >
@@ -36,11 +40,27 @@ const Destination = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[-7.5675595,110.7954161]}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
+
+            {destinations.map((destination) => (
+              <Marker
+                key={destination.id}
+                position={[destination.latitude, destination.longitude]}
+              >
+                <Popup>
+                  {destination.name} <br /> {destination.description}
+                </Popup>
+                <Tooltip
+                  direction="top"
+                  offset={[-8, -2]}
+                  opacity={1}
+                  interactive
+                >
+                  <span className="text-xs font-semibold text-neutral-700">
+                    {destination.name}
+                  </span>
+                </Tooltip>
+              </Marker>
+            ))}
           </MapContainer>
         </div>
       </section>
