@@ -1,14 +1,43 @@
 import SearchBar from "@/components/SearchBar.jsx";
 import React from "react";
 import DestinationCard from "@/components/DestinationCard.jsx";
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Tooltip,
+  GeoJSON,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import useFetchDestinations from "@/api/useFetchDestinations.js";
+import geoJsonData from "../lib/solo-raya.json";
 
 const Destination = () => {
   const { destinations } = useFetchDestinations();
 
   console.log(destinations);
+
+  // Fungsi untuk menentukan gaya berdasarkan atribut GeoJSON
+  const getStyle = (feature) => {
+    const fillColors = {
+      Karanganyar: "#FFCCCC", // Merah muda
+      Surakarta: "#CCFFCC", // Hijau muda
+      Sukoharjo: "#CCCCFF", // Biru muda
+      Boyolali: "#FFFFCC", // Kuning muda
+      Klaten: "#FFCCFF", // Magenta muda
+      Wonogiri: "#CCFFFF", // Cyan muda
+      Sragen: "#FFD9B3", // Oranye muda
+    };
+
+    return {
+      color: "#1B2559", // Outline hitam untuk semua daerah
+      weight: 0.5,
+      opacity: 1,
+      fillColor: fillColors[feature.properties.NAME_2] || "#FFFFFF", // Default putih jika tidak ada warna
+      fillOpacity: 0.3, // Transparansi area arsiran
+    };
+  };
 
   return (
     <div className="mx-auto mt-0.5 w-full max-w-10/12">
@@ -40,6 +69,8 @@ const Destination = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+
+            <GeoJSON data={geoJsonData} style={getStyle} />
 
             {destinations.map((destination) => (
               <Marker
