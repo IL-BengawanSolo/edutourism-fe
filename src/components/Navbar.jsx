@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { navLinks } from "@/constants/index.js";
 import { Menu, X } from "lucide-react"; // Ikon untuk menu hamburger
+import Logo from "./Logo.jsx";
+import { Link } from "react-router";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,34 +12,31 @@ const Navbar = () => {
     <header className="bg-white shadow-sm">
       <div className="flex items-center justify-between p-4 px-6 lg:px-16">
         {/* Logo */}
-        <a href="/" className="flex items-center">
-          <img
-            src="/src/assets/images/logo.png"
-            alt="Logo"
-            className="h-12 w-12 rounded-full"
-          />
-          <h1 className="text-pr-blue-800 ml-4 text-xl font-bold">EduSolo</h1>
-        </a>
+        <Logo />
 
         {/* Desktop Navigation */}
         <nav className="hidden gap-x-12 lg:flex">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
-              href={link.path}
+              to={link.path} // Ganti href dengan to
               className="text-neutral-dark-grey hover:text-pr-blue-800 text-lg font-medium"
             >
               {link.name}
-            </a>
+            </Link>
           ))}
         </nav>
 
         {/* Buttons */}
         <div className="hidden items-center space-x-4 lg:flex">
-          <Button size="custom">Login</Button>
-          <Button size="custom" variant="lite">
-            Register
-          </Button>
+          <Link to="/login">
+            <Button size="custom">Login</Button>
+          </Link>
+          <Link to="/register">
+            <Button size="custom" variant="lite">
+              Register
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -59,21 +58,25 @@ const Navbar = () => {
           <ul className="flex flex-col items-center gap-y-4 p-4">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <a
-                  href={link.path}
+                <Link
+                  to={link.path} // Ganti href dengan to
                   className="text-neutral-dark-grey hover:text-pr-blue-800 text-lg font-medium"
                 >
                   {link.name}
-                </a>
+                </Link>
               </li>
             ))}
             <div className="mt-4 flex flex-col items-center gap-y-2">
-              <Button size="custom" className="w-full">
-                Login
-              </Button>
-              <Button size="custom" variant="lite" className="w-full">
-                Register
-              </Button>
+              <Link to="/login" className="w-full">
+                <Button size="custom" className="w-full">
+                  Login
+                </Button>
+              </Link>
+              <Link to="/register" className="w-full">
+                <Button size="custom" variant="lite" className="w-full">
+                  Register
+                </Button>
+              </Link>
             </div>
           </ul>
         </nav>

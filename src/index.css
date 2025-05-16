@@ -9,6 +9,10 @@
     body {
         font-family: var(--font-montserrat);
     }
+
+    h1, h2 {
+        @apply text-neutral-black;
+    }
 }
 
 .leaflet-container {
