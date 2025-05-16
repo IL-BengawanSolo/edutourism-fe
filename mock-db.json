@@ -1,0 +1,44 @@
+{
+  "destinations": [
+    {
+      "id": 1,
+      "name": "Kampung Batik Laweyan",
+      "address_detail": "Jl. Dr. Rajiman No.521, Laweyan, Kec. Laweyan, Kota Surakarta, Jawa Tengah 57148",
+      "latitude": -7.56988389999999,
+      "longitude": 110.7968942,
+      "category": "Seni dan Budaya",
+      "subcategory": "Kampung Batik",
+      "description": "Kampung Batik Laweyan di Kota Solo adalah kawasan wisata batik yang telah ada sejak Kerajaan Pajang tahun 1546 M. Berlokasi di lahan seluas 24 hektar, kawasan ini terdiri dari tiga blok dan dihuni oleh ratusan pengrajin batik dengan berbagai motif dan harga. Selain menjadi sentra batik, Laweyan juga menyimpan kekayaan arsitektur Jawa kuno.",
+      "opening_hours": {
+        "Senin": "08:00-20:00",
+        "Selasa": "08:00-20:00",
+        "Rabu": "08:00-20:00",
+        "Kamis": "08:00-20:00",
+        "Jumat": "08:00-20:00",
+        "Sabtu": "08:00-20:00",
+        "Minggu": "08:00-20:00"
+      },
+      "ticket_price": {
+        "Paket 1": 25000,
+        "Paket 2": 37000,
+        "Paket 3": 50000,
+        "Keterangan": {
+          "Paket 1": "Keliling Kampung, Free Minum, Free Guide, Durasi 1 Jam",
+          "Paket 2": "Membatik, Free Guide, Free Minum, Durasi 1.5 Jam",
+          "Paket 3": "Membatik dan Keliling Kampung, Free Minum, Free Guide, Durasi 2.5 Jam"
+        }
+      },
+      "min_price": 25000,
+      "max_price": 50000,
+      "activities": "Belajar Membuat Batik, Belanja Batik, Berfoto, Kuliner Kampung Batik, Keliling Kampung Batik",
+      "facilities": "Parkir, Toko Batik, Museum Batik, Kuliner, Belajar Membatik, Spot Foto",
+      "review_count": 325,
+      "average_rating": 4.4,
+      "age_category": "Anak - anak, Remaja",
+      "Website_url": "https://kampoengbatiklaweyan.org/",
+      "image_url": "https://example.com/kampungbatiklaweyan.jpg",
+      "created_at": "2023-10-01T12:00:00Z",
+      "updated_at": "2023-10-01T12:00:00Z"
+    }
+  ]
+}

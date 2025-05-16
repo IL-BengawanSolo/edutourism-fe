@@ -11,6 +11,10 @@
     }
 }
 
+.leaflet-container {
+    @apply h-5/6 rounded-2xl;
+}
+
 @theme {
     --color-pr-blue-50: #ecfaff;
     --color-pr-blue-100: #d4f3ff;
