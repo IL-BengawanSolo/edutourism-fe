@@ -8,7 +8,7 @@ const DestinationCardContent = ({ variant = "col" }) => {
 
   return (
     <div className="flex flex-col gap-4 font-montserrat">
-      <h2 className={`${titleSize} font-bold text-shadow-neutral-black2 line-clamp-2`}>
+      <h2 className={`${titleSize} font-bold line-clamp-2`}>
       Museum Manusia Purba Sangiran Klaster Krikilan
       </h2>
       <p

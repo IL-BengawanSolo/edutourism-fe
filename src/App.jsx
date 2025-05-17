@@ -4,7 +4,11 @@ import DestinationCard from "./components/DestinationCard.jsx";
 import SearchBar from "./components/SearchBar.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Destination from "./pages/Destination.jsx";
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/Login.jsx";
+import MainLayout from "./layouts/MainLayout.jsx";
+import AuthLayout from "./layouts/AuthLayout.jsx";
+import SetupProfile from "./pages/SetupProfile.jsx";
 
 function App() {
   return (
@@ -18,19 +22,21 @@ function App() {
     //     </Button>
     //     <DestinationCard variant="col" />
     //     <DestinationCard variant="row" />
-    //   </div>
+    //   </div>     
     // </>
-    <div className="bg-neutral-bg">
-      <Navbar />
-      <main >
-        <Routes>
-          <Route path="/destination" element={<Destination />} />
-          {/* <Route path="/" element={<Home />} />
-        <Route path="/event" element={<Event />} />
-        <Route path="/rekomendasi-ai" element={<RekomendasiAI />} /> */}
-        </Routes>
-      </main>
-    </div>
+    <Routes>
+      {/* Main Layout */}
+      <Route element={<MainLayout />}>
+        <Route index element={null} />
+        <Route path="destinations" element={<Destination />} />
+      </Route>
+
+      {/* Auth Layout */}
+      <Route element={<AuthLayout />}>
+        <Route path="login" element={<LoginPage />} />
+        <Route path="setup-profile" element={<SetupProfile />} />
+      </Route>
+    </Routes>
   );
 }
 
