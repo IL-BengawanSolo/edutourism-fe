@@ -4,9 +4,9 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
-    <div className="bg-neutral-bg">
+    <div className="min-h-screen flex flex-col bg-neutral-bg">
       <Navbar />
-      <main>
+      <main className="flex-1 flex flex-col">
         <Outlet />
       </main>
     </div>
