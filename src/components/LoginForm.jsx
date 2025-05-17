@@ -2,13 +2,26 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm({ className, ...props }) {
+  const navigate = useNavigate(); // Inisialisasi hook
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // ...proses login di sini...
+    navigate("/setup-profile"); // Navigasi ke halaman setup profile
+  };
+
   return (
-    <form className={cn("flex flex-col gap-6", className)} {...props}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn("flex flex-col gap-8", className)}
+      {...props}
+    >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Masuk ke akun Anda</h1>
-        <p className="text-muted-foreground text-sm text-balance">
+        <p className="text-muted-foreground text-left text-sm">
           Ayo login dan dapatkan rekomendasi tempat wisata terbaik untuk dirimu
           dengan berbasis AI!
         </p>
@@ -21,7 +34,7 @@ export function LoginForm({ className, ...props }) {
             type="email"
             placeholder="contoh@email.com"
             className="h-12 bg-white"
-            required
+            
           />
         </div>
         <div className="grid gap-3">
@@ -38,7 +51,7 @@ export function LoginForm({ className, ...props }) {
             id="password"
             type="password"
             className="h-12 bg-white"
-            required
+            
           />
         </div>
         <Button type="submit" className="h-11 w-full font-semibold">

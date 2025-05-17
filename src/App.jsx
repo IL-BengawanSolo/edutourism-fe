@@ -4,10 +4,11 @@ import DestinationCard from "./components/DestinationCard.jsx";
 import SearchBar from "./components/SearchBar.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Destination from "./pages/Destination.jsx";
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/Login.jsx";
 import MainLayout from "./layouts/MainLayout.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx";
+import SetupProfile from "./pages/SetupProfile.jsx";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
     //     </Button>
     //     <DestinationCard variant="col" />
     //     <DestinationCard variant="row" />
-    //   </div>
+    //   </div>     
     // </>
     <Routes>
       {/* Main Layout */}
@@ -33,6 +34,7 @@ function App() {
       {/* Auth Layout */}
       <Route element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
+        <Route path="setup-profile" element={<SetupProfile />} />
       </Route>
     </Routes>
   );
