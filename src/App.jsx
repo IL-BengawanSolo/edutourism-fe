@@ -9,6 +9,7 @@ import LoginPage from "./pages/Login.jsx";
 import MainLayout from "./layouts/MainLayout.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx";
 import SetupProfile from "./pages/SetupProfile.jsx";
+import Recommendation from "./pages/Recommendation.jsx";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route index element={null} />
         <Route path="destinations" element={<Destination />} />
+        <Route path="recommendations" element={<Recommendation />} />
       </Route>
 
       {/* Auth Layout */}

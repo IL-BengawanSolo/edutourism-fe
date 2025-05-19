@@ -85,6 +85,7 @@ const Destination = () => {
                   offset={[-8, -2]}
                   opacity={1}
                   interactive
+                  permanent
                 >
                   <span className="text-xs font-semibold text-neutral-700">
                     {destination.name}
