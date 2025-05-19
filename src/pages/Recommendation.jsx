@@ -1,9 +1,83 @@
 import { Button } from "@/components/ui/button.jsx";
 import React from "react";
-
+("/src/assets/images/girl.png");
 const Recommendation = () => {
   return (
     <>
+      <div className="bg-neutral-light-grey flex w-full flex-row items-center justify-start xl:justify-between ">
+        {/* Left Image */}
+        <div className="mt-6 flex max-w-[350px] min-w-[120px] items-center md:w-auto">
+          {/* Desktop image */}
+          <img
+            src="/src/assets/images/girl.png"
+            alt="Traveler Girl"
+            className="hidden max-h-[260px] object-cover lg:block"
+          />
+          {/* Mobile image */}
+          <img
+            src="/src/assets/images/girl-mobile.png"
+            alt="Traveler Girl Mobile"
+            className="block max-h-[260px] w-36 object-cover md:max-w-[220px] lg:hidden"
+          />
+        </div>
+
+        {/* Center Text */}
+        <div className="flex flex-1 flex-col items-center px-4 md:max-w-[712px] ">
+          <h1 className="text-pr-blue-950 text-md text-center font-bold md:text-3xl xl:text-5xl line-clamp-1 ">
+            Test Preferensi Liburan
+          </h1>
+          <p className="text-pr-blue-900 mt-1 text-left text-xs font-medium md:mt-4 md:text-base lg:mt-6 lg:text-center xl:text-xl">
+            Jawablah pertanyaan sesuai keadaan dan preferensi liburan kamu,
+            <br className="hidden md:block" /> dan dapatkan rekomendasi tempat
+            dengan bantuan AI kami!
+          </p>
+
+          {/* Progress Bar */}
+          <div className="mt-3 flex w-full max-w-xs items-center gap-2 md:mt-4 md:max-w-[712px] lg:mt-8">
+            <div className="h-3 flex-1 rounded-full bg-white lg:h-5">
+              <div className="bg-pr-blue-800 h-full w-2/5 rounded-full"></div>
+            </div>
+            <span className="text-pr-blue-800 text-xs font-bold whitespace-nowrap md:text-base lg:text-xl">
+              2/5
+            </span>
+          </div>
+        </div>
+
+        {/* Right Image */}
+        <div className="hidden max-w-[350px] min-w-[120px] md:w-auto xl:block mt-6 items-center">
+          <img
+            src="/src/assets/images/plane.png"
+            alt="Airplane"
+            className="h-auto w-[355px] object-cover pb-22"
+          />
+        </div>
+      </div>
+
+      {/* <div className="relative flex items-start">
+        <img
+          src="/src/assets/images/banner-recommendation.png"
+          alt="Not Login Image"
+          className="w-full"
+        />
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center">
+          <h1 className="text-pr-blue-950 text-[3.6vw] leading-tight font-bold">
+            Test Preferensi Liburan
+          </h1>
+          <p className="text-pr-blue-900 mt-1 max-w-[80%] text-[1.4vw] font-medium">
+            Jawablah pertanyaan sesuai keadaan dan preference liburan kamu,
+            <br /> dan dapatkan rekomendasi tempat dengan bantuan AI kami!
+          </p>
+
+          <div className="mt-4 flex w-[45%] items-center gap-3">
+            <div className="flex h-[1.5vw] flex-1 items-center overflow-hidden rounded-full bg-white">
+              <div className="bg-pr-blue-800 h-full w-[40%]" />
+            </div>
+            <div className="text-[1.5vw] font-semibold whitespace-nowrap text-blue-900">
+              2/5
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="relative flex h-[85vh] items-center justify-center">
         <img
           src="/src/assets/images/not-login.png"
@@ -26,7 +100,7 @@ const Recommendation = () => {
             Mulai Tes Rekomendasi
           </Button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
