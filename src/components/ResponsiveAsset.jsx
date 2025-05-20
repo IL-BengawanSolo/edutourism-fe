@@ -45,7 +45,7 @@ const AutoSizeResponsiveAsset = ({
   const rightPercent = calcPercent(right, 1440);
 
   const style = {
-    position: "absolute",
+    // position: "absolute",
     // width: vw ? `${vw}vw` : undefined,
     height: vh ? `${vh}vh` : undefined,
     top: topPercent !== null ? `${topPercent}%` : undefined,
