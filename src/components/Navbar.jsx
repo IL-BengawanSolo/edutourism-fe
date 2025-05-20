@@ -3,14 +3,18 @@ import { Button } from "@/components/ui/button";
 import { navLinks } from "@/constants/index.js";
 import { Menu, X } from "lucide-react"; // Ikon untuk menu hamburger
 import Logo from "./Logo.jsx";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLocation } from "react-router";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+
+  // Ganti warna background jika di path "/"
+  const headerBg = location.pathname === "/" ? "bg-pr-blue-50" : "bg-white";
 
   return (
-    <header className="bg-white">
-      <div className="flex items-center justify-between p-3 px-4 lg:px-16">
+    <header className={headerBg}>
+      <div className="flex items-center justify-between p-4 lg:p-3 px-4 lg:px-16">
         {/* Logo */}
         <Logo />
 

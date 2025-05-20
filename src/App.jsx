@@ -10,6 +10,7 @@ import MainLayout from "./layouts/MainLayout.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx";
 import SetupProfile from "./pages/SetupProfile.jsx";
 import Recommendation from "./pages/Recommendation.jsx";
+import Home from "./pages/Home.jsx";
 
 function App() {
   return (
@@ -23,12 +24,12 @@ function App() {
     //     </Button>
     //     <DestinationCard variant="col" />
     //     <DestinationCard variant="row" />
-    //   </div>     
+    //   </div>
     // </>
     <Routes>
       {/* Main Layout */}
       <Route element={<MainLayout />}>
-        <Route index element={null} />
+        <Route index element={<Home />} />
         <Route path="destinations" element={<Destination />} />
         <Route path="recommendations" element={<Recommendation />} />
       </Route>
