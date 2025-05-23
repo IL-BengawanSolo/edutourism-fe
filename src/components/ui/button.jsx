@@ -32,6 +32,7 @@ const buttonVariants = cva(
         custom: "h-10 px-6 has-[>svg]:px-4 min-w-[140px] min-h-14 rounded-[20px] font-base font-bold cursor-pointer",
         icon: "size-9",
       },
+      
     },
     defaultVariants: {
       variant: "default",
