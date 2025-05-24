@@ -1,5 +1,5 @@
 import SearchBar from "@/components/SearchBar.jsx";
-import React from "react";
+import React, { useEffect } from "react";
 import DestinationCard from "@/components/DestinationCard.jsx";
 import {
   MapContainer,
@@ -15,6 +15,10 @@ import geoJsonData from "../lib/solo-raya.json";
 
 const Destination = () => {
   const { destinations } = useFetchDestinations();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   console.log(destinations);
 
