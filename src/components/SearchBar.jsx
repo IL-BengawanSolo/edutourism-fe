@@ -10,13 +10,13 @@ const SearchBar = () => {
       <Input
         type="text"
         placeholder="Cari destinasi wisata..."
-        className="placeholder:text-neutral-grey text-neutral-dark-grey h-16 rounded-lg border-none bg-white pr-20 pl-24 !text-lg !font-medium placeholder:text-lg placeholder:font-medium placeholder:italic"
+        className="placeholder:text-neutral-grey text-neutral-dark-grey h-14 rounded-xl border-none bg-white pr-20 pl-24 !text-lg !font-medium placeholder:text-lg placeholder:font-medium placeholder:italic"
       />
       <Button
         size="custom"
         variant="lite"
         type="submit"
-        className="absolute right-2 h-12 min-h-12 px-4"
+        className="absolute right-2 px-8 h-10 rounded-xl"
       >
         Cari
       </Button>
