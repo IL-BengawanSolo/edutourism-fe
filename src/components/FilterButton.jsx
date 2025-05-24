@@ -19,7 +19,7 @@ const FilterButton = ({
 }) => {
   return (
     <Select {...props}>
-      <SelectTrigger className="text-neutral-dark-grey flex !h-12 w-full justify-center rounded-xl border-none bg-white text-[16px] font-medium">
+      <SelectTrigger className="text-neutral-dark-grey flex !h-10 w-full justify-center rounded-full border-none bg-white text-[16px] font-medium">
         {icon}
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
