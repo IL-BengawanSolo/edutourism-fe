@@ -4,6 +4,7 @@ import DestinationCard from "@/components/DestinationCard.jsx";
 import FilterBar from "@/components/FilterBar.jsx";
 import DestinationMap from "@/components/DestinationMap.jsx";
 import useFetchDestinations from "@/api/useFetchDestinations.js";
+import { Link } from "react-router-dom";
 
 const Destination = () => {
   const { destinations } = useFetchDestinations();
@@ -18,13 +19,10 @@ const Destination = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (!stickyRef.current) return;
-      // Ambil posisi relatif terhadap viewport
       const { top } = stickyRef.current.getBoundingClientRect();
-      // Shadow hanya muncul jika stickyRef benar-benar menempel di atas viewport
       setIsSticky(top <= 0);
     };
 
-    // Jalankan sekali saat mount untuk memastikan state awal benar
     handleScroll();
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -49,8 +47,18 @@ const Destination = () => {
       <section className="max-container mx-auto grid w-11/12 grid-cols-1 gap-6 sm:w-10/12 lg:grid-cols-5">
         {/* Destination Cards */}
         <div className="col-span-3 flex flex-col gap-4">
-          <DestinationCard variant="row" />
-          <DestinationCard variant="row" />
+          <Link to="/destinations/id" className="no-underline">
+            <DestinationCard
+              variant="row"
+              badgeText={[
+                "Sejarah",
+                "Budaya",
+                "Teknologi",
+                "Cagar Budaya Hindu-Buddha & Arkeologi",
+              ]}
+            />
+          </Link>
+          <DestinationCard variant="row" title="Kampung Batik Laweyan" />
           <DestinationCard variant="row" />
           <DestinationCard variant="row" />
           <DestinationCard variant="row" />
@@ -58,7 +66,7 @@ const Destination = () => {
         </div>
 
         {/* Map */}
-        <div className="sticky top-44 col-span-1 lg:col-span-2 h-[calc(100vh-6rem)]">
+        <div className="sticky top-44 col-span-1 h-[calc(100vh-6rem)] lg:col-span-2">
           <DestinationMap destinations={destinations} />
         </div>
       </section>
