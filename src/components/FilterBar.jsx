@@ -1,5 +1,5 @@
 import React from "react";
-import { Filter, Filter2, Location, Swap, Wallet } from "react-iconly";
+import { Filter, Filter2, Location, People, Swap, Wallet } from "react-iconly";
 import FilterButton from "@/components/FilterButton.jsx";
 
 const FilterBar = () => {
@@ -11,11 +11,11 @@ const FilterBar = () => {
         placeholder="Kategori"
         items={[
           { label: "Semua", value: "all" },
-          { label: "Wisata Alam", value: "nature" },
-          { label: "Wisata Budaya", value: "culture" },
-          { label: "Wisata Sejarah", value: "history" },
-          { label: "Wisata Kuliner", value: "culinary" },
-          { label: "Wisata Religi", value: "religious" },
+          { label: "Alam", value: "nature" },
+          { label: "Budaya", value: "culture" },
+          { label: "Sejarah", value: "history" },
+          { label: "Kuliner", value: "culinary" },
+          { label: "Religi", value: "religious" },
         ]}
       />
       <FilterButton
@@ -53,16 +53,13 @@ const FilterBar = () => {
         ]}
       />
       <FilterButton
-        icon={<Filter className="text-neutral-grey size-5" filled />}
-        label="Bintang"
-        placeholder="Bintang"
+        icon={<People className="text-neutral-grey size-5" filled />}
+        label="Kategori Umur"
+        placeholder="Kategori Umur"
         items={[
           { label: "Semua", value: "all" },
-          { label: "1 Bintang", value: "1-star" },
-          { label: "2 Bintang", value: "2-star" },
-          { label: "3 Bintang", value: "3-star" },
-          { label: "4 Bintang", value: "4-star" },
-          { label: "5 Bintang", value: "5-star" },
+          { label: "Anak-anak", value: "children" },
+          { label: "Remaja", value: "teenager" },
         ]}
       />
       
