@@ -11,8 +11,56 @@ import {
 import "leaflet/dist/leaflet.css";
 
 import geoJsonData from "../lib/solo-raya.json";
+import { Location } from "react-iconly";
+import { Icon } from "leaflet";
 
-const DestinationMap = ({destinations}) => {
+const DestinationMap = ({ destinations }) => {
+  // const locationIcon = new Icon({
+  //   iconUrl: "/src/assets/location.png",
+  //   iconSize: [40, 40],
+  // });
+
+  // SVG Iconly Location sebagai string (tanpa background)
+  const svgIcon = encodeURIComponent(`
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(3.5,2)" fill="#0163D2">
+      <path d="M8.49344564,0 C13.1561184,0 17,3.71789185 17,8.31775805 C17,10.6356906 16.1570081,12.787628 14.7695,14.611575 C13.2388042,16.6235165 11.3521561,18.3764655 9.22854262,19.7524254 C8.74251142,20.0704162 8.3038733,20.0944155 7.77044902,19.7524254 C5.63473516,18.3764655 3.74808708,16.6235165 2.23050003,14.611575 C0.84198351,12.787628 0,10.6356906 0,8.31775805 C0,3.71789185 3.84388161,0 8.49344564,0 Z M8.49344564,5.77683196 C6.95165787,5.77683196 5.6942286,7.04779499 5.6942286,8.57675052 C5.6942286,10.1177057 6.95165787,11.3296704 8.49344564,11.3296704 C10.0362418,11.3296704 11.3057714,10.1177057 11.3057714,8.57675052 C11.3057714,7.04779499 10.0362418,5.77683196 8.49344564,5.77683196 Z"/>
+    </g>
+  </svg>
+`);
+
+  const createDivIcon = (label) =>
+    window.L.divIcon({
+      className: "custom-marker",
+      html: `
+        <div style="
+          display: flex;
+          align-items: center;
+          font-family: 'Montserrat', sans-serif;
+          min-height: 48px;
+        ">
+          <img src="data:image/svg+xml,${svgIcon}" width="24" height="24" style="display:block; filter: drop-shadow(0 2px 4px rgba(1,99,210,0.10));"/>
+            <span style="
+              font-size: 12px;
+              font-weight: 500;
+              color: #0163D2;
+              letter-spacing: -0.1em;
+              white-space: nowrap;
+              text-shadow: 0 1px 2px #fff;
+              background: rgba(255, 255, 255, 0.8); /* biru muda transparan */
+              //  background: rgba(227, 240, 255, 0.7); /* biru muda transparan */
+              border-radius: 999px;
+              padding: 1px 4px;
+              display: inline-block;
+            ">
+              ${label}
+            </span>
+        </div>
+      `,
+      // anchor X = padding kiri (6) + setengah icon (12), anchor Y = tinggi icon (24)
+      iconAnchor: [12, 32], // [18, 32] agar anchor tetap di bawah icon, bukan di bawah label
+    });
+
   // Fungsi untuk menentukan gaya berdasarkan atribut GeoJSON
   const getStyle = (feature) => {
     const fillColors = {
@@ -27,22 +75,23 @@ const DestinationMap = ({destinations}) => {
 
     return {
       color: "#1B2559", // Outline hitam untuk semua daerah
-      weight: 0.5,
+      weight: 0.2,
       opacity: 1,
       fillColor: fillColors[feature.properties.NAME_2] || "#FFFFFF", // Default putih jika tidak ada warna
-      fillOpacity: 0.3, // Transparansi area arsiran
+      fillOpacity: 0.2, // Transparansi area arsiran
     };
   };
 
   return (
     <MapContainer
-      center={[-7.5675595, 110.7954161]}
-      zoom={13}
+      center={[-7.560421, 110.826454]}
+      zoom={12}
       scrollWheelZoom={false}
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        subdomains={"abcd"}
       />
 
       <GeoJSON data={geoJsonData} style={getStyle} />
@@ -51,21 +100,37 @@ const DestinationMap = ({destinations}) => {
         <Marker
           key={destination.id}
           position={[destination.latitude, destination.longitude]}
+          icon={createDivIcon(destination.name)}
         >
           <Popup>
-            {destination.name} <br /> {destination.description}
+            
+            <div className="flex flex-col gap-2">
+              <h3 className="font-montserrat text-base font-semibold text-neutral-900">
+                {destination.name}
+              </h3>
+              <p className="font-montserrat text-sm text-neutral-700">
+                {destination.description}
+              </p>
+              <a
+                href={`/destinations/${destination.id}`}
+                className="text-primary font-montserrat text-sm font-semibold"
+              >
+                Lihat Detail
+              </a>
+            </div>
           </Popup>
-          <Tooltip
+          {/* <Tooltip
             direction="top"
-            offset={[-8, -2]}
+            offset={[0, -15]}
             opacity={1}
             interactive
             permanent
+            className="bg-transparent"
           >
-            <span className="text-xs font-semibold text-neutral-700">
+            <span className="font-montserrat text-[10px] font-semibold text-neutral-700">
               {destination.name}
             </span>
-          </Tooltip>
+          </Tooltip> */}
         </Marker>
       ))}
     </MapContainer>
