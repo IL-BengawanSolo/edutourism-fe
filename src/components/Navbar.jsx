@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <header className={headerBg}>
-      <div className="flex items-center justify-between p-4 lg:p-3 px-4 lg:px-16">
+      <div className="flex items-center justify-between p-4 px-4 lg:p-3 lg:px-16">
         {/* Logo */}
         <Logo />
 
@@ -24,14 +24,19 @@ const Navbar = () => {
             <NavLink
               key={link.name}
               to={link.path}
-              className={({ isActive }) =>
-                `line-clamp-1 text-lg ${
-                  isActive
+              className={() => {
+                // Custom active: aktif jika path sekarang diawali dengan link.path
+                const active =
+                  link.path === "/"
+                    ? location.pathname === "/"
+                    : location.pathname.startsWith(link.path);
+                return `line-clamp-1 text-lg ${
+                  active
                     ? "text-pr-blue-800 font-bold"
                     : "text-neutral-dark-grey hover:text-pr-blue-800 font-medium"
-                }`
-              }
-              end
+                }`;
+              }}
+              end={link.path === "/"}
             >
               {link.name}
             </NavLink>
@@ -66,11 +71,16 @@ const Navbar = () => {
               <li key={link.name}>
                 <NavLink
                   to={link.path}
-                  className={({ isActive }) =>
-                    `text-lg ${
-                      isActive
-                        ? "text-pr-blue-800 font-bold"
-                        : "text-neutral-dark-grey hover:text-pr-blue-800 font-medium"
+                  className={() =>
+                    // Custom active: aktif jika path sekarang diawali dengan link.path
+                    `line-clamp-1 text-lg ${
+                      link.path === "/"
+                        ? location.pathname === "/"
+                          ? "text-pr-blue-800 font-bold"
+                          : "text-neutral-dark-grey hover:text-pr-blue-800 font-medium"
+                        : location.pathname.startsWith(link.path)
+                          ? "text-pr-blue-800 font-bold"
+                          : "text-neutral-dark-grey hover:text-pr-blue-800 font-medium"
                     }`
                   }
                   end

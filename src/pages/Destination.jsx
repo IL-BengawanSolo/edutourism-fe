@@ -66,7 +66,7 @@ const Destination = () => {
         </div>
 
         {/* Map */}
-        <div className="sticky top-44 col-span-1 h-[calc(100vh-6rem)] lg:col-span-2">
+        <div className="sticky top-38 col-span-1 h-[calc(100vh-14rem)] lg:col-span-2">
           <DestinationMap destinations={destinations} />
         </div>
       </section>
