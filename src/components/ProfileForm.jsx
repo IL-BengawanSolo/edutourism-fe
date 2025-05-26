@@ -6,14 +6,14 @@ import { Label } from "@/components/ui/label";
 export function ProfileForm({ className, ...props }) {
   return (
     <form className={cn("flex flex-col gap-8", className)} {...props}>
-      <div className="flex flex-col items-center gap-2 text-center">
+      <div className="flex flex-col items-center gap-4 text-center">
         <h1 className="text-2xl font-bold">Lengkapi Profil Anda</h1>
         <p className="text-muted-foreground text-sm text-left">
           Selamat, kamu sudah selesai mendaftarkan email di sistem EduSolo, sekarang lengkapi identitas kamu untuk menyelesaikan pendaftaran.
         </p>
       </div>
-      <div className="grid gap-6">
-        <div className="grid gap-3">
+      <div className="grid gap-4">
+        <div className="grid gap-2">
           <Label htmlFor="name">Nama Lengkap</Label>
           <Input
             id="name"
@@ -23,7 +23,7 @@ export function ProfileForm({ className, ...props }) {
             required
           />
         </div>
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <Label htmlFor="phone">Nomor Telepon</Label>
           <Input
             id="phone"
@@ -33,7 +33,7 @@ export function ProfileForm({ className, ...props }) {
             required
           />
         </div>
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <Label htmlFor="birthdate">Tanggal Lahir</Label>
           <Input
             id="birthdate"
@@ -42,7 +42,7 @@ export function ProfileForm({ className, ...props }) {
             required
           />
         </div>
-        <Button type="submit" className="h-11 w-full font-semibold">
+        <Button type="submit" className="mt-2 h-12 w-full font-semibold rounded-xl">
           Simpan Profil
         </Button>
       </div>

@@ -7,15 +7,17 @@ const AuthLayout = () => {
     <div className="bg-neutral-bg">
       <main>
         <div className="grid min-h-screen lg:grid-cols-2">
-          <div className="bg-muted relative hidden lg:block">
+          {/* Kiri: Gambar */}
+          <div className="sticky top-0 z-10 hidden h-screen w-full lg:block">
             <img
               src="/src/assets/images/auth-bg.png"
               alt="Image"
-              className="absolute inset-0 h-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-cover object-left"
             />
           </div>
-          <div className="flex flex-col gap-4 p-6 md:p-10">
-            <header>
+          {/* Kanan: Form */}
+          <div className="flex min-h-screen flex-col justify-center p-6 md:px-8 md:py-4 ">
+            <header className="mb-4 flex items-center">
               <Logo />
             </header>
             <div className="flex flex-1 items-center justify-center">
