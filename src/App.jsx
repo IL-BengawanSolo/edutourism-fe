@@ -11,6 +11,7 @@ import AuthLayout from "./layouts/AuthLayout.jsx";
 import SetupProfile from "./pages/SetupProfile.jsx";
 import Recommendation from "./pages/Recommendation.jsx";
 import Home from "./pages/Home.jsx";
+import DestinationDetail from "./pages/DestinationDetail.jsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="destinations" element={<Destination />} />
+        <Route path="destinations/:destination-id" element={<DestinationDetail />} />
         <Route path="recommendations" element={<Recommendation />} />
       </Route>
 

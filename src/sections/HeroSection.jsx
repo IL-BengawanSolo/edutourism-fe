@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="bg-pr-blue-50 relative h-[calc(100vh-5rem)] w-full overflow-hidden">
+    <section className="bg-pr-blue-50 relative h-[calc(100vh-72px)] w-full overflow-hidden">
       <div className="pointer-events-none select-none">
         {heroAssets.map((asset, idx) => (
           <AutoSizeResponsiveAsset
