@@ -19,15 +19,15 @@ export function LoginForm({ className, ...props }) {
       className={cn("flex flex-col gap-8", className)}
       {...props}
     >
-      <div className="flex flex-col items-center gap-2 text-center">
+      <div className="flex flex-col items-center gap-4 text-center">
         <h1 className="text-2xl font-bold">Masuk ke akun Anda</h1>
         <p className="text-muted-foreground text-left text-sm">
           Ayo login dan dapatkan rekomendasi tempat wisata terbaik untuk dirimu
           dengan berbasis AI!
         </p>
       </div>
-      <div className="grid gap-6">
-        <div className="grid gap-3">
+      <div className="grid gap-4">
+        <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
@@ -37,7 +37,7 @@ export function LoginForm({ className, ...props }) {
             
           />
         </div>
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="password">Kata Sandi</Label>
             <a
@@ -54,7 +54,7 @@ export function LoginForm({ className, ...props }) {
             
           />
         </div>
-        <Button type="submit" className="h-11 w-full font-semibold">
+        <Button type="submit" className="mt-2 h-12 w-full font-semibold rounded-xl">
           Masuk
         </Button>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
@@ -64,7 +64,7 @@ export function LoginForm({ className, ...props }) {
         </div>
         <Button
           variant="outline"
-          className="h-14 w-full rounded-full font-medium"
+          className="h-12 w-full rounded-full font-medium"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
