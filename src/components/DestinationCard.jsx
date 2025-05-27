@@ -7,10 +7,11 @@ const DestinationCard = ({
   imageSrc = "/src/assets/images/kampung-batik-laweyan.jpeg",
   title = "Museum Manusia Purba Sangiran Klaster Krikilan",
   location = "Surakarta",
-  categoryBadge = ["Sains", "Lingkungan"],
-  subCategoryBadge = "Cagar Budaya Hindu-Buddha & Arkeologi",
+  categoryBadge = ["Sains", "Lingkungan", "Sejarah"],
+  subCategoryBadge = "Kampung Batik",
   price = "25.000 - 50.000",
   match = "84% Match dengan kamu",
+  ageType = undefined, // "anak" | "remaja" | undefined
   ...props
 }) => {
   const isCol = variant === "col";
@@ -51,6 +52,7 @@ const DestinationCard = ({
           subCategoryBadge={subCategoryBadge}
           price={price}
           match={match}
+          ageType={ageType}
         />
       </div>
     </div>

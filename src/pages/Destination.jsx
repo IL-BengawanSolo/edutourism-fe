@@ -56,13 +56,18 @@ const Destination = () => {
                 "Teknologi",
                 "Cagar Budaya Hindu-Buddha & Arkeologi",
               ]}
+              ageType="all"
             />
           </Link>
-          <DestinationCard variant="row" title="Kampung Batik Laweyan" />
-          <DestinationCard variant="row" />
-          <DestinationCard variant="row" />
-          <DestinationCard variant="row" />
-          <DestinationCard variant="row" />
+          <DestinationCard
+            variant="row"
+            title="Kampung Batik Laweyan"
+            ageType="anak"
+          />
+          <DestinationCard variant="row" ageType="remaja" />
+          <DestinationCard variant="row" ageType="all" />
+          <DestinationCard variant="row" ageType="anak" />
+          <DestinationCard variant="row" ageType="all" />
         </div>
 
         {/* Map */}
