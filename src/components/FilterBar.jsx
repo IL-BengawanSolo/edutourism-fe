@@ -6,6 +6,16 @@ const FilterBar = () => {
   return (
     <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-5 sm:gap-6">
       <FilterButton
+        icon={<People className="text-neutral-grey size-5" filled />}
+        label="Kategori Umur"
+        placeholder="Kategori Umur"
+        items={[
+          { label: "Semua", value: "all" },
+          { label: "Anak-anak", value: "children" },
+          { label: "Remaja", value: "teenager" },
+        ]}
+      />
+      <FilterButton
         icon={<Filter2 className="text-neutral-grey size-5" filled />}
         label="Kategori"
         placeholder="Kategori"
@@ -32,6 +42,16 @@ const FilterBar = () => {
           { label: "Kab. Wonogiri", value: "wonogiri" },
         ]}
       />
+
+      <FilterButton
+        icon={<Wallet className="text-neutral-grey size-5" filled />}
+        label="Harga"
+        placeholder="Harga"
+        items={[
+          { label: "Gratis", value: "free" },
+          { label: "Berbayar", value: "paid" },
+        ]}
+      />
       <FilterButton
         icon={<Swap className="text-neutral-grey size-5" filled />}
         label="Urutkan"
@@ -43,26 +63,6 @@ const FilterBar = () => {
           { label: "Rating Terendah", value: "lowest-rating" },
         ]}
       />
-      <FilterButton
-        icon={<Wallet className="text-neutral-grey size-5" filled />}
-        label="Harga"
-        placeholder="Harga"
-        items={[
-          { label: "Gratis", value: "free" },
-          { label: "Berbayar", value: "paid" },
-        ]}
-      />
-      <FilterButton
-        icon={<People className="text-neutral-grey size-5" filled />}
-        label="Kategori Umur"
-        placeholder="Kategori Umur"
-        items={[
-          { label: "Semua", value: "all" },
-          { label: "Anak-anak", value: "children" },
-          { label: "Remaja", value: "teenager" },
-        ]}
-      />
-      
     </div>
   );
 };
