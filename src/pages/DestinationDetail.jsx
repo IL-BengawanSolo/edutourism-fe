@@ -8,6 +8,7 @@ import { Location } from "react-iconly";
 import DestinationMap from "@/components/DestinationMap.jsx";
 import { Separator } from "@/components/ui/separator.jsx";
 import CarouselDestinationRow from "@/components/CarouselDestinationRow.jsx";
+import { MapIcon } from "lucide-react";
 
 const images = [
   "/src/assets/images/bg-img.png", // 0: utama kiri
@@ -66,7 +67,10 @@ const DestinationDetail = () => {
   return (
     <>
       <section className="max-container mx-auto w-full sm:w-10/12">
-        <div id="general-info" className="grid h-[340px] grid-cols-2 gap-2 md:h-[300px]">
+        <div
+          id="general-info"
+          className="grid h-[340px] grid-cols-2 gap-2 md:h-[300px]"
+        >
           {/* Kiri: gambar utama */}
           <div className="col-span-1 row-span-1 h-full">
             <img
@@ -243,19 +247,34 @@ const DestinationDetail = () => {
         </div>
       </div> */}
 
-        <div  className="mt-4 mb-4 grid grid-cols-1 gap-4 rounded-none lg:grid-cols-6">
-          <div id="location" className="col-span-1 flex flex-col gap-4 rounded-2xl bg-white p-8 lg:col-span-4">
+        <div className="mt-4 mb-4 grid grid-cols-1 gap-4 rounded-none lg:grid-cols-6">
+          <div
+            id="location"
+            className="col-span-1 flex flex-col gap-4 rounded-2xl bg-white p-8 lg:col-span-4"
+          >
             <h1 className="text-2xl font-bold">Lokasi</h1>
-            <p className="text-neutral-black mt-4 mb-4 flex items-center gap-2 text-base font-medium">
+            <p className="text-neutral-black mt-4 mb-2 flex items-center gap-2 text-base font-medium">
               <Location set="bold" className="text-pr-blue-800 size-10" />
               Loweyan, Surakarta, Jawa Tengah Jl. Dr. Rajiman No.521, Laweyan,
               Kec. Laweyan, Kota Surakarta, Jawa Tengah 57148
             </p>
-            <div className="h-[360px] z-0">
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=-7.5698839,110.7968942"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-pr-blue-600 hover:bg-pr-blue-600/90 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow transition mb-2"
+            >
+              <MapIcon className="text-base text-white" />
+              <span>Lihat di Google Maps</span>
+            </a>
+            <div className="z-0 h-[360px]">
               <DestinationMap destinations={destinations} />
             </div>
           </div>
-          <div id="opening-hours" className="col-span-1 flex flex-col gap-4 rounded-2xl bg-white p-8 lg:col-span-2">
+          <div
+            id="opening-hours"
+            className="col-span-1 flex flex-col gap-4 rounded-2xl bg-white p-8 lg:col-span-2"
+          >
             <h1 className="text-2xl font-bold">Jam Buka</h1>
             <div className="mt-2 flex flex-col gap-2">
               {Object.entries(openingHours).map(([day, time]) => (
