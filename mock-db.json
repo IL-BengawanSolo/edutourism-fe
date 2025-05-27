@@ -1999,50 +1999,7 @@
       "Aktivitas Cleaned": "['edukasi']",
       "Fasilitas Cleaned": "['area parkir kendaraan', 'toilet umum', 'mushola', 'warung makan dan minuman']"
     },
-    {
-      "id": "T057",
-      "name": "Obyek Wisata Waduk Gajah Mungkur Wonogiri",
-      "Detail Alamat": "Godean, Sendang, Kecamatan Wonogiri, Kabupaten Wonogiri, Jawa Tengah 57615",
-      "latitude": -7.85504,
-      "longitude": 109.10509,
-      "Kategori": "lingkungan",
-      "Jenis Tempat": "Waduk / Danau Buatan",
-      "Jam Operasional": {
-        "Senin": "08:00-17:00",
-        "Selasa": "08:00-17:00",
-        "Rabu": "08:00-17:00",
-        "Kamis": "08:00-17:00",
-        "Jumat": "08:00-17:00",
-        "Sabtu": "08:00-17:00",
-        "Minggu": "08:00-17:00"
-      },
-      "Harga Tiket": {
-        "Tiket Masuk": {
-          "Weekday": 15000,
-          "Weekend": 20000
-        },
-        "Waterboom": 15000,
-        "Wisata Perahu": 10000,
-        "Parkir": {
-          "Motor": 2000,
-          "Mobil": 5000,
-          "Mini Bus": 10000,
-          "Bus": 20000
-        }
-      },
-      "Harga Min": 15000,
-      "Harga Max": 20000,
-      "Jumlah Ulasan (Google Maps)": 9617,
-      "Overall Rating (Google Maps)": 4.2,
-      "Link Website": "",
-      "Deskripsi Singkat": "Waduk Gajah Mungkur merupakan danau buatan yang dibangun di atas Sungai Bengawan Solo. Selain \n berfungsi sebagai irigasi dan pembangkit listrik, waduk ini juga menjadi destinasi wisata populer di Wonogiri. Pengunjung dapat menikmati berbagai aktivitas seperti wisata air, taman satwa, waterboom, dan spot foto menarik seperti jembatan kaca.",
-      "Aktivitas": "Wisata, Wahana Anak",
-      "Fasilitas": "Area parkir luas, Toilet umum, Mushola, Warung makan dan kantin, \n Waterboom dengan seluncuran dan kolam renang, Taman Satwa mini dengan berbagai jenis hewan, Playground anak dengan berbagai permainan, Wisata perahu dan sepeda air, Jembatan kaca untuk spot foto, Area berkemah dan campervan, Spot memancing, Panggung hiburan outdoor, Pusat informasi wisata",
-      "Kategori Umur": "Remaja",
-      "description": "waduk gajah mungkur merupakan danau buatan yang dibangun di atas sungai bengawan solo selain berfungsi sebagai irigasi dan pembangkit listrik waduk ini juga menjadi destinasi wisata populer di wonogiri pengunjung dapat menikmati berbagai aktivitas seperti wisata air taman satwa waterboom dan spot foto menarik seperti jembatan kaca",
-      "Aktivitas Cleaned": "['wisata', 'wahana anak']",
-      "Fasilitas Cleaned": "['area parkir luas', 'toilet umum', 'mushola', 'warung makan dan kantin', 'waterboom dengan seluncuran dan kolam renang', 'taman satwa mini dengan berbagai jenis hewan', 'playground anak dengan berbagai permainan', 'wisata perahu dan sepeda air', 'jembatan kaca untuk spot foto', 'area berkemah dan campervan', 'spot memancing', 'panggung hiburan outdoor', 'pusat informasi wisata']"
-    },
+
     {
       "id": "T058",
       "name": "Taman Satwa Gajah Mungkur",

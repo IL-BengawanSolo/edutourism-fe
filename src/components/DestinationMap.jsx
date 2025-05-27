@@ -9,10 +9,12 @@ import {
   GeoJSON,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import "react-leaflet-markercluster/styles";
 
 import geoJsonData from "../lib/solo-raya.json";
 import { Location } from "react-iconly";
 import { Icon } from "leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 
 const DestinationMap = ({ destinations }) => {
   // const locationIcon = new Icon({
@@ -87,39 +89,41 @@ const DestinationMap = ({ destinations }) => {
       center={[-7.560421, 110.826454]}
       zoom={12}
       scrollWheelZoom={false}
+      minZoom={9}
     >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         subdomains={"abcd"}
+        detectRetina={true}
       />
 
       <GeoJSON data={geoJsonData} style={getStyle} />
 
-      {destinations.map((destination) => (
-        <Marker
-          key={destination.id}
-          position={[destination.latitude, destination.longitude]}
-          icon={createDivIcon(destination.name)}
-        >
-          <Popup>
-            
-            <div className="flex flex-col gap-2">
-              <h3 className="font-montserrat text-base font-semibold text-neutral-900">
-                {destination.name}
-              </h3>
-              <p className="font-montserrat text-sm text-neutral-700">
-                {destination.description}
-              </p>
-              <a
-                href={`/destinations/${destination.id}`}
-                className="text-primary font-montserrat text-sm font-semibold"
-              >
-                Lihat Detail
-              </a>
-            </div>
-          </Popup>
-          {/* <Tooltip
+      <MarkerClusterGroup showCoverageOnHover={false}>
+        {destinations.map((destination) => (
+          <Marker
+            key={destination.id}
+            position={[destination.latitude, destination.longitude]}
+            icon={createDivIcon(destination.name)}
+          >
+            <Popup>
+              <div className="flex flex-col gap-2">
+                <h3 className="font-montserrat text-base font-semibold text-neutral-900">
+                  {destination.name}
+                </h3>
+                <p className="font-montserrat text-sm text-neutral-700">
+                  {destination.description}
+                </p>
+                <a
+                  href={`/destinations/${destination.id}`}
+                  className="text-primary font-montserrat text-sm font-semibold"
+                >
+                  Lihat Detail
+                </a>
+              </div>
+            </Popup>
+            {/* <Tooltip
             direction="top"
             offset={[0, -15]}
             opacity={1}
@@ -131,8 +135,9 @@ const DestinationMap = ({ destinations }) => {
               {destination.name}
             </span>
           </Tooltip> */}
-        </Marker>
-      ))}
+          </Marker>
+        ))}
+      </MarkerClusterGroup>
     </MapContainer>
   );
 };

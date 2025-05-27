@@ -34,6 +34,8 @@
   @apply h-full rounded-2xl;
 }
 
+.markercluster-map { height: 90vh; }
+
 @theme {
   --color-pr-blue-50: #ecfaff;
   --color-pr-blue-100: #d4f3ff;
