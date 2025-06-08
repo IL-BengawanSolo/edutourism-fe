@@ -50,22 +50,12 @@ const Destination = () => {
           <Link to="/destinations/id" className="no-underline">
             <DestinationCard
               variant="row"
-              badgeText={[
-                "Sejarah",
-                "Budaya",
-                "Teknologi",
-                "Cagar Budaya Hindu-Buddha & Arkeologi",
-              ]}
+              title="Kampung Batik Laweyan"
               ageType="all"
             />
           </Link>
-          <DestinationCard
-            variant="row"
-            title="Kampung Batik Laweyan"
-            ageType="anak"
-          />
-          <DestinationCard variant="row" ageType="remaja" />
-          <DestinationCard variant="row" ageType="all" />
+          <DestinationCard variant="row" ageType="remaja" imageSrc="/src/assets/images/kauman.png" title="Kampung Batik Kauman"/>
+          <DestinationCard variant="row" ageType="all" imageSrc="/src/assets/images/radya.png" title="Museum Radya Pustaka" />
           <DestinationCard variant="row" ageType="anak" />
           <DestinationCard variant="row" ageType="all" />
         </div>

@@ -15,6 +15,7 @@ import geoJsonData from "../lib/solo-raya.json";
 import { Location } from "react-iconly";
 import { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import { Badge } from "./ui/badge.jsx";
 
 const DestinationMap = ({ destinations }) => {
   // const locationIcon = new Icon({
@@ -108,33 +109,42 @@ const DestinationMap = ({ destinations }) => {
             icon={createDivIcon(destination.name)}
           >
             <Popup>
-              <div className="flex flex-col gap-2">
-                <h3 className="font-montserrat text-base font-semibold text-neutral-900">
+              <div className="font-montserrat flex flex-col">
+                <h3 className="text-base font-semibold text-neutral-900">
                   {destination.name}
                 </h3>
-                <p className="font-montserrat text-sm text-neutral-700">
-                  {destination.description}
+
+                <div className="mt-2 flex flex-row gap-2">
+                  <div className="flex flex-wrap gap-2">
+                    <Badge className="text-xs sm:text-sm" variant="custom">
+                      Seni
+                    </Badge>
+                  </div>
+
+                  <Badge
+                    className="text-xs sm:text-sm"
+                    variant="custom_secondary"
+                  >
+                    Museum Batik
+                  </Badge>
+                </div>
+
+                <p className="line-clamp-3 text-sm text-neutral-700">
+                  {destination["Deskripsi Singkat"]}
                 </p>
+
+                <img
+                  src="/src/assets/images/kampung-batik-laweyan.jpeg"
+                  alt=""
+                />
                 <a
                   href={`/destinations/${destination.id}`}
-                  className="text-primary font-montserrat text-sm font-semibold"
+                  className="text-primary text-sm font-semibold mt-3 hover:underline"
                 >
                   Lihat Detail
                 </a>
               </div>
             </Popup>
-            {/* <Tooltip
-            direction="top"
-            offset={[0, -15]}
-            opacity={1}
-            interactive
-            permanent
-            className="bg-transparent"
-          >
-            <span className="font-montserrat text-[10px] font-semibold text-neutral-700">
-              {destination.name}
-            </span>
-          </Tooltip> */}
           </Marker>
         ))}
       </MarkerClusterGroup>
