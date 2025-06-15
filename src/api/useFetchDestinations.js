@@ -10,7 +10,7 @@ const useFetchDestinations = () => {
     const fetchDestinations = async () => {
       try {
         const response = await axiosInstance.get("/destinations");
-        setDestinations(response.data);
+        setDestinations(response.data.data);
       } catch (error) {
         setError(error);
       } finally {

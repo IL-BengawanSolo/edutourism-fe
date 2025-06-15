@@ -26,7 +26,7 @@ const CarouselDestinationRow = () => {
                   ageType="remaja"
                   imageSrc="/src/assets/images/kauman.jpg"
                   title="Kampung Batik Kauman"
-                  categoryBadge={["Budaya", "Seni", "Kreativitas"]}
+                  category={["Budaya", "Seni", "Kreativitas"]}
                   price="Gratis"
                 />
               </div>
@@ -38,8 +38,8 @@ const CarouselDestinationRow = () => {
                   ageType="all"
                   imageSrc="/src/assets/images/radya.jpg"
                   title="Museum Radya Pustaka"
-                  categoryBadge={["Sejarah", "Budaya"]}
-                  subCategoryBadge="Museum Sejarah"
+                  category={["Sejarah", "Budaya"]}
+                  placeType="Museum Sejarah"
                   price="5.000 - 20.000"
                 />
               </div>

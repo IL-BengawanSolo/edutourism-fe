@@ -7,14 +7,32 @@ const DestinationCard = ({
   imageSrc = "/src/assets/images/kampung-batik-laweyan.jpeg",
   title = "Kampung Batik Laweyan",
   location = "Surakarta",
-  categoryBadge = ["Sains", "Lingkungan", "Sejarah"],
-  subCategoryBadge = "Kampung Batik",
-  price = "25.000 - 50.000",
+  category = ["Sains", "Lingkungan", "Sejarah"],
+  placeType = "Kampung Batik",
+  minPrice = "25.000",
+  maxPrice = "50.000",
+  isFree = false,
   match = "84% Match dengan kamu",
-  ageType = undefined, // "anak" | "remaja" | undefined
+  ageType = undefined,
   ...props
 }) => {
   const isCol = variant === "col";
+
+  const formatRupiah = (value) => {
+    if (!value) return "0";
+    return "Rp" + Number(value).toLocaleString("id-ID");
+  };
+
+  let priceLabel;
+  if (isFree) {
+    priceLabel = "Gratis";
+  } else if (minPrice && maxPrice && minPrice !== maxPrice) {
+    priceLabel = `${formatRupiah(minPrice)} - ${formatRupiah(maxPrice)}`;
+  } else if (minPrice) {
+    priceLabel = formatRupiah(minPrice);
+  } else {
+    priceLabel = "-";
+  }
 
   return (
     <div
@@ -28,7 +46,7 @@ const DestinationCard = ({
         alt={title}
         className={`object-cover ${
           isCol
-            ? "h-64 w-[352px] rounded-4xl sm:h-80 object-cover"
+            ? "h-64 w-[352px] rounded-4xl object-cover sm:h-80"
             : "h-40 w-40 rounded-2xl sm:h-54 sm:w-54"
         }`}
       />
@@ -48,9 +66,9 @@ const DestinationCard = ({
           variant={variant}
           title={title}
           location={location}
-          categoryBadge={categoryBadge}
-          subCategoryBadge={subCategoryBadge}
-          price={price}
+          category={category}
+          placeType={placeType}
+          price={priceLabel}
           match={match}
           ageType={ageType}
         />

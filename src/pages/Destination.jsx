@@ -10,7 +10,7 @@ const Destination = () => {
   const { destinations } = useFetchDestinations();
   const [isSticky, setIsSticky] = useState(false);
   const stickyRef = useRef(null);
-  console.log(destinations);
+  console.log("destinations:", destinations);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,7 +47,30 @@ const Destination = () => {
       <section className="max-container mx-auto grid w-11/12 grid-cols-1 gap-6 sm:w-10/12 lg:grid-cols-5">
         {/* Destination Cards */}
         <div className="col-span-3 flex flex-col gap-4">
-          <Link to="/destinations/id" className="no-underline">
+          {destinations.map((destination) => (
+            <Link
+              key={destination.id}
+              to={`/destinations/${destination.slug}`}
+              className="no-underline"
+            >
+              <DestinationCard
+                variant="row"
+                title={destination.name}
+                category={destination.categories || []}
+                placeType={destination.place_type}
+                location={destination.region_name}
+                minPrice={destination.ticket_price_min}
+                maxPrice={destination.ticket_price_max}
+                isFree={
+                  (Number(destination.ticket_price_min) === 0 ||
+                    !destination.ticket_price_min) &&
+                  (Number(destination.ticket_price_max) === 0 ||
+                    !destination.ticket_price_max)
+                }
+              />
+            </Link>
+          ))}
+          {/* <Link to="/destinations/id" className="no-underline">
             <DestinationCard
               variant="row"
               title="Kampung Batik Laweyan"
@@ -73,7 +96,7 @@ const Destination = () => {
             price="5.000 - 20.000"
           />
           <DestinationCard variant="row" ageType="anak" />
-          <DestinationCard variant="row" ageType="all" />
+          <DestinationCard variant="row" ageType="all" /> */}
         </div>
 
         {/* Map */}

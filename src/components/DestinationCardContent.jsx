@@ -6,11 +6,11 @@ const DestinationCardContent = ({
   variant,
   title,
   location,
-  categoryBadge,
-  subCategoryBadge,
+  category,
+  placeType,
   price,
   match,
-  ageType, // "anak" | "remaja" | undefined
+  ageType,
 }) => {
   const titleSize =
     variant === "col" ? "text-xl sm:text-2xl" : "text-lg sm:text-xl";
@@ -31,24 +31,28 @@ const DestinationCardContent = ({
 
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap gap-2">
-          {categoryBadge.map((text, idx) => (
-            <Badge key={idx} className={`${badgeSize}`} variant="custom">
+          {category.map((text, idx) => (
+            <Badge key={idx} className={badgeSize} variant="custom">
               {text}
             </Badge>
           ))}{" "}
         </div>
 
-        {subCategoryBadge && (
-          <Badge className={badgeSize} variant="custom_secondary">
-            {subCategoryBadge}
-          </Badge>
+        {placeType && (
+          <div className="flex flex-wrap gap-2">
+            {placeType.split(",").map((text, idx) => (
+              <Badge key={idx} className={badgeSize} variant="custom_secondary">
+                {text.trim()}
+              </Badge>
+            ))}{" "}
+          </div>
         )}
       </div>
 
       <div className="flex w-full items-center justify-between">
         <p className={`${textSize} text-neutral-dark-grey font-medium`}>
           <span className="hidden md:inline">Harga </span>
-          Rp <span className="font-semibold">{price}</span>
+          <span className="font-semibold">{price}</span>
         </p>
         <div className="ml-4 flex items-center gap-2">
           {(ageType === "anak" || ageType === "all") && (

@@ -9,6 +9,8 @@ import DestinationMap from "@/components/DestinationMap.jsx";
 import { Separator } from "@/components/ui/separator.jsx";
 import CarouselDestinationRow from "@/components/CarouselDestinationRow.jsx";
 import { MapIcon } from "lucide-react";
+import useFetchDestinationBySlug from "@/api/useFetchDestinationBySlug.js";
+import { useParams } from "react-router-dom";
 
 const images = [
   "/src/assets/images/laweyan/laweyan1.jpg", // 0: utama kiri
@@ -62,7 +64,8 @@ function scrollToWithOffset(id, offset = -60) {
 }
 
 const DestinationDetail = () => {
-  console.log(destinations);
+  const { slug } = useParams();
+  const { destination, loading, error } = useFetchDestinationBySlug(slug);
 
   return (
     <>
@@ -262,7 +265,7 @@ const DestinationDetail = () => {
               href="https://www.google.com/maps/search/?api=1&query=-7.5698839,110.7968942"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-pr-blue-600 hover:bg-pr-blue-600/90 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow transition mb-2"
+              className="bg-pr-blue-600 hover:bg-pr-blue-600/90 mb-2 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold text-white shadow transition"
             >
               <MapIcon className="text-base text-white" />
               <span>Lihat di Google Maps</span>

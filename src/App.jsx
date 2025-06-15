@@ -32,7 +32,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="destinations" element={<Destination />} />
-        <Route path="destinations/:destination-id" element={<DestinationDetail />} />
+        <Route path="destinations/:slug" element={<DestinationDetail />} />
         <Route path="recommendations" element={<Recommendation />} />
       </Route>
 
