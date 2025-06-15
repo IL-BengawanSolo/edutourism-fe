@@ -5,7 +5,7 @@ const DestinationCard = ({
   variant = "col",
   className = "",
   imageSrc = "/src/assets/images/kampung-batik-laweyan.jpeg",
-  title = "Museum Manusia Purba Sangiran Klaster Krikilan",
+  title = "Kampung Batik Laweyan",
   location = "Surakarta",
   categoryBadge = ["Sains", "Lingkungan", "Sejarah"],
   subCategoryBadge = "Kampung Batik",
@@ -28,7 +28,7 @@ const DestinationCard = ({
         alt={title}
         className={`object-cover ${
           isCol
-            ? "h-64 w-full rounded-4xl sm:h-80"
+            ? "h-64 w-[352px] rounded-4xl sm:h-80 object-cover"
             : "h-40 w-40 rounded-2xl sm:h-54 sm:w-54"
         }`}
       />

@@ -11,11 +11,11 @@ import CarouselDestinationRow from "@/components/CarouselDestinationRow.jsx";
 import { MapIcon } from "lucide-react";
 
 const images = [
-  "/src/assets/images/bg-img.png", // 0: utama kiri
-  "/src/assets/images/bg-img.png", // 1: kanan atas kiri
-  "/src/assets/images/bg-img.png", // 2: kanan atas kanan
-  "/src/assets/images/bg-img.png", // 3: kanan bawah kiri
-  "/src/assets/images/bg-img.png", // 4: kanan bawah kanan
+  "/src/assets/images/laweyan/laweyan1.jpg", // 0: utama kiri
+  "/src/assets/images/laweyan/laweyan2.jpg", // 1: kanan atas kiri
+  "/src/assets/images/laweyan/laweyan3.jpg", // 2: kanan atas kanan
+  "/src/assets/images/laweyan/laweyan4.jpg", // 3: kanan bawah kiri
+  "/src/assets/images/laweyan/laweyan5.jpg", // 4: kanan bawah kanan
 ];
 
 const openingHours = {
@@ -76,11 +76,11 @@ const DestinationDetail = () => {
             <img
               src={images[0]}
               alt=""
-              className="h-full w-full object-cover"
+              className="h-[300px] w-full object-cover"
             />
           </div>
           {/* Kanan: 4 grid (2x2) */}
-          <div className="col-span-1 grid h-full grid-cols-2 grid-rows-2 gap-2">
+          <div className="col-span-1 grid h-[300px] grid-cols-2 grid-rows-2 gap-2">
             <img
               src={images[1]}
               alt=""
@@ -192,7 +192,7 @@ const DestinationDetail = () => {
             </Badge>
           </div>
           <p className="text-neutral-black mt-4 text-xl font-bold">
-            <span className="text-primary">Harga Tiket Masuk:</span> Rp10.000 -
+            <span className="text-primary">Harga Tiket Masuk:</span> Rp25.000 -
             Rp50.000
           </p>
 

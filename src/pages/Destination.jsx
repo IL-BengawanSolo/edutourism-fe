@@ -51,11 +51,27 @@ const Destination = () => {
             <DestinationCard
               variant="row"
               title="Kampung Batik Laweyan"
+              categoryBadge={["Budaya", "Seni", "Kreativitas"]}
               ageType="all"
             />
           </Link>
-          <DestinationCard variant="row" ageType="remaja" imageSrc="/src/assets/images/kauman.png" title="Kampung Batik Kauman"/>
-          <DestinationCard variant="row" ageType="all" imageSrc="/src/assets/images/radya.png" title="Museum Radya Pustaka" />
+          <DestinationCard
+            variant="row"
+            ageType="remaja"
+            imageSrc="/src/assets/images/kauman.jpg"
+            title="Kampung Batik Kauman"
+            categoryBadge={["Budaya", "Seni", "Kreativitas"]}
+            price="Gratis"
+          />
+          <DestinationCard
+            variant="row"
+            ageType="all"
+            imageSrc="/src/assets/images/radya.jpg"
+            title="Museum Radya Pustaka"
+            categoryBadge={["Sejarah", "Budaya"]}
+            subCategoryBadge="Museum Sejarah"
+            price="5.000 - 20.000"
+          />
           <DestinationCard variant="row" ageType="anak" />
           <DestinationCard variant="row" ageType="all" />
         </div>

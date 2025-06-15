@@ -56,13 +56,29 @@ const JumbotronTestCompleted = () => {
           </h1>
         </div>
 
-        <div className="flex w-full flex-col items-center justify-center gap-6 sm:flex-row sm:items-stretch sm:gap-6 flex-wrap">
-          <DestinationCard variant="col" subCategoryBadge="Museum Sejarah" />
-          <DestinationCard variant="col" subCategoryBadge="Museum Sejarah" />
-          <DestinationCard variant="col" subCategoryBadge="Museum Sejarah" />
-          <DestinationCard variant="col" subCategoryBadge="Museum Sejarah" />
-          <DestinationCard variant="col" subCategoryBadge="Museum Sejarah" />
-          <DestinationCard variant="col" subCategoryBadge="Museum Sejarah" />
+        <div className="flex w-full flex-col flex-wrap items-center justify-center gap-6 sm:flex-row sm:items-stretch sm:gap-6">
+          <DestinationCard
+            variant="col"
+            title="Kampung Batik Laweyan"
+            categoryBadge={["Budaya", "Seni", "Kreativitas"]}
+          />
+          <DestinationCard
+            variant="col"
+            imageSrc="/src/assets/images/kauman.jpg"
+            title="Kampung Batik Kauman"
+            categoryBadge={["Budaya", "Seni", "Kreativitas"]}
+            match="78% Match dengan kamu"
+            price="Gratis"
+          />
+          <DestinationCard
+            variant="col"
+            imageSrc="/src/assets/images/radya.jpg"
+            title="Museum Radya Pustaka"
+            categoryBadge={["Sejarah", "Budaya"]}
+            subCategoryBadge="Museum Sejarah"
+            match="71% Match dengan kamu"
+            price="5.000 - 20.000"
+          />
         </div>
       </section>
     </>

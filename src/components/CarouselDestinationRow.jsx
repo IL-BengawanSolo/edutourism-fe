@@ -18,13 +18,34 @@ const CarouselDestinationRow = () => {
         className="w-full"
       >
         <CarouselContent>
-          {Array.from({ length: 4 }).map((_, index) => (
-            <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/2">
+
+            <CarouselItem  className="md:basis-1/1 lg:basis-1/2">
               <div className="p-1">
-                <DestinationCard variant="row" />
+                <DestinationCard
+                  variant="row"
+                  ageType="remaja"
+                  imageSrc="/src/assets/images/kauman.jpg"
+                  title="Kampung Batik Kauman"
+                  categoryBadge={["Budaya", "Seni", "Kreativitas"]}
+                  price="Gratis"
+                />
               </div>
             </CarouselItem>
-          ))}
+            <CarouselItem  className="md:basis-1/1 lg:basis-1/2">
+              <div className="p-1">
+                <DestinationCard
+                  variant="row"
+                  ageType="all"
+                  imageSrc="/src/assets/images/radya.jpg"
+                  title="Museum Radya Pustaka"
+                  categoryBadge={["Sejarah", "Budaya"]}
+                  subCategoryBadge="Museum Sejarah"
+                  price="5.000 - 20.000"
+                />
+              </div>
+            </CarouselItem>
+            
+          
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
