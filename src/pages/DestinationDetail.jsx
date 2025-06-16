@@ -20,36 +20,6 @@ const images = [
   "/src/assets/images/laweyan/laweyan5.jpg", // 4: kanan bawah kanan
 ];
 
-const openingHours = {
-  Senin: "08:00-20:00",
-  Selasa: "08:00-20:00",
-  Rabu: "08:00-20:00",
-  Kamis: "08:00-20:00",
-  Jumat: "08:00-20:00",
-  Sabtu: "08:00-20:00",
-  Minggu: "08:00-20:00",
-};
-
-const facilities = [
-  "Parkir",
-  "Toko Batik",
-  "Museum Batik",
-  "Kuliner",
-  "Belajar Membatik",
-  "Terdapat Bangku Taman untuk pengunjung bersantai",
-];
-
-const destinations = [
-  {
-    id: "1",
-    name: "Kampung Batik Laweyan",
-    latitude: -7.56988389999999,
-    longitude: 110.7968942,
-    description:
-      "Kampung Batik Laweyan di Kota Solo adalah kawasan wisata batik yang telah ada sejak Kerajaan Pajang tahun 1546 M. Berlokasi di lahan seluas 24 hektar, kawasan ini terdiri dari tiga blok dan dihuni oleh ratusan pengrajin batik dengan berbagai motif dan harga. Selain menjadi sentra batik, Laweyan juga menyimpan kekayaan arsitektur Jawa kuno.",
-  },
-];
-
 /**
  * Smooth scroll to a target element with offset (for sticky navbar)
  * @param {string} id - Element id
@@ -66,6 +36,43 @@ function scrollToWithOffset(id, offset = -60) {
 const DestinationDetail = () => {
   const { slug } = useParams();
   const { destination, loading, error } = useFetchDestinationBySlug(slug);
+  console.log(destination);
+
+  if (loading) {
+    return <div className="py-10 text-center">Memuat data destinasi...</div>;
+  }
+  if (error) {
+    return (
+      <div className="py-10 text-center text-red-500">
+        Gagal memuat data destinasi.
+      </div>
+    );
+  }
+  if (!destination) {
+    return <div className="py-10 text-center">Destinasi tidak ditemukan.</div>;
+  }
+
+  const formatRupiah = (value) => {
+    if (!value) return "0";
+    return "Rp" + Number(value).toLocaleString("id-ID");
+  };
+
+  const minPrice = destination.ticket_price_min;
+  const maxPrice = destination.ticket_price_max;
+  const isFree =
+    (Number(minPrice) === 0 || !minPrice) &&
+    (Number(maxPrice) === 0 || !maxPrice);
+
+  let priceLabel;
+  if (isFree) {
+    priceLabel = "Gratis";
+  } else if (minPrice && maxPrice && minPrice !== maxPrice) {
+    priceLabel = `${formatRupiah(minPrice)} - ${formatRupiah(maxPrice)}`;
+  } else if (minPrice) {
+    priceLabel = formatRupiah(minPrice);
+  } else {
+    priceLabel = "-";
+  }
 
   return (
     <>
@@ -174,38 +181,31 @@ const DestinationDetail = () => {
         </div>
 
         <div className="mt-4 mb-4 flex flex-col gap-4 rounded-none bg-white p-8 sm:rounded-2xl">
-          <h1 className="text-4xl font-bold">Kampung Batik Loweyan</h1>
+          <h1 className="text-4xl font-bold">{destination.name}</h1>
           <p className="text-neutral-grey flex items-center gap-2 text-base font-medium">
             <Location set="bold" className="text-neutral-grey" />
-            Loweyan, Surakarta, Jawa Tengah
+            {destination.region_name}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            <Badge className="text-sm" variant="custom">
-              Budaya
-            </Badge>
-            <Badge className="text-sm" variant="custom">
-              Seni
-            </Badge>
-            <Badge className="text-sm" variant="custom">
-              Kreativitas
-            </Badge>
+            {destination.categories.map((text, idx) => (
+              <Badge key={idx} className="text-sm" variant="custom">
+                {text}
+              </Badge>
+            ))}{" "}
             <Separator orientation="vertical" className="mx-1 h-5" />
-            <Badge className="text-sm" variant="custom_secondary">
-              Kampung Batik
-            </Badge>
+            {destination.place_type.split(",").map((text, idx) => (
+              <Badge key={idx} className="text-sm" variant="custom_secondary">
+                {text.trim()}
+              </Badge>
+            ))}{" "}
           </div>
           <p className="text-neutral-black mt-4 text-xl font-bold">
-            <span className="text-primary">Harga Tiket Masuk:</span> Rp25.000 -
-            Rp50.000
+            <span className="text-primary">Harga Tiket Masuk: </span>
+            {priceLabel}
           </p>
 
           <p className="text-neutral-black mt-4 text-base font-medium">
-            Kampung Batik Laweyan di Kota Solo adalah kawasan wisata batik yang
-            telah ada sejak Kerajaan Pajang tahun 1546 M. Berlokasi di lahan
-            seluas 24 hektar, kawasan ini terdiri dari tiga blok dan dihuni oleh
-            ratusan pengrajin batik dengan berbagai motif dan harga. Selain
-            menjadi sentra batik, Laweyan juga menyimpan kekayaan arsitektur
-            Jawa kuno.
+            {destination.description}
           </p>
         </div>
         <div
@@ -214,7 +214,7 @@ const DestinationDetail = () => {
         >
           <h1 className="text-2xl font-bold">Fasilitas</h1>
           <div className="mt-2 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {facilities.map((label) => (
+            {destination.facilities.map((label) => (
               <div
                 key={label}
                 className="bg-neutral-bg flex min-h-[36px] items-center gap-2 rounded-xl px-3 py-2"
@@ -233,22 +233,6 @@ const DestinationDetail = () => {
             ))}
           </div>
         </div>
-        {/* <div className="mt-4 mb-4 flex flex-col gap-4 rounded-none bg-white p-8 sm:rounded-2xl">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-          <div className="col-span-3 h-[calc(100vh-12rem)]">
-            <h1 className="text-2xl font-bold">Lokasi</h1>
-            <p className="text-neutral-black mt-4 mb-4 flex items-center gap-2 text-base font-medium">
-              <Location set="bold" className="text-pr-blue-800 size-10" />
-              Loweyan, Surakarta, Jawa Tengah Jl. Dr. Rajiman No.521, Laweyan,
-              Kec. Laweyan, Kota Surakarta, Jawa Tengah 57148
-            </p>
-            <DestinationMap destinations={destinations} />
-          </div>
-          <div className="col-span-2">
-            <h1 className="text-2xl font-bold">Jam Buka</h1>
-          </div>
-        </div>
-      </div> */}
 
         <div className="mt-4 mb-4 grid grid-cols-1 gap-4 rounded-none lg:grid-cols-6">
           <div
@@ -258,8 +242,7 @@ const DestinationDetail = () => {
             <h1 className="text-2xl font-bold">Lokasi</h1>
             <p className="text-neutral-black mt-4 mb-2 flex items-center gap-2 text-base font-medium">
               <Location set="bold" className="text-pr-blue-800 size-10" />
-              Loweyan, Surakarta, Jawa Tengah Jl. Dr. Rajiman No.521, Laweyan,
-              Kec. Laweyan, Kota Surakarta, Jawa Tengah 57148
+              {destination.address}
             </p>
             <a
               href="https://www.google.com/maps/search/?api=1&query=-7.5698839,110.7968942"
@@ -271,7 +254,10 @@ const DestinationDetail = () => {
               <span>Lihat di Google Maps</span>
             </a>
             <div className="z-0 h-[360px]">
-              <DestinationMap destinations={destinations} />
+              <DestinationMap
+                destinations={destination}
+                center={[destination.latitude, destination.longitude]}
+              />
             </div>
           </div>
           <div
@@ -280,7 +266,7 @@ const DestinationDetail = () => {
           >
             <h1 className="text-2xl font-bold">Jam Buka</h1>
             <div className="mt-2 flex flex-col gap-2">
-              {Object.entries(openingHours).map(([day, time]) => (
+              {Object.entries(destination.opening_hours).map(([day, time]) => (
                 <div
                   key={day}
                   className="bg-pr-blue-50 flex items-center justify-between rounded-lg px-3 py-2"

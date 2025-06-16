@@ -12,17 +12,10 @@ import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/styles";
 
 import geoJsonData from "../lib/solo-raya.json";
-import { Location } from "react-iconly";
-import { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { Badge } from "./ui/badge.jsx";
 
-const DestinationMap = ({ destinations }) => {
-  // const locationIcon = new Icon({
-  //   iconUrl: "/src/assets/location.png",
-  //   iconSize: [40, 40],
-  // });
-
+const DestinationMap = ({ destinations, center = [-7.560421, 110.826454] }) => {
   // SVG Iconly Location sebagai string (tanpa background)
   const svgIcon = encodeURIComponent(`
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,9 +78,16 @@ const DestinationMap = ({ destinations }) => {
     };
   };
 
+  // Normalize destinations: support array or single object
+  const destinationList = Array.isArray(destinations)
+    ? destinations
+    : destinations
+      ? [destinations]
+      : [];
+
   return (
     <MapContainer
-      center={[-7.560421, 110.826454]}
+      center={center}
       zoom={12}
       scrollWheelZoom={false}
       minZoom={9}
@@ -102,7 +102,7 @@ const DestinationMap = ({ destinations }) => {
       <GeoJSON data={geoJsonData} style={getStyle} />
 
       <MarkerClusterGroup showCoverageOnHover={false}>
-        {destinations.map((destination) => (
+        {destinationList.map((destination) => (
           <Marker
             key={destination.id}
             position={[destination.latitude, destination.longitude]}
@@ -139,7 +139,7 @@ const DestinationMap = ({ destinations }) => {
                 />
                 <a
                   href={`/destinations/${destination.id}`}
-                  className="text-primary text-sm font-semibold mt-3 hover:underline"
+                  className="text-primary mt-3 text-sm font-semibold hover:underline"
                 >
                   Lihat Detail
                 </a>
