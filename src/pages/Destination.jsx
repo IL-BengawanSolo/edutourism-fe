@@ -61,12 +61,6 @@ const Destination = () => {
                 location={destination.region_name}
                 minPrice={destination.ticket_price_min}
                 maxPrice={destination.ticket_price_max}
-                isFree={
-                  (Number(destination.ticket_price_min) === 0 ||
-                    !destination.ticket_price_min) &&
-                  (Number(destination.ticket_price_max) === 0 ||
-                    !destination.ticket_price_max)
-                }
               />
             </Link>
           ))}

@@ -1,5 +1,6 @@
 import React from "react";
 import DestinationCardContent from "./DestinationCardContent";
+import { getPriceLabel } from "@/lib/utils.js";
 
 const DestinationCard = ({
   variant = "col",
@@ -11,28 +12,13 @@ const DestinationCard = ({
   placeType = "Kampung Batik",
   minPrice = "25.000",
   maxPrice = "50.000",
-  isFree = false,
   match = "84% Match dengan kamu",
   ageType = undefined,
   ...props
 }) => {
   const isCol = variant === "col";
 
-  const formatRupiah = (value) => {
-    if (!value) return "0";
-    return "Rp" + Number(value).toLocaleString("id-ID");
-  };
-
-  let priceLabel;
-  if (isFree) {
-    priceLabel = "Gratis";
-  } else if (minPrice && maxPrice && minPrice !== maxPrice) {
-    priceLabel = `${formatRupiah(minPrice)} - ${formatRupiah(maxPrice)}`;
-  } else if (minPrice) {
-    priceLabel = formatRupiah(minPrice);
-  } else {
-    priceLabel = "-";
-  }
+  const priceLabel = getPriceLabel(minPrice, maxPrice);
 
   return (
     <div
