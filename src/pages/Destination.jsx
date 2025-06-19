@@ -55,12 +55,14 @@ const Destination = () => {
             >
               <DestinationCard
                 variant="row"
-                title={destination.name}
-                category={destination.categories || []}
-                placeType={destination.place_type}
-                location={destination.region_name}
+                name={destination.name}
+                categories={destination.categories || []}
+                placeTypes={destination.place_types}
+                region_name={destination.region_name}
                 minPrice={destination.ticket_price_min}
                 maxPrice={destination.ticket_price_max}
+                ageCategories={destination.age_categories}
+
               />
             </Link>
           ))}

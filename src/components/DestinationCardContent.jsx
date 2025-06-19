@@ -1,16 +1,30 @@
 import { Badge } from "@/components/ui/badge";
-import { Baby, PersonStanding } from "lucide-react";
 import { Location } from "react-iconly";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faChild,
+  faBaby,
+  faPerson,
+  faUniversalAccess,
+} from "@fortawesome/free-solid-svg-icons";
+
+const AGE_ICON_MAP = {
+  Remaja: <FontAwesomeIcon className="text-primary h-5 w-5" icon={faPerson} title="Remaja" />,
+  "Anak-anak": <FontAwesomeIcon className="text-primary h-5 w-5" icon={faChild} title="Anak-anak" />,
+  Balita: <FontAwesomeIcon className="text-primary h-5 w-5" icon={faBaby} title="Balita" />,
+  "Semua Umur": <FontAwesomeIcon className="text-primary h-5 w-5" icon={faUniversalAccess} title="Semua Umur" />,
+};
+const ALL_AGES = ["Remaja", "Anak-anak", "Balita", "Semua Umur"];
 
 const DestinationCardContent = ({
   variant,
-  title,
-  location,
-  category,
-  placeType,
+  name,
+  region_name,
+  categories,
+  placeTypes,
   price,
   match,
-  ageType,
+  ageCategories,
 }) => {
   const titleSize =
     variant === "col" ? "text-xl sm:text-2xl" : "text-lg sm:text-xl";
@@ -19,30 +33,41 @@ const DestinationCardContent = ({
   const badgeSize =
     variant === "col" ? "text-sm sm:text-base" : "text-xs sm:text-sm";
 
+  let ages = [];
+  if (typeof ageCategories === "string") {
+    if (ageCategories === "Semua Umur") {
+      ages = ALL_AGES;
+    } else {
+      ages = [ageCategories];
+    }
+  } else if (Array.isArray(ageCategories)) {
+    ages = ageCategories;
+  }
+
   return (
     <div className="font-montserrat flex flex-col gap-2 sm:gap-3">
-      <h2 className={`${titleSize} line-clamp-2 font-bold`}>{title}</h2>
+      <h2 className={`${titleSize} line-clamp-2 font-bold`}>{name}</h2>
       <p
         className={`${textSize} text-neutral-grey flex items-center gap-2 font-medium`}
       >
         <Location set="bold" className="text-neutral-grey" />
-        {location}
+        {region_name}
       </p>
 
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap gap-2">
-          {category.map((text, idx) => (
+          {categories.map((text, idx) => (
             <Badge key={idx} className={badgeSize} variant="custom">
               {text}
             </Badge>
           ))}{" "}
         </div>
 
-        {placeType && (
+        {placeTypes && (
           <div className="flex flex-wrap gap-2">
-            {placeType.split(",").map((text, idx) => (
+            {placeTypes.map((text, idx) => (
               <Badge key={idx} className={badgeSize} variant="custom_secondary">
-                {text.trim()}
+                {text}
               </Badge>
             ))}{" "}
           </div>
@@ -54,12 +79,15 @@ const DestinationCardContent = ({
           <span className="hidden md:inline">Harga </span>
           <span className="font-semibold">{price}</span>
         </p>
-        <div className="ml-4 flex items-center gap-2">
-          {(ageType === "anak" || ageType === "all") && (
-            <Baby className="text-primary text-lg" title="Anak-anak" />
-          )}
-          {(ageType === "remaja" || ageType === "all") && (
-            <PersonStanding className="text-primary text-lg" title="Remaja" />
+        <div className="ml-4 flex items-center gap-3">
+          {ages.map(
+            (age) =>
+              AGE_ICON_MAP[age] && (
+                <span key={age} className="flex items-center gap-1">
+                  {AGE_ICON_MAP[age]}
+                  <span className="text-xs text-neutral-700">{age}</span>
+                </span>
+              ),
           )}
         </div>
       </div>

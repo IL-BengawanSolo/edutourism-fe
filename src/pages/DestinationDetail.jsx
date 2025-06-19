@@ -57,7 +57,7 @@ const DestinationDetail = () => {
             Tempat Wisata Serupa
           </h1>
         </div>
-        <CarouselDestinationRow />
+        {/* <CarouselDestinationRow /> */}
       </section>
     </>
   );

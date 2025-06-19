@@ -104,7 +104,7 @@ const DestinationMap = ({ destinations, center = [-7.560421, 110.826454] }) => {
       <MarkerClusterGroup showCoverageOnHover={false}>
         {destinationList.map((destination) => (
           <Marker
-            key={destination.id}
+            key={destination.slug}
             position={[destination.latitude, destination.longitude]}
             icon={createDivIcon(destination.name)}
           >

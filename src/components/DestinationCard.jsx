@@ -6,14 +6,14 @@ const DestinationCard = ({
   variant = "col",
   className = "",
   imageSrc = "/src/assets/images/kampung-batik-laweyan.jpeg",
-  title = "Kampung Batik Laweyan",
-  location = "Surakarta",
-  category = ["Sains", "Lingkungan", "Sejarah"],
-  placeType = "Kampung Batik",
+  name = "Kampung Batik Laweyan",
+  region_name = "Surakarta",
+  categories = ["Sains", "Lingkungan", "Sejarah"],
+  placeTypes = ["Kampung Batik"],
   minPrice = "25.000",
   maxPrice = "50.000",
   match = "84% Match dengan kamu",
-  ageType = undefined,
+  ageCategories = undefined,
   ...props
 }) => {
   const isCol = variant === "col";
@@ -29,34 +29,23 @@ const DestinationCard = ({
     >
       <img
         src={imageSrc}
-        alt={title}
+        alt={name}
         className={`object-cover ${
           isCol
             ? "h-64 w-[352px] rounded-4xl object-cover sm:h-80"
             : "h-40 w-40 rounded-2xl sm:h-54 sm:w-54"
         }`}
       />
-
-      {/* <img
-        src={imageSrc}
-        alt={title}
-        className={`aspect-[3/4] object-cover ${
-          isCol
-            ? "h-auto max-h-80 w-full rounded-4xl"
-            : "h-40 w-40 rounded-2xl sm:h-64 sm:w-48"
-        }`}
-      /> */}
-
       <div className={`${isCol ? "mt-5" : "my-3 ml-6 flex-1"}`}>
         <DestinationCardContent
           variant={variant}
-          title={title}
-          location={location}
-          category={category}
-          placeType={placeType}
+          name={name}
+          region_name={region_name}
+          categories={categories}
+          placeTypes={placeTypes}
           price={priceLabel}
           match={match}
-          ageType={ageType}
+          ageCategories={ageCategories}
         />
       </div>
     </div>
