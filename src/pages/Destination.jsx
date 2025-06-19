@@ -5,6 +5,7 @@ import FilterBar from "@/components/FilterBar.jsx";
 import DestinationMap from "@/components/DestinationMap.jsx";
 import useFetchDestinations from "@/api/useFetchDestinations.js";
 import { Link } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Destination = () => {
   const { destinations } = useFetchDestinations();
@@ -29,6 +30,13 @@ const Destination = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Infinite scroll state
+  const [visible, setVisible] = useState(10); // tampilkan 10 item awal
+
+  const fetchMoreData = () => {
+    setVisible((prev) => prev + 10); // tambah 10 setiap scroll bawah
+  };
+
   return (
     <div>
       <div
@@ -47,52 +55,37 @@ const Destination = () => {
       <section className="max-container mx-auto grid w-11/12 grid-cols-1 gap-6 sm:w-10/12 lg:grid-cols-5">
         {/* Destination Cards */}
         <div className="col-span-3 flex flex-col gap-4">
-          {destinations.map((destination) => (
-            <Link
-              key={destination.id}
-              to={`/destinations/${destination.slug}`}
-              className="no-underline"
-            >
-              <DestinationCard
-                variant="row"
-                name={destination.name}
-                categories={destination.categories || []}
-                placeTypes={destination.place_types}
-                region_name={destination.region_name}
-                minPrice={destination.ticket_price_min}
-                maxPrice={destination.ticket_price_max}
-                ageCategories={destination.age_categories}
-
-              />
-            </Link>
-          ))}
-          {/* <Link to="/destinations/id" className="no-underline">
-            <DestinationCard
-              variant="row"
-              title="Kampung Batik Laweyan"
-              categoryBadge={["Budaya", "Seni", "Kreativitas"]}
-              ageType="all"
-            />
-          </Link>
-          <DestinationCard
-            variant="row"
-            ageType="remaja"
-            imageSrc="/src/assets/images/kauman.jpg"
-            title="Kampung Batik Kauman"
-            categoryBadge={["Budaya", "Seni", "Kreativitas"]}
-            price="Gratis"
-          />
-          <DestinationCard
-            variant="row"
-            ageType="all"
-            imageSrc="/src/assets/images/radya.jpg"
-            title="Museum Radya Pustaka"
-            categoryBadge={["Sejarah", "Budaya"]}
-            subCategoryBadge="Museum Sejarah"
-            price="5.000 - 20.000"
-          />
-          <DestinationCard variant="row" ageType="anak" />
-          <DestinationCard variant="row" ageType="all" /> */}
+          <InfiniteScroll
+            dataLength={Math.min(visible, destinations.length)}
+            next={fetchMoreData}
+            hasMore={visible < destinations.length}
+            loader={<h4 className="py-4 text-center">Memuat...</h4>}
+            endMessage={
+              <p className="py-4 text-center text-neutral-500">
+                Semua destinasi sudah ditampilkan.
+              </p>
+            }
+            className="flex flex-col gap-4"
+          >
+            {destinations.slice(0, visible).map((destination) => (
+              <Link
+                key={destination.id}
+                to={`/destinations/${destination.slug}`}
+                className="no-underline"
+              >
+                <DestinationCard
+                  variant="row"
+                  name={destination.name}
+                  categories={destination.categories || []}
+                  placeTypes={destination.place_types}
+                  region_name={destination.region_name}
+                  minPrice={destination.ticket_price_min}
+                  maxPrice={destination.ticket_price_max}
+                  ageCategories={destination.age_categories}
+                />
+              </Link>
+            ))}
+          </InfiniteScroll>
         </div>
 
         {/* Map */}
