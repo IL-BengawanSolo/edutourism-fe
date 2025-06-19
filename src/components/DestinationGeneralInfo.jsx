@@ -24,9 +24,9 @@ const DestinationGeneralInfo = ({ destination, priceLabel }) => {
         ))}{" "}
         {/* Place type */}
         <Separator orientation="vertical" className="mx-1 h-5" />
-        {destination.place_type.split(",").map((text, idx) => (
+        {destination.place_types.map((text, idx) => (
           <Badge key={idx} className="text-sm" variant="custom_secondary">
-            {text.trim()}
+            {text}
           </Badge>
         ))}{" "}
       </div>

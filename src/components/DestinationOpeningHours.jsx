@@ -5,13 +5,25 @@ const DestinationOpeningHours = ({ opening_hours }) => (
   >
     <h1 className="text-2xl font-bold">Jam Buka</h1>
     <div className="mt-2 flex flex-col gap-2">
-      {Object.entries(opening_hours).map(([day, time]) => (
+      {opening_hours.map((oh) => (
         <div
-          key={day}
-          className="bg-pr-blue-50 flex items-center justify-between rounded-lg px-3 py-2"
+          key={oh.id}
+          className={`flex items-center justify-between rounded-lg px-3 py-2 ${
+            oh.is_closed
+              ? "bg-neutral-200 opacity-60"
+              : "bg-pr-blue-50"
+          }`}
         >
-          <span className="font-semibold text-neutral-800">{day}</span>
-          <span className="text-primary font-semibold">{time}</span>
+          <span className={`font-semibold ${oh.is_closed ? "text-neutral-500" : "text-neutral-800"}`}>
+            {oh.day_of_week}
+          </span>
+          {oh.is_closed ? (
+            <span className="text-red-500 font-semibold">Tutup</span>
+          ) : (
+            <span className="text-primary font-semibold">
+              {oh.open_time} - {oh.close_time}
+            </span>
+          )}
         </div>
       ))}
     </div>
