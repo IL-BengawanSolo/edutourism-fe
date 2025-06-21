@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 
 // icon: ReactNode, items: array of { label, value }, label: string, placeholder: string
-const FilterButton = ({
+const SelectFilterButton = ({
   icon,
   items = [],
   label = "Filter",
@@ -37,4 +37,4 @@ const FilterButton = ({
   );
 };
 
-export default FilterButton;
+export default SelectFilterButton;

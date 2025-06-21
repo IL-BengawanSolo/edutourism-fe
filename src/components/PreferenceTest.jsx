@@ -43,7 +43,7 @@ const PreferenceTest = ({ onTestCompleted }) => {
                 value={cat.value}
                 aria-label={`Toggle ${cat.label}`}
               >
-                <Toggle size="custom2" variant="custom2">
+                <Toggle size="custom2" variant="custom">
                   {cat.label}
                 </Toggle>
               </ToggleGroupItem>

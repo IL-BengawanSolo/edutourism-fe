@@ -1,55 +1,87 @@
 import SearchBar from "@/components/SearchBar.jsx";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DestinationCard from "@/components/DestinationCard.jsx";
 import FilterBar from "@/components/FilterBar.jsx";
 import DestinationMap from "@/components/DestinationMap.jsx";
-import useFetchDestinations from "@/api/useFetchDestinations.js";
-import { Link } from "react-router-dom";
+// import useFetchDestinations from "@/api/useFetchDestinations.js";
+import { Link, useSearchParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
+import useSearchAndFilterDestinations from "@/api/useSearchAndFilterDestinations.js";
+import StickyHeader from "@/components/StickyHeader.jsx";
 
 const Destination = () => {
-  const { destinations } = useFetchDestinations();
-  const [isSticky, setIsSticky] = useState(false);
-  const stickyRef = useRef(null);
-  console.log("destinations:", destinations);
+  const { destinations, loading, error, searchAndFilter } =
+    useSearchAndFilterDestinations();
+  console.log("Destinations:", destinations);
 
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchValue = searchParams.get("search") || "";
+  const filters = React.useMemo(
+    () => ({
+      region_id: searchParams.get("region_id") || undefined,
+      category_id: searchParams.get("category_id") || undefined,
+      place_type_id: searchParams.get("place_type_id") || undefined,
+      age_category_id: searchParams.get("age_category_id") || undefined,
+    }),
+    [searchParams],
+  );
+
+  // Handler SearchBar
+  const handleSearchChange = (val) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      if (val) {
+        params.set("search", val);
+      } else {
+        params.delete("search");
+      }
+      return params;
+    });
+  };
+
+  // Handler FilterBar
+  const handleFilterChange = (newFilters) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      Object.entries(newFilters).forEach(([key, value]) => {
+        if (value && value !== "all") {
+          params.set(key, value);
+        } else {
+          params.delete(key);
+        }
+      });
+      return params;
+    });
+  };
+
+  // Fetch data saat search/filter berubah
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!stickyRef.current) return;
-      const { top } = stickyRef.current.getBoundingClientRect();
-      setIsSticky(top <= 0);
-    };
-
-    handleScroll();
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    searchAndFilter({ search: searchValue, ...filters });
+    setVisible(10); // reset infinite scroll saat filter/search berubah
+  }, [
+    searchValue,
+    filters.region_id,
+    filters.category_id,
+    filters.place_type_id,
+    filters.age_category_id,
+    searchAndFilter,
+    filters,
+  ]);
 
   // Infinite scroll state
-  const [visible, setVisible] = useState(10); // tampilkan 10 item awal
-
+  const [visible, setVisible] = useState(10);
   const fetchMoreData = () => {
-    setVisible((prev) => prev + 10); // tambah 10 setiap scroll bawah
+    setVisible((prev) => prev + 10);
   };
 
   return (
     <div>
-      <div
-        ref={stickyRef}
-        className={`bg-neutral-bg sticky top-0 z-10 py-3 transition-shadow duration-200 sm:py-5 ${
-          isSticky ? "shadow-[0px_4px_10px_-4px_rgba(0,0,0,0.16)]" : ""
-        }`}
-      >
+      <StickyHeader>
         <section className="max-container mx-auto w-11/12 sm:w-10/12">
-          <SearchBar />
-          <FilterBar />
+          <SearchBar value={searchValue} onSubmit={handleSearchChange} />
+          <FilterBar filters={filters} setFilters={handleFilterChange} />
         </section>
-      </div>
+      </StickyHeader>
 
       {/* Main Layout */}
       <section className="max-container mx-auto grid w-11/12 grid-cols-1 gap-6 sm:w-10/12 lg:grid-cols-5">
@@ -69,7 +101,7 @@ const Destination = () => {
           >
             {destinations.slice(0, visible).map((destination) => (
               <Link
-                key={destination.id}
+                key={destination.slug}
                 to={`/destinations/${destination.slug}`}
                 className="no-underline"
               >
@@ -90,7 +122,10 @@ const Destination = () => {
 
         {/* Map */}
         <div className="sticky top-38 col-span-1 h-[calc(100vh-14rem)] lg:col-span-2">
-          <DestinationMap destinations={destinations} />
+          <DestinationMap
+            key={destinations.map((d) => d.uuid).join(",")}
+            destinations={destinations}
+          />
         </div>
       </section>
     </div>
