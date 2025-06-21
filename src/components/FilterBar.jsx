@@ -46,6 +46,9 @@ import {
 } from "@/components/ui/sidebar";
 
 import { Separator } from "./ui/separator.jsx";
+import useFetchPlaceTypes from "@/api/useFetchPlaceTypes.js";
+import { Checkbox } from "@/components/ui/checkbox.jsx";
+import { Label } from "@/components/ui/label.jsx";
 
 const FILTER_MENU = [
   {
@@ -82,17 +85,38 @@ const FILTER_MENU = [
 ];
 
 const FilterBar = () => {
-  const { categories, loading } = useFetchCategories();
+  const { categories, loading: categoriesLoading } = useFetchCategories();
+  const { placeTypes, loading: placeTypesLoading } = useFetchPlaceTypes();
+  const [selectedCategories, setSelectedCategories] = React.useState([]);
+  const [selectedPlaceTypes, setSelectedPlaceTypes] = React.useState([]);
+
+  console.log("Selected Categories:", selectedCategories);
 
   const categoryItems = [
-    { label: "Semua", value: "all" },
-    ...(!loading && categories
+    ...(!categoriesLoading && categories
       ? categories.map((cat) => ({
           label: cat.name,
           value: cat.id,
         }))
       : []),
   ];
+
+  const placeTypeItems = [
+    ...(!placeTypesLoading && placeTypes
+      ? placeTypes.map((type) => ({
+          label: type.name,
+          value: type.id,
+        }))
+      : []),
+  ];
+
+  const handlePlaceTypeChange = (value) => {
+    setSelectedPlaceTypes((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+    );
+  };
+
+  console.log("Selected Place Types:", selectedPlaceTypes);
 
   return (
     <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-5 sm:gap-6">
@@ -145,7 +169,7 @@ const FilterBar = () => {
                 </SidebarContent>
               </Sidebar>
 
-              <main className="flex h-[480px] flex-1 flex-col overflow-hidden border-l-1 bg-white">
+              <main className="flex h-[480px] flex-1 flex-col overflow-hidden border-l-1 bg-white pb-24">
                 <div className="flex flex-1 flex-col gap-4 overflow-y-auto pt-0 pl-6">
                   <div className="flex w-full flex-col border-t-1 pt-4">
                     <h1 className="pb-4 text-xl font-bold">Kategori</h1>
@@ -153,6 +177,8 @@ const FilterBar = () => {
                     <ToggleGroup
                       type="multiple"
                       className="flex w-full flex-row flex-wrap gap-2 md:w-11/12"
+                      value={selectedCategories}
+                      onValueChange={setSelectedCategories}
                     >
                       {categoryItems.map((cat) => (
                         <div key={cat.value}>
@@ -171,6 +197,25 @@ const FilterBar = () => {
 
                     <Separator className="my-4" />
                     <h1 className="pb-4 text-xl font-bold">Jenis Tempat</h1>
+
+                    <div className="flex flex-col gap-2">
+                      {placeTypeItems.map((type) => (
+                        <Label
+                          key={type.value}
+                          className="flex cursor-pointer items-center gap-2"
+                        >
+                          <Checkbox
+                            checked={selectedPlaceTypes.includes(type.value)}
+                            onCheckedChange={() =>
+                              handlePlaceTypeChange(type.value)
+                            }
+                          />
+                          {type.label}
+                        </Label>
+                      ))}
+                    </div>
+
+                    <Separator className="my-4" />
                   </div>
                 </div>
               </main>
