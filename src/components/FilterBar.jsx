@@ -90,8 +90,6 @@ const FilterBar = () => {
   const [selectedCategories, setSelectedCategories] = React.useState([]);
   const [selectedPlaceTypes, setSelectedPlaceTypes] = React.useState([]);
 
-  console.log("Selected Categories:", selectedCategories);
-
   const categoryItems = [
     ...(!categoriesLoading && categories
       ? categories.map((cat) => ({
@@ -116,12 +114,36 @@ const FilterBar = () => {
     );
   };
 
+  // State untuk deteksi perubahan (dirty state)
+  const [initialCategories, setInitialCategories] = React.useState([]);
+  const [initialPlaceTypes, setInitialPlaceTypes] = React.useState([]);
+
+  // Cek apakah ada perubahan
+  const isDirty =
+    JSON.stringify(selectedCategories) !== JSON.stringify(initialCategories) ||
+    JSON.stringify(selectedPlaceTypes) !== JSON.stringify(initialPlaceTypes);
+
+  // Reset handler
+  const handleReset = () => {
+    setSelectedCategories(initialCategories);
+    setSelectedPlaceTypes(initialPlaceTypes);
+  };
+
+  // Simpan handler
+  const handleSave = (e) => {
+    e.preventDefault();
+    setInitialCategories(selectedCategories);
+    setInitialPlaceTypes(selectedPlaceTypes);
+    // TODO: trigger filter ke parent/FE sesuai kebutuhan
+  };
+
+  console.log("Selected Categories:", selectedCategories);
   console.log("Selected Place Types:", selectedPlaceTypes);
 
   return (
     <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-5 sm:gap-6">
       <Dialog>
-        <form>
+        <form onSubmit={handleSave}>
           <DialogTrigger asChild>
             <Button variant="filter">
               <Filter2 className="text-neutral-grey size-5" filled />
@@ -169,7 +191,7 @@ const FilterBar = () => {
                 </SidebarContent>
               </Sidebar>
 
-              <main className="flex h-[480px] flex-1 flex-col overflow-hidden border-l-1 bg-white pb-24">
+              <main className="flex h-[320px] flex-1 flex-col border-l-1 bg-white">
                 <div className="flex flex-1 flex-col gap-4 overflow-y-auto pt-0 pl-6">
                   <div className="flex w-full flex-col border-t-1 pt-4">
                     <h1 className="pb-4 text-xl font-bold">Kategori</h1>
@@ -188,6 +210,7 @@ const FilterBar = () => {
                             aria-label={`Toggle ${cat.label}`}
                             size="custom_sm"
                             variant="custom"
+                            className="text-neutral-black border-neutral-black hover:border-primary border-1 data-[state=on]:border-2"
                           >
                             {cat.label}
                           </ToggleGroupItem>
@@ -221,11 +244,31 @@ const FilterBar = () => {
               </main>
             </SidebarProvider>
 
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
-              <Button type="submit">Save changes</Button>
+            <DialogFooter
+              className="absolute bottom-0 left-0 z-10 flex w-full gap-2 border-t border-neutral-200 bg-white px-6 py-4"
+              style={{ boxShadow: "0 -2px 8px 0 rgba(0,0,0,0.03)" }}
+            >
+              {isDirty && (
+                <div className="flex w-full justify-between">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleReset}
+                    size="custom"
+                    className="h-10 rounded-full text-lg font-bold"
+                  >
+                    Reset
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="default"
+                    size="custom"
+                    className="h-10"
+                  >
+                    Simpan
+                  </Button>
+                </div>
+              )}
             </DialogFooter>
           </DialogContent>
         </form>
