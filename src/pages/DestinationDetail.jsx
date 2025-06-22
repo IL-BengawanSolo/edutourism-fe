@@ -6,12 +6,12 @@ import { useParams } from "react-router-dom";
 import useFetchDestinationBySlug from "@/api/useFetchDestinationBySlug.js";
 import CarouselDestinationRow from "@/components/CarouselDestinationRow.jsx";
 
-import DestinationImages from "@/components/DestinationImages.jsx";
-import DestinationGeneralInfo from "@/components/DestinationGeneralInfo.jsx";
-import DestinationFacilities from "@/components/DestinationFacilities.jsx";
-import DestinationLocation from "@/components/DestinationLocation.jsx";
-import DestinationOpeningHours from "@/components/DestinationOpeningHours.jsx";
-import DestinationTabs from "@/components/DestinationTabs.jsx";
+import DestinationImages from "@/components/destination-detail/DestinationImages.jsx";
+import DestinationGeneralInfo from "@/components/destination-detail/DestinationGeneralInfo.jsx";
+import DestinationFacilities from "@/components/destination-detail/DestinationFacilities.jsx";
+import DestinationLocation from "@/components/destination-detail/DestinationLocation.jsx";
+import DestinationOpeningHours from "@/components/destination-detail/DestinationOpeningHours.jsx";
+import DestinationTabs from "@/components/destination-detail/DestinationTabs.jsx";
 
 const DestinationDetail = () => {
   const { slug } = useParams();
