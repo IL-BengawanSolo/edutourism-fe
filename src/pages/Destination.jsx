@@ -1,7 +1,7 @@
 import SearchBar from "@/components/SearchBar.jsx";
 import React, { useEffect, useState } from "react";
 import DestinationCard from "@/components/DestinationCard.jsx";
-import FilterBar from "@/components/FilterBar.jsx";
+import FilterBar from "@/components/filter/FilterBar.jsx";
 import DestinationMap from "@/components/DestinationMap.jsx";
 // import useFetchDestinations from "@/api/useFetchDestinations.js";
 import { Link, useSearchParams } from "react-router-dom";
