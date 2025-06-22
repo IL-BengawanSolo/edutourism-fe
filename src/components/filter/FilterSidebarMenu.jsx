@@ -36,20 +36,6 @@ const FILTER_MENU = [
     key: "jenisTempat",
   },
   {
-    icon: <FontAwesomeIcon icon={faHouseCircleCheck} />,
-    label: "Fasilitas",
-    href: "#fasilitas",
-    sectionId: "fasilitas-section",
-    key: "fasilitas",
-  },
-  {
-    icon: <FontAwesomeIcon icon={faBolt} />,
-    label: "Aktivitas",
-    href: "#aktivitas",
-    sectionId: "aktivitas-section",
-    key: "aktivitas",
-  },
-  {
     icon: <FontAwesomeIcon icon={faCalendarDays} />,
     label: "Hari Buka",
     href: "#hari-buka",
@@ -62,6 +48,20 @@ const FILTER_MENU = [
     href: "#wilayah",
     sectionId: "wilayah-section",
     key: "wilayah",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faHouseCircleCheck} />,
+    label: "Fasilitas",
+    href: "#fasilitas",
+    sectionId: "fasilitas-section",
+    key: "fasilitas",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faBolt} />,
+    label: "Aktivitas",
+    href: "#aktivitas",
+    sectionId: "aktivitas-section",
+    key: "aktivitas",
   },
 ];
 
@@ -127,5 +127,6 @@ function FilterSidebarMenu({
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export { FILTER_MENU };
 export default FilterSidebarMenu;

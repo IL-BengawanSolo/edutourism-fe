@@ -22,6 +22,7 @@ const Destination = () => {
       category_id: searchParams.get("category_id") || undefined,
       place_type_id: searchParams.get("place_type_id") || undefined,
       age_category_id: searchParams.get("age_category_id") || undefined,
+       price_range: searchParams.get("price_range") || undefined,
     }),
     [searchParams],
   );
@@ -44,7 +45,7 @@ const Destination = () => {
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
       Object.entries(newFilters).forEach(([key, value]) => {
-        if (value && value !== "all") {
+        if (value) {
           params.set(key, value);
         } else {
           params.delete(key);
@@ -64,6 +65,7 @@ const Destination = () => {
     filters.category_id,
     filters.place_type_id,
     filters.age_category_id,
+    filters.price_range,
     searchAndFilter,
     filters,
   ]);
@@ -79,7 +81,7 @@ const Destination = () => {
       <StickyHeader>
         <section className="max-container mx-auto w-11/12 sm:w-10/12">
           <SearchBar value={searchValue} onSubmit={handleSearchChange} />
-          <FilterBar filters={filters} setFilters={handleFilterChange} />
+          <FilterBar setFilters={handleFilterChange} />
         </section>
       </StickyHeader>
 

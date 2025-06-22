@@ -1,21 +1,34 @@
 import React from "react";
-import SelectFilterButton from "@/components/SelectFilterButton.jsx";
+import SelectFilterButton from "@/components/filter/SelectFilterButton.jsx";
 import useFetchCategories from "@/api/useFetchCategories.js";
 import useFetchPlaceTypes from "@/api/useFetchPlaceTypes.js";
 import FilterDialog from "./FilterDialog.jsx";
 
-import {
-  People,
-  Wallet,
-  Swap,
-  Star,
-} from "react-iconly";
+import { People, Wallet, Swap, Star } from "react-iconly";
+import { Badge } from "../ui/badge.jsx";
 
-const FilterBar = () => {
+const FilterBar = ({ setFilters }) => {
   const { categories, loading: categoriesLoading } = useFetchCategories();
   const { placeTypes, loading: placeTypesLoading } = useFetchPlaceTypes();
+
+  // State untuk semua filter
   const [selectedCategories, setSelectedCategories] = React.useState([]);
   const [selectedPlaceTypes, setSelectedPlaceTypes] = React.useState([]);
+  const [priceRange, setPriceRange] = React.useState("");
+  const [ageCategory, setAgeCategory] = React.useState("");
+  const [sort, setSort] = React.useState("");
+
+  // Update parent setiap filter berubah
+  React.useEffect(() => {
+    setFilters({
+      category_id: selectedCategories.join(","),
+      place_type_id: selectedPlaceTypes.join(","),
+      price_range: priceRange,
+      age_category_id: ageCategory,
+      sort,
+    });
+    // eslint-disable-next-line
+  }, [selectedCategories, selectedPlaceTypes, priceRange, ageCategory, sort]);
 
   const categoryItems = [
     ...(!categoriesLoading && categories
@@ -37,7 +50,7 @@ const FilterBar = () => {
 
   const handlePlaceTypeChange = (value) => {
     setSelectedPlaceTypes((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
     );
   };
 
@@ -62,7 +75,7 @@ const FilterBar = () => {
   };
 
   return (
-    <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-5 sm:gap-6">
+    <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
       <FilterDialog
         categoryItems={categoryItems}
         selectedCategories={selectedCategories}
@@ -75,7 +88,7 @@ const FilterBar = () => {
         handleSave={handleSave}
       />
 
-        <SelectFilterButton
+      <SelectFilterButton
         icon={<People className="text-neutral-grey size-5" filled />}
         label="Kategori Umur"
         placeholder="Kategori Umur"
@@ -89,24 +102,36 @@ const FilterBar = () => {
         icon={<Wallet className="text-neutral-grey size-5" filled />}
         label="Harga"
         placeholder="Harga"
+        value={priceRange}
+        onChange={setPriceRange}
         items={[
           { label: "Gratis", value: "free" },
-          { label: "Berbayar", value: "paid" },
+          { label: "< Rp 10K", value: "lt-10k" },
+          { label: "Rp 10K - 30K", value: "10-30" },
+          { label: "Rp 30K - 100K", value: "30-100" },
+          { label: "> Rp 100K", value: "gt-100k" },
         ]}
-      />
+      >
+        {priceRange !== "" && (
+          <Badge className="bg-pr-blue-100" variant="custom">
+            1
+          </Badge>
+        )}
+      </SelectFilterButton>
+
       <SelectFilterButton
         icon={<Swap className="text-neutral-grey size-5" filled />}
         label="Urutkan"
         placeholder="Urutkan"
         items={[
-          { label: "Terbaru", value: "newest" },
-          { label: "Terlama", value: "oldest" },
+          { label: "Harga Tertinggi", value: "highest-price" },
+          { label: "Harga Terendah", value: "lowest-price" },
           { label: "Rating Tertinggi", value: "highest-rating" },
-          { label: "Rating Terendah", value: "lowest-rating" },
+          { label: "Jumlah Ulasan", value: "review-count" },
         ]}
       />
 
-      <SelectFilterButton
+      {/* <SelectFilterButton
         icon={<Star className="text-neutral-grey size-5" filled />}
         label="Rating"
         placeholder="Rating"
@@ -119,7 +144,7 @@ const FilterBar = () => {
           { label: "Kab. Klaten", value: "klaten" },
           { label: "Kab. Wonogiri", value: "wonogiri" },
         ]}
-      />
+      /> */}
     </div>
   );
 };

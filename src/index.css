@@ -69,6 +69,8 @@
   --color-neutral-bg: #f5f7fd;
   --color-neutral-light-bg: #fafaff;
 
+  --color-state-error: #FC2824;
+
   --font-montserrat: "Montserrat", sans-serif;
 
   --animate-typing-dot-bounce: typing-dot-bounce 1.25s ease-out infinite;

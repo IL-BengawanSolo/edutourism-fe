@@ -8,7 +8,7 @@ import {
   Wallet,
   Category,
 } from "react-iconly";
-import SelectFilterButton from "@/components/SelectFilterButton.jsx";
+import SelectFilterButton from "@/components/filter/SelectFilterButton.jsx";
 import useFetchCategories from "@/api/useFetchCategories.js";
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
