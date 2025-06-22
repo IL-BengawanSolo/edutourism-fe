@@ -16,7 +16,7 @@ const FilterBar = ({ setFilters }) => {
   const [selectedPlaceTypes, setSelectedPlaceTypes] = React.useState([]);
   const [priceRange, setPriceRange] = React.useState("");
   const [ageCategory, setAgeCategory] = React.useState("");
-  const [sort, setSort] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("");
 
   // Update parent setiap filter berubah
   React.useEffect(() => {
@@ -25,10 +25,10 @@ const FilterBar = ({ setFilters }) => {
       place_type_id: selectedPlaceTypes.join(","),
       price_range: priceRange,
       age_category_id: ageCategory,
-      sort,
+      sort_by: sortBy,
     });
     // eslint-disable-next-line
-  }, [selectedCategories, selectedPlaceTypes, priceRange, ageCategory, sort]);
+  }, [selectedCategories, selectedPlaceTypes, priceRange, ageCategory, sortBy]);
 
   const categoryItems = [
     ...(!categoriesLoading && categories
@@ -123,13 +123,22 @@ const FilterBar = ({ setFilters }) => {
         icon={<Swap className="text-neutral-grey size-5" filled />}
         label="Urutkan"
         placeholder="Urutkan"
+        value={sortBy}
+        onChange={setSortBy}
         items={[
           { label: "Harga Tertinggi", value: "highest-price" },
           { label: "Harga Terendah", value: "lowest-price" },
           { label: "Rating Tertinggi", value: "highest-rating" },
           { label: "Jumlah Ulasan", value: "review-count" },
         ]}
-      />
+      >
+        {sortBy !== "" && (
+          <Badge className="bg-pr-blue-100" variant="custom">
+            1
+          </Badge>
+        )}
+      </SelectFilterButton>
+
 
       {/* <SelectFilterButton
         icon={<Star className="text-neutral-grey size-5" filled />}

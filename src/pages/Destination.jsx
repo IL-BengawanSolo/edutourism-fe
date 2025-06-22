@@ -22,7 +22,8 @@ const Destination = () => {
       category_id: searchParams.get("category_id") || undefined,
       place_type_id: searchParams.get("place_type_id") || undefined,
       age_category_id: searchParams.get("age_category_id") || undefined,
-       price_range: searchParams.get("price_range") || undefined,
+      price_range: searchParams.get("price_range") || undefined,
+      sort_by: searchParams.get("sort_by") || undefined,
     }),
     [searchParams],
   );
@@ -66,6 +67,7 @@ const Destination = () => {
     filters.place_type_id,
     filters.age_category_id,
     filters.price_range,
+    filters.sort_by,
     searchAndFilter,
     filters,
   ]);
