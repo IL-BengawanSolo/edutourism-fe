@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { Badge } from "../ui/badge.jsx";
 
 const SelectFilterButton = ({
   icon,
@@ -18,7 +19,7 @@ const SelectFilterButton = ({
   placeholder = "Filter",
   value,
   onChange,
-  children,
+  showBadge = true,
   className = "",
   ...props
 }) => {
@@ -51,7 +52,13 @@ const SelectFilterButton = ({
         <SelectTrigger className={triggerClassName}>
           {iconWithColor}
           <SelectValue placeholder={placeholder} />
-          {children}
+          {showBadge && isActive && (
+            <span className="ml-2">
+              <Badge className="bg-pr-blue-100" variant="custom">
+                1
+              </Badge>
+            </span>
+          )}
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -73,7 +80,7 @@ const SelectFilterButton = ({
           type="button"
           size="icon"
           variant="ghost"
-          className="bg-state-error/85 hover:bg-state-error hover:text-white absolute top-1/2 right-2 h-5 w-5 -translate-y-1/2 rounded-full p-0 text-white"
+          className="bg-state-error/85 hover:bg-state-error absolute top-1/2 right-2 h-5 w-5 -translate-y-1/2 rounded-full p-0 text-white hover:text-white"
           onClick={handleReset}
           tabIndex={-1}
           title={`Reset ${label}`}

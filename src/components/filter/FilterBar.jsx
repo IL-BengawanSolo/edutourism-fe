@@ -2,14 +2,16 @@ import React from "react";
 import SelectFilterButton from "@/components/filter/SelectFilterButton.jsx";
 import useFetchCategories from "@/api/useFetchCategories.js";
 import useFetchPlaceTypes from "@/api/useFetchPlaceTypes.js";
+import useFetchAgeCategories from "@/api/useFetchAgeCategories.js";
 import FilterDialog from "./FilterDialog.jsx";
 
 import { People, Wallet, Swap, Star } from "react-iconly";
-import { Badge } from "../ui/badge.jsx";
 
 const FilterBar = ({ setFilters }) => {
   const { categories, loading: categoriesLoading } = useFetchCategories();
   const { placeTypes, loading: placeTypesLoading } = useFetchPlaceTypes();
+  const { ageCategories, loading: ageCategoriesLoading } =
+    useFetchAgeCategories();
 
   // State untuk semua filter
   const [selectedCategories, setSelectedCategories] = React.useState([]);
@@ -44,6 +46,15 @@ const FilterBar = ({ setFilters }) => {
       ? placeTypes.map((type) => ({
           label: type.name,
           value: type.id,
+        }))
+      : []),
+  ];
+
+  const ageCategoryItems = [
+    ...(!ageCategoriesLoading && ageCategories
+      ? ageCategories.map((age) => ({
+          label: age.name,
+          value: age.id,
         }))
       : []),
   ];
@@ -92,12 +103,11 @@ const FilterBar = ({ setFilters }) => {
         icon={<People className="text-neutral-grey size-5" filled />}
         label="Kategori Umur"
         placeholder="Kategori Umur"
-        items={[
-          { label: "Semua", value: "all" },
-          { label: "Anak-anak", value: "children" },
-          { label: "Remaja", value: "teenager" },
-        ]}
+        items={ageCategoryItems}
+        value={ageCategory}
+        onChange={setAgeCategory}
       />
+
       <SelectFilterButton
         icon={<Wallet className="text-neutral-grey size-5" filled />}
         label="Harga"
@@ -111,13 +121,7 @@ const FilterBar = ({ setFilters }) => {
           { label: "Rp 30K - 100K", value: "30-100" },
           { label: "> Rp 100K", value: "gt-100k" },
         ]}
-      >
-        {priceRange !== "" && (
-          <Badge className="bg-pr-blue-100" variant="custom">
-            1
-          </Badge>
-        )}
-      </SelectFilterButton>
+      />
 
       <SelectFilterButton
         icon={<Swap className="text-neutral-grey size-5" filled />}
@@ -131,29 +135,7 @@ const FilterBar = ({ setFilters }) => {
           { label: "Rating Tertinggi", value: "highest-rating" },
           { label: "Jumlah Ulasan", value: "review-count" },
         ]}
-      >
-        {sortBy !== "" && (
-          <Badge className="bg-pr-blue-100" variant="custom">
-            1
-          </Badge>
-        )}
-      </SelectFilterButton>
-
-
-      {/* <SelectFilterButton
-        icon={<Star className="text-neutral-grey size-5" filled />}
-        label="Rating"
-        placeholder="Rating"
-        items={[
-          { label: "Semua", value: "all" },
-          { label: "Kota Surakarta", value: "surakarta" },
-          { label: "Kab. Sukoharjo", value: "sukoharjo" },
-          { label: "Kab. Karanganyar", value: "karanganyar" },
-          { label: "Kab. Boyolali", value: "boyolali" },
-          { label: "Kab. Klaten", value: "klaten" },
-          { label: "Kab. Wonogiri", value: "wonogiri" },
-        ]}
-      /> */}
+      />
     </div>
   );
 };
