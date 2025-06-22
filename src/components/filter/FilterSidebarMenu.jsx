@@ -5,6 +5,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
@@ -18,47 +19,72 @@ import {
   faMapLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { Category } from "react-iconly";
-
+import { Badge } from "@/components/ui/badge";
 const FILTER_MENU = [
   {
     icon: <Category className="size-5" filled />,
     label: "Kategori",
     href: "#kategori",
     sectionId: "kategori-section",
+    key: "kategori",
   },
   {
     icon: <FontAwesomeIcon icon={faList} />,
     label: "Jenis Tempat",
     href: "#jenis-tempat",
     sectionId: "jenis-tempat-section",
+    key: "jenisTempat",
   },
   {
     icon: <FontAwesomeIcon icon={faHouseCircleCheck} />,
     label: "Fasilitas",
     href: "#fasilitas",
     sectionId: "fasilitas-section",
+    key: "fasilitas",
   },
   {
     icon: <FontAwesomeIcon icon={faBolt} />,
     label: "Aktivitas",
     href: "#aktivitas",
     sectionId: "aktivitas-section",
+    key: "aktivitas",
   },
   {
     icon: <FontAwesomeIcon icon={faCalendarDays} />,
     label: "Hari Buka",
     href: "#hari-buka",
     sectionId: "hari-buka-section",
+    key: "hariBuka",
   },
   {
     icon: <FontAwesomeIcon icon={faMapLocationDot} />,
     label: "Wilayah",
     href: "#wilayah",
     sectionId: "wilayah-section",
+    key: "wilayah",
   },
 ];
 
-function FilterSidebarMenu({ activeSection, onMenuClick, children }) {
+function FilterSidebarMenu({
+  activeSection,
+  onMenuClick,
+  selectedCategories = [],
+  selectedPlaceTypes = [],
+  selectedFacilities = [],
+  selectedActivities = [],
+  selectedOpenDays = [],
+  selectedRegions = [],
+  children,
+}) {
+  const badgeCount = {
+    kategori: selectedCategories.length,
+    jenisTempat: selectedPlaceTypes.length,
+    fasilitas: selectedFacilities.length,
+    aktivitas: selectedActivities.length,
+    hariBuka: selectedOpenDays.length,
+    wilayah: selectedRegions.length,
+  };
+
   return (
     <SidebarProvider className="items-start">
       <Sidebar
@@ -68,9 +94,9 @@ function FilterSidebarMenu({ activeSection, onMenuClick, children }) {
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem className="flex flex-col gap-2">
-                  {FILTER_MENU.map((item) => (
+              <SidebarMenu className="flex flex-col gap-2">
+                {FILTER_MENU.map((item) => (
+                  <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton
                       asChild
                       key={item.label}
@@ -82,8 +108,15 @@ function FilterSidebarMenu({ activeSection, onMenuClick, children }) {
                         <span>{item.label}</span>
                       </a>
                     </SidebarMenuButton>
-                  ))}
-                </SidebarMenuItem>
+                    {badgeCount[item.key] > 0 && (
+                      <SidebarMenuBadge>
+                        <Badge className="text-xs" variant="secondary">
+                          {badgeCount[item.key]}
+                        </Badge>
+                      </SidebarMenuBadge>
+                    )}
+                  </SidebarMenuItem>
+                ))}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
