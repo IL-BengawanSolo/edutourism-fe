@@ -99,6 +99,10 @@ const Destination = () => {
             }
             className="flex flex-col gap-4"
           >
+            <p>
+              Ditemukan {destinations.length} destinasi
+              {searchValue && ` untuk "${searchValue}"`}
+            </p>
             {destinations.slice(0, visible).map((destination) => (
               <Link
                 key={destination.slug}

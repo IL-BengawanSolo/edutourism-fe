@@ -13,6 +13,7 @@ import { Filter2 } from "react-iconly";
 import FilterSidebarMenu from "./FilterSidebarMenu.jsx";
 import FilterMainContent from "./FilterMainContent.jsx";
 import FilterDialogFooter from "./FilterDialogFooter.jsx";
+import { FILTER_MENU } from "./FilterSidebarMenu";
 
 const FilterDialog = ({
   categoryItems,
@@ -24,41 +25,65 @@ const FilterDialog = ({
   isDirty,
   handleReset,
   handleSave,
-}) => (
-  <Dialog>
-    <form onSubmit={handleSave}>
-      <DialogTrigger asChild>
-        <Button variant="filter">
-          <Filter2 className="text-neutral-grey size-5" filled />
-          Filter
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="overflow-hidden md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
-        <DialogHeader>
-          <DialogTitle>
-            <span className="text-3xl">Filter</span>
-          </DialogTitle>
-        </DialogHeader>
-        <DialogDescription className="text-neutral-dark-grey">
-          Pilih filter untuk menemukan tempat wisata yang sesuai dengan
-          preferensimu.
-        </DialogDescription>
+}) => {
+  const [activeSection, setActiveSection] = React.useState(
+    FILTER_MENU[0].sectionId,
+  );
 
-        <FilterSidebarMenu>
-          <FilterMainContent
-            categoryItems={categoryItems}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            placeTypeItems={placeTypeItems}
-            selectedPlaceTypes={selectedPlaceTypes}
-            handlePlaceTypeChange={handlePlaceTypeChange}
-          />
-        </FilterSidebarMenu>
+  // Scroll ke section saat klik menu
+const handleMenuClick = (sectionId) => {
+  const container = document.getElementById("filter-main-scroll");
+  const section = document.getElementById(sectionId);
+  if (container && section) {
+    // Hitung posisi relatif section terhadap container
+    const containerTop = container.getBoundingClientRect().top;
+    const sectionTop = section.getBoundingClientRect().top;
+    const scrollOffset = sectionTop - containerTop + container.scrollTop;
+    container.scrollTo({ top: scrollOffset, behavior: "smooth" });
+  }
+};
+    return (
+      <Dialog>
+        <form onSubmit={handleSave}>
+          <DialogTrigger asChild>
+            <Button variant="filter">
+              <Filter2 className="text-neutral-grey size-5" filled />
+              Filter
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="overflow-hidden md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
+            
+            <DialogHeader>
+              <DialogTitle>
+                <span className="text-3xl">Filter</span>
+              </DialogTitle>
+            </DialogHeader>
+            <DialogDescription className="text-neutral-dark-grey">
+              Pilih filter untuk menemukan tempat wisata yang sesuai dengan
+              preferensimu.
+            </DialogDescription>
 
-        <FilterDialogFooter isDirty={isDirty} onReset={handleReset} />
-      </DialogContent>
-    </form>
-  </Dialog>
-);
+            <FilterSidebarMenu
+              activeSection={activeSection}
+              onMenuClick={handleMenuClick}
+            >
+              <FilterMainContent
+                categoryItems={categoryItems}
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
+                placeTypeItems={placeTypeItems}
+                selectedPlaceTypes={selectedPlaceTypes}
+                handlePlaceTypeChange={handlePlaceTypeChange}
+                onSectionChange={setActiveSection}
+              />
+            </FilterSidebarMenu>
+
+            <FilterDialogFooter isDirty={isDirty} onReset={handleReset} />
+          </DialogContent>
+        </form>
+      </Dialog>
+    );
+  };
+
 
 export default FilterDialog;

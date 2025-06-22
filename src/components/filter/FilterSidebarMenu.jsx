@@ -23,37 +23,42 @@ const FILTER_MENU = [
   {
     icon: <Category className="size-5" filled />,
     label: "Kategori",
-    href: "#",
-    isActive: true,
+    href: "#kategori",
+    sectionId: "kategori-section",
   },
   {
     icon: <FontAwesomeIcon icon={faList} />,
     label: "Jenis Tempat",
-    href: "#",
+    href: "#jenis-tempat",
+    sectionId: "jenis-tempat-section",
   },
   {
     icon: <FontAwesomeIcon icon={faHouseCircleCheck} />,
     label: "Fasilitas",
-    href: "#",
+    href: "#fasilitas",
+    sectionId: "fasilitas-section",
   },
   {
     icon: <FontAwesomeIcon icon={faBolt} />,
     label: "Aktivitas",
-    href: "#",
+    href: "#aktivitas",
+    sectionId: "aktivitas-section",
   },
   {
     icon: <FontAwesomeIcon icon={faCalendarDays} />,
     label: "Hari Buka",
-    href: "#",
+    href: "#hari-buka",
+    sectionId: "hari-buka-section",
   },
   {
     icon: <FontAwesomeIcon icon={faMapLocationDot} />,
     label: "Wilayah",
-    href: "#",
+    href: "#wilayah",
+    sectionId: "wilayah-section",
   },
 ];
 
-function FilterSidebarMenu({ children }) {
+function FilterSidebarMenu({ activeSection, onMenuClick, children }) {
   return (
     <SidebarProvider className="items-start">
       <Sidebar
@@ -69,7 +74,8 @@ function FilterSidebarMenu({ children }) {
                     <SidebarMenuButton
                       asChild
                       key={item.label}
-                      isActive={item.isActive}
+                      isActive={activeSection === item.sectionId}
+                      onClick={() => onMenuClick?.(item.sectionId)}
                     >
                       <a href={item.href}>
                         {item.icon}
@@ -88,4 +94,5 @@ function FilterSidebarMenu({ children }) {
   );
 }
 
+export { FILTER_MENU };
 export default FilterSidebarMenu;
