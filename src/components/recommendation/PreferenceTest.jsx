@@ -3,7 +3,7 @@ import { Toggle } from "@/components/ui/toggle.jsx";
 import { ArrowLeft, ArrowRight } from "react-iconly";
 
 import React from "react";
-import { Button } from "./ui/button.jsx";
+import { Button } from "../ui/button.jsx";
 
 const categories = [
   { value: "seni", label: "Seni" },
