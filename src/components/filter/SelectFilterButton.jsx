@@ -53,11 +53,9 @@ const SelectFilterButton = ({
           {iconWithColor}
           <SelectValue placeholder={placeholder} />
           {showBadge && isActive && (
-            <span className="ml-2">
-              <Badge className="bg-pr-blue-100" variant="custom">
-                1
-              </Badge>
-            </span>
+            <Badge className="bg-pr-blue-100" variant="custom">
+              1
+            </Badge>
           )}
         </SelectTrigger>
         <SelectContent>

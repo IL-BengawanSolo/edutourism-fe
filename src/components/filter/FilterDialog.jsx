@@ -53,17 +53,19 @@ const FilterDialog = ({
         <DialogTrigger asChild>
           <Button
             variant="filter"
-            className={`${ 
-              totalSelected > 0 ? "ring-sc-yellow-300 ring-2" : "border-none"
+            className={`${
+              totalSelected > 0
+                ? "ring-pr-blue-600 text-pr-blue-800 ring-3"
+                : "border-none"
             }`}
           >
-            <Filter2 className="text-neutral-grey size-5" filled />
+            <Filter2
+              className={`size-5 ${totalSelected > 0 ? "text-pr-blue-600" : "text-neutral-grey"}`}
+              filled
+            />
             Filter
             {totalSelected > 0 && (
-              <Badge
-                className="bg-sc-yellow-300 text-xs"
-                variant="secondary"
-              >
+              <Badge className="bg-pr-blue-100" variant="custom">
                 {totalSelected}
               </Badge>
             )}

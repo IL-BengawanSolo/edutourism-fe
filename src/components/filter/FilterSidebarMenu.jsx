@@ -110,7 +110,7 @@ function FilterSidebarMenu({
                     </SidebarMenuButton>
                     {badgeCount[item.key] > 0 && (
                       <SidebarMenuBadge>
-                        <Badge className="text-xs" variant="secondary">
+                        <Badge variant="custom" className="text-white bg-primary">
                           {badgeCount[item.key]}
                         </Badge>
                       </SidebarMenuBadge>
