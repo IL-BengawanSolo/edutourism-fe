@@ -14,6 +14,8 @@ import "react-leaflet-markercluster/styles";
 import geoJsonData from "../lib/solo-raya.json";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { Badge } from "./ui/badge.jsx";
+import { Separator } from "./ui/separator.jsx";
+import { getPriceLabel } from "@/lib/utils.js";
 
 const DestinationMap = ({ destinations, center = [-7.560421, 110.826454] }) => {
   // SVG Iconly Location sebagai string (tanpa background)
@@ -84,14 +86,9 @@ const DestinationMap = ({ destinations, center = [-7.560421, 110.826454] }) => {
     : destinations
       ? [destinations]
       : [];
-
+  console.log(destinations);
   return (
-    <MapContainer
-      center={center}
-      zoom={12}
-      scrollWheelZoom={false}
-      minZoom={9}
-    >
+    <MapContainer center={center} zoom={12} scrollWheelZoom={false} minZoom={9}>
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
@@ -108,29 +105,47 @@ const DestinationMap = ({ destinations, center = [-7.560421, 110.826454] }) => {
             position={[destination.latitude, destination.longitude]}
             icon={createDivIcon(destination.name)}
           >
-            <Popup>
-              <div className="font-montserrat flex flex-col">
-                <h3 className="text-base font-semibold text-neutral-900">
+            <Popup >
+              <div className="font-montserrat flex min-w-xs flex-col pr-4">
+                <h3 className="text-neutral-black text-xl font-bold">
                   {destination.name}
                 </h3>
 
-                <div className="mt-2 flex flex-row gap-2">
-                  <div className="flex flex-wrap gap-2">
-                    <Badge className="text-xs sm:text-sm" variant="custom">
-                      Seni
-                    </Badge>
+                <Separator className="mt-2" />
+
+                <div className="my-2 flex flex-col">
+                  <div className="flex flex-row flex-wrap gap-2">
+                    {destination.categories.map((cat) => (
+                      <Badge key={cat} className="text-xs" variant="custom">
+                        {cat || []}
+                      </Badge>
+                    ))}
+
+                    {destination.place_types.map((ptypes) => (
+                      <Badge
+                        key={ptypes}
+                        className="text-xs"
+                        variant="custom_secondary"
+                      >
+                        {ptypes || []}
+                      </Badge>
+                    ))}
                   </div>
 
-                  <Badge
-                    className="text-xs sm:text-sm"
-                    variant="custom_secondary"
-                  >
-                    Museum Batik
-                  </Badge>
+                  <p className="text-neutral-dark-grey !mt-2 !mb-0 font-medium">
+                    <span className="hidden md:inline">Harga Tiket Masuk </span>
+                    <span className="font-semibold">
+                      {getPriceLabel(
+                        destination.ticket_price_min,
+                        destination.ticket_price_max,
+                      )}
+                    </span>
+                  </p>
                 </div>
 
-                <p className="line-clamp-3 text-sm text-neutral-700">
-                  {destination["Deskripsi Singkat"]}
+                <Separator />
+                <p className="!my-2 line-clamp-3 text-sm text-neutral-700">
+                  {destination.description}
                 </p>
 
                 <img
@@ -138,7 +153,7 @@ const DestinationMap = ({ destinations, center = [-7.560421, 110.826454] }) => {
                   alt=""
                 />
                 <a
-                  href={`/destinations/${destination.id}`}
+                  href={`/destinations/${destination.slug}`}
                   className="text-primary mt-3 text-sm font-semibold hover:underline"
                 >
                   Lihat Detail

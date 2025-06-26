@@ -36,6 +36,27 @@
 
 .markercluster-map { height: 90vh; }
 
+/* Styling close button pada leaflet popup */
+.leaflet-popup-close-button {
+  color: #fff !important;
+  background: #FC2824 !important; /* merah */
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  opacity: 1 !important;
+  right: 0.5rem !important;
+  top: 0.5rem !important;
+  transition: background 0.2s, color 0.2s;
+}
+.leaflet-popup-close-button:hover {
+  background: #d62839 !important; /* lebih gelap saat hover */
+  color: #fff !important;
+}
+
 @theme {
   --color-pr-blue-50: #ecfaff;
   --color-pr-blue-100: #d4f3ff;
