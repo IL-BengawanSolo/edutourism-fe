@@ -2,10 +2,10 @@ import React from "react";
 import { Checkbox } from "@/components/ui/checkbox.jsx";
 import { Label } from "@/components/ui/label.jsx";
 
-function PlaceTypeFilter({ items, selected, onToggle }) {
+function CheckboxFilter({ label, items, selected, onToggle }) {
   return (
     <>
-      <h1 className="pb-4 text-xl font-bold">Jenis Tempat</h1>
+      <h1 className="pb-4 text-xl font-bold">{label}</h1>
       <div className="flex flex-col gap-2">
         {items.map((type) => (
           <Label
@@ -24,4 +24,4 @@ function PlaceTypeFilter({ items, selected, onToggle }) {
   );
 }
 
-export default PlaceTypeFilter;
+export default CheckboxFilter;

@@ -24,6 +24,9 @@ const FilterDialog = ({
   placeTypeItems,
   selectedPlaceTypes,
   handlePlaceTypeChange,
+  selectedRegion,
+  regionItems,
+  setSelectedRegion,
   isDirtySaveButton,
   isDirtyResetButton,
   handleReset,
@@ -35,7 +38,9 @@ const FilterDialog = ({
 
   // Hitung total filter yang dipilih
   const totalSelected =
-    (selectedCategories?.length || 0) + (selectedPlaceTypes?.length || 0);
+    (selectedCategories?.length || 0) +
+    (selectedPlaceTypes?.length || 0) +
+    (selectedRegion?.length || 0);
   // + tambahkan filter lain jika ada
 
   // Scroll ke section saat klik menu
@@ -90,6 +95,7 @@ const FilterDialog = ({
           onMenuClick={handleMenuClick}
           selectedCategories={selectedCategories}
           selectedPlaceTypes={selectedPlaceTypes}
+          selectedRegions={selectedRegion}
         >
           <FilterMainContent
             categoryItems={categoryItems}
@@ -98,6 +104,9 @@ const FilterDialog = ({
             placeTypeItems={placeTypeItems}
             selectedPlaceTypes={selectedPlaceTypes}
             handlePlaceTypeChange={handlePlaceTypeChange}
+            regionItems={regionItems}
+            setSelectedRegion={setSelectedRegion}
+            selectedRegion={selectedRegion}
             onSectionChange={setActiveSection}
           />
         </FilterSidebarMenu>

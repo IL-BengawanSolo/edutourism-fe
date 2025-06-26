@@ -6,6 +6,7 @@ import useFetchAgeCategories from "@/api/useFetchAgeCategories.js";
 import FilterDialog from "./FilterDialog.jsx";
 
 import { People, Wallet, Swap, Star } from "react-iconly";
+import useFetchRegions from "@/api/useFetchRegions.js";
 
 const FilterBar = ({ filters, setFilters }) => {
   const [open, setOpen] = React.useState(false);
@@ -13,10 +14,13 @@ const FilterBar = ({ filters, setFilters }) => {
   const { placeTypes, loading: placeTypesLoading } = useFetchPlaceTypes();
   const { ageCategories, loading: ageCategoriesLoading } =
     useFetchAgeCategories();
+  const { regions, loading: regionsLoading } = useFetchRegions();
 
   // State untuk semua filter
   const [selectedCategories, setSelectedCategories] = React.useState([]);
   const [selectedPlaceTypes, setSelectedPlaceTypes] = React.useState([]);
+  const [selectedRegion, setSelectedRegion] = React.useState([]);
+
   const [priceRange, setPriceRange] = React.useState("");
   const [ageCategory, setAgeCategory] = React.useState("");
   const [sortBy, setSortBy] = React.useState("");
@@ -33,6 +37,11 @@ const FilterBar = ({ filters, setFilters }) => {
         ? filters.place_type_id.map((v) => Number(v))
         : [],
     );
+    setSelectedRegion(
+      Array.isArray(filters.region_id)
+        ? filters.region_id.map((v) => Number(v))
+        : [],
+    );
     // setPriceRange(filters.price_range || "");
     // setAgeCategory(filters.age_category_id || "");
     // setSortBy(filters.sort_by || "");
@@ -44,6 +53,7 @@ const FilterBar = ({ filters, setFilters }) => {
       category_id: selectedCategories,
       place_type_id: selectedPlaceTypes,
       price_range: priceRange,
+      region_id: selectedRegion,
       age_category_id: ageCategory,
       sort_by: sortBy,
     });
@@ -59,30 +69,33 @@ const FilterBar = ({ filters, setFilters }) => {
   // State for dirty check
   const [initialCategories, setInitialCategories] = React.useState([]);
   const [initialPlaceTypes, setInitialPlaceTypes] = React.useState([]);
+  const [initialRegion, setInitialRegion] = React.useState([]);
 
   const isDirtySaveButton =
     JSON.stringify(selectedCategories) !== JSON.stringify(initialCategories) ||
-    JSON.stringify(selectedPlaceTypes) !== JSON.stringify(initialPlaceTypes);
-
-  // const isDirty =
-  //   JSON.stringify(selectedCategories) !== JSON.stringify(initialCategories) ||
-  //   JSON.stringify(selectedPlaceTypes) !== JSON.stringify(initialPlaceTypes);
+    JSON.stringify(selectedPlaceTypes) !== JSON.stringify(initialPlaceTypes) ||
+    JSON.stringify(selectedRegion) !== JSON.stringify(initialRegion);
 
   const isDirtyResetButton =
-    selectedCategories.length > 0 || selectedPlaceTypes.length > 0;
+    selectedCategories.length > 0 ||
+    selectedPlaceTypes.length > 0 ||
+    selectedRegion.length > 0;
 
   const handleReset = () => {
     setSelectedCategories([]);
     setSelectedPlaceTypes([]);
+    setSelectedRegion([]);
   };
 
   const handleSave = (e) => {
     e.preventDefault();
     setInitialCategories(selectedCategories);
     setInitialPlaceTypes(selectedPlaceTypes);
+    setInitialRegion(selectedRegion);
     setFilters({
       category_id: selectedCategories,
       place_type_id: selectedPlaceTypes,
+      region_id: selectedRegion,
       price_range: priceRange,
       age_category_id: ageCategory,
       sort_by: sortBy,
@@ -117,6 +130,15 @@ const FilterBar = ({ filters, setFilters }) => {
       : []),
   ];
 
+  const regionItems = [
+    ...(!regionsLoading && regions
+      ? regions.map((reg) => ({
+          label: reg.name,
+          value: reg.id,
+        }))
+      : []),
+  ];
+
   return (
     <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
       <FilterDialog
@@ -128,6 +150,9 @@ const FilterBar = ({ filters, setFilters }) => {
         placeTypeItems={placeTypeItems}
         selectedPlaceTypes={selectedPlaceTypes}
         handlePlaceTypeChange={handlePlaceTypeChange}
+        regionItems={regionItems}
+        selectedRegion={selectedRegion}
+        setSelectedRegion={setSelectedRegion}
         isDirtySaveButton={isDirtySaveButton}
         isDirtyResetButton={isDirtyResetButton}
         handleReset={handleReset}

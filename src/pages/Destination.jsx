@@ -18,7 +18,7 @@ const Destination = () => {
   const searchValue = searchParams.get("search") || "";
   const filters = React.useMemo(
     () => ({
-      region_id: searchParams.get("region_id") || undefined,
+      region_id: searchParams.getAll("region_id"),
       category_id: searchParams.getAll("category_id"),
       place_type_id: searchParams.getAll("place_type_id"),
       age_category_id: searchParams.get("age_category_id") || undefined,
@@ -49,6 +49,7 @@ const Destination = () => {
       // Hapus semua category_id & place_type_id dulu
       params.delete("category_id");
       params.delete("place_type_id");
+      params.delete("region_id");
 
       // Tambahkan array category_id
       if (Array.isArray(newFilters.category_id)) {
@@ -68,16 +69,23 @@ const Destination = () => {
         params.append("place_type_id", newFilters.place_type_id);
       }
 
+      // Tambahkan array region_id
+      if (Array.isArray(newFilters.region_id)) {
+        newFilters.region_id.forEach((id) => {
+          if (id) params.append("region_id", id);
+        });
+      } else if (newFilters.region_id) {
+        params.append("region_id", newFilters.region_id);
+      }
+
       // Sisanya tetap pakai set
-      ["region_id", "age_category_id", "price_range", "sort_by"].forEach(
-        (key) => {
-          if (newFilters[key]) {
-            params.set(key, newFilters[key]);
-          } else {
-            params.delete(key);
-          }
-        },
-      );
+      ["age_category_id", "price_range", "sort_by"].forEach((key) => {
+        if (newFilters[key]) {
+          params.set(key, newFilters[key]);
+        } else {
+          params.delete(key);
+        }
+      });
 
       return params;
     });

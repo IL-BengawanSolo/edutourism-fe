@@ -36,18 +36,18 @@ const FILTER_MENU = [
     key: "jenisTempat",
   },
   {
-    icon: <FontAwesomeIcon icon={faCalendarDays} />,
-    label: "Hari Buka",
-    href: "#hari-buka",
-    sectionId: "hari-buka-section",
-    key: "hariBuka",
-  },
-  {
     icon: <FontAwesomeIcon icon={faMapLocationDot} />,
     label: "Wilayah",
     href: "#wilayah",
     sectionId: "wilayah-section",
     key: "wilayah",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faCalendarDays} />,
+    label: "Hari Buka",
+    href: "#hari-buka",
+    sectionId: "hari-buka-section",
+    key: "hariBuka",
   },
   {
     icon: <FontAwesomeIcon icon={faHouseCircleCheck} />,
@@ -70,19 +70,19 @@ function FilterSidebarMenu({
   onMenuClick,
   selectedCategories = [],
   selectedPlaceTypes = [],
+  selectedRegions = [],
+  selectedOpenDays = [],
   selectedFacilities = [],
   selectedActivities = [],
-  selectedOpenDays = [],
-  selectedRegions = [],
   children,
 }) {
   const badgeCount = {
     kategori: selectedCategories.length,
     jenisTempat: selectedPlaceTypes.length,
+    wilayah: selectedRegions.length,
+    hariBuka: selectedOpenDays.length,
     fasilitas: selectedFacilities.length,
     aktivitas: selectedActivities.length,
-    hariBuka: selectedOpenDays.length,
-    wilayah: selectedRegions.length,
   };
 
   return (
@@ -110,7 +110,10 @@ function FilterSidebarMenu({
                     </SidebarMenuButton>
                     {badgeCount[item.key] > 0 && (
                       <SidebarMenuBadge>
-                        <Badge variant="custom" className="text-white bg-primary">
+                        <Badge
+                          variant="custom"
+                          className="bg-primary text-white"
+                        >
                           {badgeCount[item.key]}
                         </Badge>
                       </SidebarMenuBadge>

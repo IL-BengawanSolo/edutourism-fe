@@ -1,11 +1,12 @@
 import React from "react";
-import CategoryFilter from "./CategoryFilter.jsx";
-import PlaceTypeFilter from "./PlaceTypeFilter.jsx";
+import ToggleFilter from "./ToggleFilter.jsx";
 import { Separator } from "../ui/separator.jsx";
+import CheckboxFilter from "./CheckboxFilter.jsx";
 
 const SECTION_IDS = [
   "kategori-section",
   "jenis-tempat-section",
+  "wilayah-section",
   // Tambahkan section id lain jika ada
 ];
 
@@ -16,16 +17,21 @@ function FilterMainContent({
   placeTypeItems,
   selectedPlaceTypes,
   handlePlaceTypeChange,
+  regionItems,
+  selectedRegion,
+  setSelectedRegion,
   onSectionChange,
 }) {
-
   const kategoriSepRef = React.useRef(null);
   const jenisTempatSepRef = React.useRef(null);
+  const wilayahSepRef = React.useRef(null);
 
   // Map section id ke separator ref berikutnya
   const separatorRefs = {
     "kategori-section": kategoriSepRef,
     "jenis-tempat-section": jenisTempatSepRef,
+    "wilayah-section": wilayahSepRef,
+
     // Tambahkan separator ref lain jika ada
   };
 
@@ -41,7 +47,8 @@ function FilterMainContent({
         const sectionId = SECTION_IDS[i];
         const sepRef = separatorRefs[sectionId];
         if (sepRef && sepRef.current) {
-          const sepTop = sepRef.current.getBoundingClientRect().top - containerTop;
+          const sepTop =
+            sepRef.current.getBoundingClientRect().top - containerTop;
           if (sepTop > 0) {
             active = sectionId;
             break;
@@ -65,11 +72,12 @@ function FilterMainContent({
   return (
     <main
       id="filter-main-scroll"
-      className="flex h-[320px] flex-1 flex-col border-l-1 bg-white overflow-y-auto pl-6"
+      className="flex h-[320px] flex-1 flex-col overflow-y-auto border-l-1 bg-white pl-6"
     >
-      <div className="flex w-full flex-col border-t-1 pt-4 ">
+      <div className="flex w-full flex-col border-t-1 pt-4 pb-25">
         <section id="kategori-section">
-          <CategoryFilter
+          <ToggleFilter
+            label={"Kategori"}
             items={categoryItems}
             selected={selectedCategories}
             onChange={setSelectedCategories}
@@ -77,14 +85,22 @@ function FilterMainContent({
         </section>
         <Separator className="my-4" ref={kategoriSepRef} />
         <section id="jenis-tempat-section">
-          <PlaceTypeFilter
+          <CheckboxFilter
+            label={"Jenis Tempat"}
             items={placeTypeItems}
             selected={selectedPlaceTypes}
             onToggle={handlePlaceTypeChange}
           />
         </section>
         <Separator className="my-4" ref={jenisTempatSepRef} />
-        {/* Tambahkan section dan separator lain sesuai kebutuhan */}
+        <section id="wilayah-section">
+          <ToggleFilter
+            label={"Wilayah"}
+            items={regionItems}
+            selected={selectedRegion}
+            onChange={setSelectedRegion}
+          />
+        </section>
       </div>
     </main>
   );

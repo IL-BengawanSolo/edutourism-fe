@@ -1,10 +1,10 @@
 import React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-function CategoryFilter({ items, selected, onChange }) {
+function ToggleFilter({ label, items, selected, onChange }) {
   return (
     <>
-      <h1 className="pb-4 text-xl font-bold">Kategori</h1>
+      <h1 className="pb-4 text-xl font-bold">{label}</h1>
       <ToggleGroup
         type="multiple"
         className="flex w-full flex-row flex-wrap gap-2 md:w-11/12"
@@ -30,4 +30,4 @@ function CategoryFilter({ items, selected, onChange }) {
   );
 }
 
-export default CategoryFilter;
+export default ToggleFilter;
