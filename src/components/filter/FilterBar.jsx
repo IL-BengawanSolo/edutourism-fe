@@ -7,7 +7,8 @@ import FilterDialog from "./FilterDialog.jsx";
 
 import { People, Wallet, Swap, Star } from "react-iconly";
 
-const FilterBar = ({ setFilters }) => {
+const FilterBar = ({ filters, setFilters }) => {
+  const [open, setOpen] = React.useState(false);
   const { categories, loading: categoriesLoading } = useFetchCategories();
   const { placeTypes, loading: placeTypesLoading } = useFetchPlaceTypes();
   const { ageCategories, loading: ageCategoriesLoading } =
@@ -20,6 +21,23 @@ const FilterBar = ({ setFilters }) => {
   const [ageCategory, setAgeCategory] = React.useState("");
   const [sortBy, setSortBy] = React.useState("");
 
+  // Sinkronkan state lokal dengan filter global saat dialog dibuka
+  React.useEffect(() => {
+    setSelectedCategories(
+      Array.isArray(filters.category_id)
+        ? filters.category_id.map((v) => Number(v))
+        : [],
+    );
+    setSelectedPlaceTypes(
+      Array.isArray(filters.place_type_id)
+        ? filters.place_type_id.map((v) => Number(v))
+        : [],
+    );
+    // setPriceRange(filters.price_range || "");
+    // setAgeCategory(filters.age_category_id || "");
+    // setSortBy(filters.sort_by || "");
+  }, [open, filters]);
+
   // Update parent setiap filter berubah
   React.useEffect(() => {
     setFilters({
@@ -30,7 +48,47 @@ const FilterBar = ({ setFilters }) => {
       sort_by: sortBy,
     });
     // eslint-disable-next-line
-  }, [selectedCategories, selectedPlaceTypes, priceRange, ageCategory, sortBy]);
+  }, [priceRange, ageCategory, sortBy]);
+
+  const handlePlaceTypeChange = (value) => {
+    setSelectedPlaceTypes((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+    );
+  };
+
+  // State for dirty check
+  const [initialCategories, setInitialCategories] = React.useState([]);
+  const [initialPlaceTypes, setInitialPlaceTypes] = React.useState([]);
+
+  const isDirtySaveButton =
+    JSON.stringify(selectedCategories) !== JSON.stringify(initialCategories) ||
+    JSON.stringify(selectedPlaceTypes) !== JSON.stringify(initialPlaceTypes);
+
+  // const isDirty =
+  //   JSON.stringify(selectedCategories) !== JSON.stringify(initialCategories) ||
+  //   JSON.stringify(selectedPlaceTypes) !== JSON.stringify(initialPlaceTypes);
+
+  const isDirtyResetButton =
+    selectedCategories.length > 0 || selectedPlaceTypes.length > 0;
+
+  const handleReset = () => {
+    setSelectedCategories([]);
+    setSelectedPlaceTypes([]);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    setInitialCategories(selectedCategories);
+    setInitialPlaceTypes(selectedPlaceTypes);
+    setFilters({
+      category_id: selectedCategories,
+      place_type_id: selectedPlaceTypes,
+      price_range: priceRange,
+      age_category_id: ageCategory,
+      sort_by: sortBy,
+    });
+    setOpen(false);
+  };
 
   const categoryItems = [
     ...(!categoriesLoading && categories
@@ -59,42 +117,19 @@ const FilterBar = ({ setFilters }) => {
       : []),
   ];
 
-  const handlePlaceTypeChange = (value) => {
-    setSelectedPlaceTypes((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
-    );
-  };
-
-  // State for dirty check
-  const [initialCategories, setInitialCategories] = React.useState([]);
-  const [initialPlaceTypes, setInitialPlaceTypes] = React.useState([]);
-
-  const isDirty =
-    JSON.stringify(selectedCategories) !== JSON.stringify(initialCategories) ||
-    JSON.stringify(selectedPlaceTypes) !== JSON.stringify(initialPlaceTypes);
-
-  const handleReset = () => {
-    setSelectedCategories(initialCategories);
-    setSelectedPlaceTypes(initialPlaceTypes);
-  };
-
-  const handleSave = (e) => {
-    e.preventDefault();
-    setInitialCategories(selectedCategories);
-    setInitialPlaceTypes(selectedPlaceTypes);
-    // TODO: trigger filter to parent/frontend as needed
-  };
-
   return (
     <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
       <FilterDialog
+        open={open}
+        onOpenChange={setOpen}
         categoryItems={categoryItems}
         selectedCategories={selectedCategories}
         setSelectedCategories={setSelectedCategories}
         placeTypeItems={placeTypeItems}
         selectedPlaceTypes={selectedPlaceTypes}
         handlePlaceTypeChange={handlePlaceTypeChange}
-        isDirty={isDirty}
+        isDirtySaveButton={isDirtySaveButton}
+        isDirtyResetButton={isDirtyResetButton}
         handleReset={handleReset}
         handleSave={handleSave}
       />

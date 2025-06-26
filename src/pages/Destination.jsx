@@ -110,7 +110,7 @@ const Destination = () => {
       <StickyHeader>
         <section className="max-container mx-auto w-11/12 sm:w-10/12">
           <SearchBar value={searchValue} onSubmit={handleSearchChange} />
-          <FilterBar setFilters={handleFilterChange} />
+          <FilterBar filters={filters} setFilters={handleFilterChange} />
         </section>
       </StickyHeader>
 

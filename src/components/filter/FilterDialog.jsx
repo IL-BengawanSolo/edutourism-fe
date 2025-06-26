@@ -16,13 +16,16 @@ import { FILTER_MENU } from "./FilterSidebarMenu";
 import { Badge } from "../ui/badge.jsx";
 
 const FilterDialog = ({
+  open,
+  onOpenChange,
   categoryItems,
   selectedCategories,
   setSelectedCategories,
   placeTypeItems,
   selectedPlaceTypes,
   handlePlaceTypeChange,
-  isDirty,
+  isDirtySaveButton,
+  isDirtyResetButton,
   handleReset,
   handleSave,
 }) => {
@@ -47,61 +50,64 @@ const FilterDialog = ({
       container.scrollTo({ top: scrollOffset, behavior: "smooth" });
     }
   };
+
   return (
-    <Dialog>
-      <form onSubmit={handleSave}>
-        <DialogTrigger asChild>
-          <Button
-            variant="filter"
-            className={`${
-              totalSelected > 0
-                ? "ring-pr-blue-600 text-pr-blue-800 ring-3"
-                : "border-none"
-            }`}
-          >
-            <Filter2
-              className={`size-5 ${totalSelected > 0 ? "text-pr-blue-600" : "text-neutral-grey"}`}
-              filled
-            />
-            Filter
-            {totalSelected > 0 && (
-              <Badge className="bg-pr-blue-100" variant="custom">
-                {totalSelected}
-              </Badge>
-            )}
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="overflow-hidden md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
-          <DialogHeader>
-            <DialogTitle>
-              <span className="text-3xl">Filter</span>
-            </DialogTitle>
-          </DialogHeader>
-          <DialogDescription className="text-neutral-dark-grey">
-            Pilih filter untuk menemukan tempat wisata yang sesuai dengan
-            preferensimu.
-          </DialogDescription>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <Button
+          variant="filter"
+          className={`${
+            totalSelected > 0
+              ? "ring-pr-blue-600 text-pr-blue-800 ring-3"
+              : "border-none"
+          }`}
+        >
+          <Filter2
+            className={`size-5 ${totalSelected > 0 ? "text-pr-blue-600" : "text-neutral-grey"}`}
+            filled
+          />
+          Filter
+          {totalSelected > 0 && (
+            <Badge className="bg-pr-blue-100" variant="custom">
+              {totalSelected}
+            </Badge>
+          )}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="overflow-hidden md:max-h-[500px] md:max-w-[700px] lg:max-w-[800px]">
+        <DialogHeader>
+          <DialogTitle>
+            <span className="text-3xl">Filter</span>
+          </DialogTitle>
+        </DialogHeader>
+        <DialogDescription className="text-neutral-dark-grey">
+          Pilih filter untuk menemukan tempat wisata yang sesuai dengan
+          preferensimu.
+        </DialogDescription>
 
-          <FilterSidebarMenu
-            activeSection={activeSection}
-            onMenuClick={handleMenuClick}
+        <FilterSidebarMenu
+          activeSection={activeSection}
+          onMenuClick={handleMenuClick}
+          selectedCategories={selectedCategories}
+          selectedPlaceTypes={selectedPlaceTypes}
+        >
+          <FilterMainContent
+            categoryItems={categoryItems}
             selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            placeTypeItems={placeTypeItems}
             selectedPlaceTypes={selectedPlaceTypes}
-          >
-            <FilterMainContent
-              categoryItems={categoryItems}
-              selectedCategories={selectedCategories}
-              setSelectedCategories={setSelectedCategories}
-              placeTypeItems={placeTypeItems}
-              selectedPlaceTypes={selectedPlaceTypes}
-              handlePlaceTypeChange={handlePlaceTypeChange}
-              onSectionChange={setActiveSection}
-            />
-          </FilterSidebarMenu>
-
-          <FilterDialogFooter isDirty={isDirty} onReset={handleReset} />
-        </DialogContent>
-      </form>
+            handlePlaceTypeChange={handlePlaceTypeChange}
+            onSectionChange={setActiveSection}
+          />
+        </FilterSidebarMenu>
+        <FilterDialogFooter
+          isDirtySaveButton={isDirtySaveButton}
+          isDirtyResetButton={isDirtyResetButton}
+          onReset={handleReset}
+          onSave={handleSave}
+        />
+      </DialogContent>
     </Dialog>
   );
 };
