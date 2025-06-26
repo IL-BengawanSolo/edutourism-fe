@@ -27,6 +27,9 @@ const FilterDialog = ({
   selectedRegion,
   regionItems,
   setSelectedRegion,
+  openDaysItems,
+  selectedOpenDays,
+  setSelectedOpenDays,
   isDirtySaveButton,
   isDirtyResetButton,
   handleReset,
@@ -40,8 +43,8 @@ const FilterDialog = ({
   const totalSelected =
     (selectedCategories?.length || 0) +
     (selectedPlaceTypes?.length || 0) +
-    (selectedRegion?.length || 0);
-  // + tambahkan filter lain jika ada
+    (selectedRegion?.length || 0) +
+    (selectedOpenDays?.length || 0); 
 
   // Scroll ke section saat klik menu
   const handleMenuClick = (sectionId) => {
@@ -96,6 +99,7 @@ const FilterDialog = ({
           selectedCategories={selectedCategories}
           selectedPlaceTypes={selectedPlaceTypes}
           selectedRegions={selectedRegion}
+          selectedOpenDays={selectedOpenDays}
         >
           <FilterMainContent
             categoryItems={categoryItems}
@@ -107,6 +111,9 @@ const FilterDialog = ({
             regionItems={regionItems}
             setSelectedRegion={setSelectedRegion}
             selectedRegion={selectedRegion}
+            openDaysItems={openDaysItems}
+            selectedOpenDays={selectedOpenDays}
+            setSelectedOpenDays={setSelectedOpenDays}
             onSectionChange={setActiveSection}
           />
         </FilterSidebarMenu>

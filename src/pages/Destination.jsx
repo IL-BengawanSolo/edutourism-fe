@@ -21,6 +21,7 @@ const Destination = () => {
       region_id: searchParams.getAll("region_id"),
       category_id: searchParams.getAll("category_id"),
       place_type_id: searchParams.getAll("place_type_id"),
+      open_days: searchParams.getAll("open_days"),
       age_category_id: searchParams.get("age_category_id") || undefined,
       price_range: searchParams.get("price_range") || undefined,
       sort_by: searchParams.get("sort_by") || undefined,
@@ -50,6 +51,7 @@ const Destination = () => {
       params.delete("category_id");
       params.delete("place_type_id");
       params.delete("region_id");
+      params.delete("open_days");
 
       // Tambahkan array category_id
       if (Array.isArray(newFilters.category_id)) {
@@ -78,6 +80,16 @@ const Destination = () => {
         params.append("region_id", newFilters.region_id);
       }
 
+      // Tambahkan open_days
+      if (Array.isArray(newFilters.open_days)) {
+        newFilters.open_days.forEach((day) => {
+          if (day) params.append("open_days", day);
+        });
+      } else if (newFilters.open_days) {
+        params.append("open_days", newFilters.open_days);
+      }
+
+
       // Sisanya tetap pakai set
       ["age_category_id", "price_range", "sort_by"].forEach((key) => {
         if (newFilters[key]) {
@@ -100,6 +112,7 @@ const Destination = () => {
     filters.region_id,
     filters.category_id,
     filters.place_type_id,
+    filters.open_days,
     filters.age_category_id,
     filters.price_range,
     filters.sort_by,

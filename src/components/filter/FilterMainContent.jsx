@@ -7,6 +7,7 @@ const SECTION_IDS = [
   "kategori-section",
   "jenis-tempat-section",
   "wilayah-section",
+  "hari-buka-section",
   // Tambahkan section id lain jika ada
 ];
 
@@ -20,17 +21,22 @@ function FilterMainContent({
   regionItems,
   selectedRegion,
   setSelectedRegion,
+  openDaysItems,
+  selectedOpenDays,
+  setSelectedOpenDays,
   onSectionChange,
 }) {
   const kategoriSepRef = React.useRef(null);
   const jenisTempatSepRef = React.useRef(null);
   const wilayahSepRef = React.useRef(null);
+  const hariBukaSepRef = React.useRef(null);
 
   // Map section id ke separator ref berikutnya
   const separatorRefs = {
     "kategori-section": kategoriSepRef,
     "jenis-tempat-section": jenisTempatSepRef,
     "wilayah-section": wilayahSepRef,
+    "hari-buka-section": hariBukaSepRef,
 
     // Tambahkan separator ref lain jika ada
   };
@@ -99,6 +105,15 @@ function FilterMainContent({
             items={regionItems}
             selected={selectedRegion}
             onChange={setSelectedRegion}
+          />
+        </section>
+        <Separator className="my-4" ref={wilayahSepRef} />
+        <section id="hari-buka-section">
+          <ToggleFilter
+            label={"Hari Buka"}
+            items={openDaysItems}
+            selected={selectedOpenDays}
+            onChange={setSelectedOpenDays}
           />
         </section>
       </div>

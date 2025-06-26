@@ -20,6 +20,7 @@ const FilterBar = ({ filters, setFilters }) => {
   const [selectedCategories, setSelectedCategories] = React.useState([]);
   const [selectedPlaceTypes, setSelectedPlaceTypes] = React.useState([]);
   const [selectedRegion, setSelectedRegion] = React.useState([]);
+  const [selectedOpenDays, setSelectedOpenDays] = React.useState([]);
 
   const [priceRange, setPriceRange] = React.useState("");
   const [ageCategory, setAgeCategory] = React.useState("");
@@ -42,6 +43,13 @@ const FilterBar = ({ filters, setFilters }) => {
         ? filters.region_id.map((v) => Number(v))
         : [],
     );
+
+    setSelectedOpenDays(
+      Array.isArray(filters.open_days)
+        ? filters.open_days.map((v) => Number(v))
+        : [],
+    );
+
     // setPriceRange(filters.price_range || "");
     // setAgeCategory(filters.age_category_id || "");
     // setSortBy(filters.sort_by || "");
@@ -52,8 +60,9 @@ const FilterBar = ({ filters, setFilters }) => {
     setFilters({
       category_id: selectedCategories,
       place_type_id: selectedPlaceTypes,
-      price_range: priceRange,
       region_id: selectedRegion,
+      open_days: selectedOpenDays,
+      price_range: priceRange,
       age_category_id: ageCategory,
       sort_by: sortBy,
     });
@@ -70,21 +79,25 @@ const FilterBar = ({ filters, setFilters }) => {
   const [initialCategories, setInitialCategories] = React.useState([]);
   const [initialPlaceTypes, setInitialPlaceTypes] = React.useState([]);
   const [initialRegion, setInitialRegion] = React.useState([]);
+  const [initialOpenDays, setInitialOpenDays] = React.useState([]);
 
   const isDirtySaveButton =
     JSON.stringify(selectedCategories) !== JSON.stringify(initialCategories) ||
     JSON.stringify(selectedPlaceTypes) !== JSON.stringify(initialPlaceTypes) ||
-    JSON.stringify(selectedRegion) !== JSON.stringify(initialRegion);
+    JSON.stringify(selectedRegion) !== JSON.stringify(initialRegion) ||
+    JSON.stringify(selectedOpenDays) !== JSON.stringify(initialOpenDays);
 
   const isDirtyResetButton =
     selectedCategories.length > 0 ||
     selectedPlaceTypes.length > 0 ||
-    selectedRegion.length > 0;
+    selectedRegion.length > 0 ||
+    selectedOpenDays.length > 0;
 
   const handleReset = () => {
     setSelectedCategories([]);
     setSelectedPlaceTypes([]);
     setSelectedRegion([]);
+    setSelectedOpenDays([]);
   };
 
   const handleSave = (e) => {
@@ -92,10 +105,12 @@ const FilterBar = ({ filters, setFilters }) => {
     setInitialCategories(selectedCategories);
     setInitialPlaceTypes(selectedPlaceTypes);
     setInitialRegion(selectedRegion);
+    setInitialOpenDays(selectedOpenDays);
     setFilters({
       category_id: selectedCategories,
       place_type_id: selectedPlaceTypes,
       region_id: selectedRegion,
+      open_days: selectedOpenDays,
       price_range: priceRange,
       age_category_id: ageCategory,
       sort_by: sortBy,
@@ -121,20 +136,30 @@ const FilterBar = ({ filters, setFilters }) => {
       : []),
   ];
 
-  const ageCategoryItems = [
-    ...(!ageCategoriesLoading && ageCategories
-      ? ageCategories.map((age) => ({
-          label: age.name,
-          value: age.id,
-        }))
-      : []),
-  ];
-
   const regionItems = [
     ...(!regionsLoading && regions
       ? regions.map((reg) => ({
           label: reg.name,
           value: reg.id,
+        }))
+      : []),
+  ];
+
+  const openDaysItems = [
+    { label: "Senin", value: 1 },
+    { label: "Selasa", value: 2 },
+    { label: "Rabu", value: 3 },
+    { label: "Kamis", value: 4 },
+    { label: "Jumat", value: 5 },
+    { label: "Sabtu", value: 6 },
+    { label: "Minggu", value: 7 },
+  ];
+
+  const ageCategoryItems = [
+    ...(!ageCategoriesLoading && ageCategories
+      ? ageCategories.map((age) => ({
+          label: age.name,
+          value: age.id,
         }))
       : []),
   ];
@@ -153,6 +178,9 @@ const FilterBar = ({ filters, setFilters }) => {
         regionItems={regionItems}
         selectedRegion={selectedRegion}
         setSelectedRegion={setSelectedRegion}
+        openDaysItems={openDaysItems}
+        selectedOpenDays={selectedOpenDays}
+        setSelectedOpenDays={setSelectedOpenDays}
         isDirtySaveButton={isDirtySaveButton}
         isDirtyResetButton={isDirtyResetButton}
         handleReset={handleReset}
