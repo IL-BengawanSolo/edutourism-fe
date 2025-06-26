@@ -23,8 +23,8 @@ const FilterBar = ({ setFilters }) => {
   // Update parent setiap filter berubah
   React.useEffect(() => {
     setFilters({
-      category_id: selectedCategories.join(","),
-      place_type_id: selectedPlaceTypes.join(","),
+      category_id: selectedCategories,
+      place_type_id: selectedPlaceTypes,
       price_range: priceRange,
       age_category_id: ageCategory,
       sort_by: sortBy,

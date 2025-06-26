@@ -19,8 +19,8 @@ const Destination = () => {
   const filters = React.useMemo(
     () => ({
       region_id: searchParams.get("region_id") || undefined,
-      category_id: searchParams.get("category_id") || undefined,
-      place_type_id: searchParams.get("place_type_id") || undefined,
+      category_id: searchParams.getAll("category_id"),
+      place_type_id: searchParams.getAll("place_type_id"),
       age_category_id: searchParams.get("age_category_id") || undefined,
       price_range: searchParams.get("price_range") || undefined,
       sort_by: searchParams.get("sort_by") || undefined,
@@ -45,13 +45,40 @@ const Destination = () => {
   const handleFilterChange = (newFilters) => {
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
-      Object.entries(newFilters).forEach(([key, value]) => {
-        if (value) {
-          params.set(key, value);
-        } else {
-          params.delete(key);
-        }
-      });
+
+      // Hapus semua category_id & place_type_id dulu
+      params.delete("category_id");
+      params.delete("place_type_id");
+
+      // Tambahkan array category_id
+      if (Array.isArray(newFilters.category_id)) {
+        newFilters.category_id.forEach((id) => {
+          if (id) params.append("category_id", id);
+        });
+      } else if (newFilters.category_id) {
+        params.append("category_id", newFilters.category_id);
+      }
+
+      // Tambahkan array place_type_id
+      if (Array.isArray(newFilters.place_type_id)) {
+        newFilters.place_type_id.forEach((id) => {
+          if (id) params.append("place_type_id", id);
+        });
+      } else if (newFilters.place_type_id) {
+        params.append("place_type_id", newFilters.place_type_id);
+      }
+
+      // Sisanya tetap pakai set
+      ["region_id", "age_category_id", "price_range", "sort_by"].forEach(
+        (key) => {
+          if (newFilters[key]) {
+            params.set(key, newFilters[key]);
+          } else {
+            params.delete(key);
+          }
+        },
+      );
+
       return params;
     });
   };
