@@ -16,44 +16,34 @@ const FilterBar = ({ filters, setFilters }) => {
     useFetchAgeCategories();
   const { regions, loading: regionsLoading } = useFetchRegions();
 
+  const categoriesFilter = Array.isArray(filters.category_id)
+    ? filters.category_id.map((v) => Number(v))
+    : [];
+
+  const placeTypesFilter = Array.isArray(filters.place_type_id)
+    ? filters.place_type_id.map((v) => Number(v))
+    : [];
+
+  const regionsFilter = Array.isArray(filters.region_id)
+    ? filters.region_id.map((v) => Number(v))
+    : [];
+
+  const openDaysFilter = Array.isArray(filters.open_days)
+    ? filters.open_days.map((v) => Number(v))
+    : [];
+
+  const priceRange = filters.price_range || "";
+  const ageCategory = filters.age_category_id || "";
+  const sortBy = filters.sort_by || "";
+
   // State untuk semua filter
-  const [selectedCategories, setSelectedCategories] = React.useState([]);
-  const [selectedPlaceTypes, setSelectedPlaceTypes] = React.useState([]);
-  const [selectedRegion, setSelectedRegion] = React.useState([]);
-  const [selectedOpenDays, setSelectedOpenDays] = React.useState([]);
-
-  const [priceRange, setPriceRange] = React.useState("");
-  const [ageCategory, setAgeCategory] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("");
-
-  // Sinkronkan state lokal dengan filter global saat dialog dibuka
-  React.useEffect(() => {
-    setSelectedCategories(
-      Array.isArray(filters.category_id)
-        ? filters.category_id.map((v) => Number(v))
-        : [],
-    );
-    setSelectedPlaceTypes(
-      Array.isArray(filters.place_type_id)
-        ? filters.place_type_id.map((v) => Number(v))
-        : [],
-    );
-    setSelectedRegion(
-      Array.isArray(filters.region_id)
-        ? filters.region_id.map((v) => Number(v))
-        : [],
-    );
-
-    setSelectedOpenDays(
-      Array.isArray(filters.open_days)
-        ? filters.open_days.map((v) => Number(v))
-        : [],
-    );
-
-    // setPriceRange(filters.price_range || "");
-    // setAgeCategory(filters.age_category_id || "");
-    // setSortBy(filters.sort_by || "");
-  }, [open, filters]);
+  const [selectedCategories, setSelectedCategories] =
+    React.useState(categoriesFilter);
+  const [selectedPlaceTypes, setSelectedPlaceTypes] =
+    React.useState(placeTypesFilter);
+  const [selectedRegion, setSelectedRegion] = React.useState(regionsFilter);
+  const [selectedOpenDays, setSelectedOpenDays] =
+    React.useState(openDaysFilter);
 
   // Update parent setiap filter berubah
   React.useEffect(() => {
@@ -76,10 +66,12 @@ const FilterBar = ({ filters, setFilters }) => {
   };
 
   // State for dirty check
-  const [initialCategories, setInitialCategories] = React.useState([]);
-  const [initialPlaceTypes, setInitialPlaceTypes] = React.useState([]);
-  const [initialRegion, setInitialRegion] = React.useState([]);
-  const [initialOpenDays, setInitialOpenDays] = React.useState([]);
+  const [initialCategories, setInitialCategories] =
+    React.useState(categoriesFilter);
+  const [initialPlaceTypes, setInitialPlaceTypes] =
+    React.useState(placeTypesFilter);
+  const [initialRegion, setInitialRegion] = React.useState(regionsFilter);
+  const [initialOpenDays, setInitialOpenDays] = React.useState(openDaysFilter);
 
   const isDirtySaveButton =
     JSON.stringify(selectedCategories) !== JSON.stringify(initialCategories) ||
@@ -159,7 +151,7 @@ const FilterBar = ({ filters, setFilters }) => {
     ...(!ageCategoriesLoading && ageCategories
       ? ageCategories.map((age) => ({
           label: age.name,
-          value: age.id,
+          value: String(age.id),
         }))
       : []),
   ];
@@ -193,7 +185,7 @@ const FilterBar = ({ filters, setFilters }) => {
         placeholder="Kategori Umur"
         items={ageCategoryItems}
         value={ageCategory}
-        onChange={setAgeCategory}
+        onChange={(val) => setFilters({ ...filters, age_category_id: val })}
       />
 
       <SelectFilterButton
@@ -201,7 +193,7 @@ const FilterBar = ({ filters, setFilters }) => {
         label="Harga"
         placeholder="Harga"
         value={priceRange}
-        onChange={setPriceRange}
+        onChange={(val) => setFilters({ ...filters, price_range: val })}
         items={[
           { label: "Gratis", value: "free" },
           { label: "< Rp 10K", value: "lt-10k" },
@@ -216,7 +208,7 @@ const FilterBar = ({ filters, setFilters }) => {
         label="Urutkan"
         placeholder="Urutkan"
         value={sortBy}
-        onChange={setSortBy}
+        onChange={(val) => setFilters({ ...filters, sort_by: val })}
         items={[
           { label: "Harga Tertinggi", value: "highest-price" },
           { label: "Harga Terendah", value: "lowest-price" },
