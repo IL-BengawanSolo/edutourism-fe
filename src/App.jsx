@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import DestinationCard from "./components/DestinationCard.jsx";
+import DestinationCard from "./components/destination-card/DestinationCard.jsx";
 import SearchBar from "./components/SearchBar.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Destination from "./pages/Destination.jsx";

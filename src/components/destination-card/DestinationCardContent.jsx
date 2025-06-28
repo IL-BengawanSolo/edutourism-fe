@@ -1,67 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Location } from "react-iconly";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChild,
-  faBaby,
-  faPerson,
-  faUniversalAccess,
-  faMoneyBillWave,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-
-// Mapping untuk label singkat usia
-const AGE_LABEL_SHORT = {
-  Remaja: "Remaja",
-  "Anak-anak": "Anak",
-  Balita: "Balita",
-  "Semua Umur": "Semua",
-};
-
-// Mapping untuk icon usia
-const getAgeIcon = (age, short = false) => {
-  const title = short ? AGE_LABEL_SHORT[age] || age : age;
-  switch (age) {
-    case "Remaja":
-      return (
-        <FontAwesomeIcon
-          className="text-primary h-5 w-5"
-          icon={faPerson}
-          title={title}
-        />
-      );
-    case "Anak-anak":
-      return (
-        <FontAwesomeIcon
-          className="text-primary h-5 w-5"
-          icon={faChild}
-          title={title}
-        />
-      );
-    case "Balita":
-      return (
-        <FontAwesomeIcon
-          className="text-primary h-5 w-5"
-          icon={faBaby}
-          title={title}
-        />
-      );
-    case "Semua Umur":
-      return (
-        <FontAwesomeIcon
-          className="text-primary h-5 w-5"
-          icon={faUniversalAccess}
-          title={title}
-        />
-      );
-    default:
-      return null;
-  }
-};
+import AgeIcons from "./AgeIcons.jsx";
 
 const ALL_AGES = ["Remaja", "Anak-anak", "Balita", "Semua Umur"];
 
@@ -77,11 +23,11 @@ const DestinationCardContent = ({
   shortAgeIcon,
 }) => {
   const titleSize =
-    variant === "col" ? "text-xl sm:text-2xl" : "text-lg sm:text-xl";
+    variant === "col" ? "text-lg sm:text-xl" : "text-lg sm:text-xl";
   const textSize =
-    variant === "col" ? "text-base sm:text-lg" : "text-sm sm:text-base";
+    variant === "col" ? "text-sm sm:text-base" : "text-sm sm:text-base";
   const badgeSize =
-    variant === "col" ? "text-sm sm:text-base" : "text-xs sm:text-sm";
+    variant === "col" ? "text-xs sm:text-sm" : "text-xs sm:text-sm";
 
   let ages = [];
   if (typeof ageCategories === "string") {
@@ -156,27 +102,21 @@ const DestinationCardContent = ({
       <div className="flex w-full items-center justify-between">
         <p className={`${textSize} text-neutral-dark-grey font-medium`}>
           <span>
-            <FontAwesomeIcon
-              className="mr-2 h-5 w-5"
-              icon={faMoneyBillWave}
-            />
+            <FontAwesomeIcon className="mr-2 h-5 w-5" icon={faMoneyBillWave} />
           </span>
           <span className="font-semibold">{price}</span>
         </p>
-        <div className="ml-4 flex items-center gap-3">
-          {ages.map(
-            (age) =>
-              getAgeIcon(age, shortAgeIcon) && (
-                <span key={age} className="flex items-center gap-1">
-                  {getAgeIcon(age, shortAgeIcon)}
-                  <span className="text-xs text-neutral-700">
-                    {shortAgeIcon ? AGE_LABEL_SHORT[age] || age : age}
-                  </span>
-                </span>
-              ),
-          )}
-        </div>
+        {variant !== "col" && (
+          <AgeIcons
+            ages={ages}
+            shortAgeIcon={shortAgeIcon}
+            className="ml-4 flex items-center gap-3"
+          />
+        )}
       </div>
+      {variant === "col" && (
+        <AgeIcons ages={ages} shortAgeIcon className="flex flex-row gap-3" />
+      )}
       {variant === "col" && match && (
         <p className={`${textSize} text-pr-blue-800 font-bold`}>{match}</p>
       )}

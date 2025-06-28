@@ -5,7 +5,7 @@ import { getPriceLabel } from "@/lib/utils.js";
 import { useParams } from "react-router-dom";
 import useFetchDestinationBySlug from "@/api/useFetchDestinationBySlug.js";
 import useFetchSimilarDestinations from "@/api/useFetchSimilarDestinations.js";
-import CarouselDestinationRow from "@/components/CarouselDestinationRow.jsx";
+import CarouselDestinationRow from "@/components/destination-card/CarouselDestinationRow.jsx";
 
 import DestinationImages from "@/components/destination-detail/DestinationImages.jsx";
 import DestinationGeneralInfo from "@/components/destination-detail/DestinationGeneralInfo.jsx";

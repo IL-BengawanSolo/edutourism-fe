@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../ui/button.jsx";
-import CarouselDestinationRow from "../CarouselDestinationRow.jsx";
-import DestinationCard from "../DestinationCard.jsx";
+import CarouselDestinationRow from "../destination-card/CarouselDestinationRow.jsx";
+import DestinationCard from "../destination-card/DestinationCard.jsx";
 
 const JumbotronTestCompleted = () => {
   return (

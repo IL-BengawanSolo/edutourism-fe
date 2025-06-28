@@ -12,7 +12,7 @@ const DestinationCard = ({
   placeTypes = ["Kampung Batik"],
   minPrice = "25.000",
   maxPrice = "50.000",
-  match = "84% Match dengan kamu",
+  match = "",
   ageCategories = undefined,
   shortPrice = false,
   shortAgeIcon = false,
@@ -34,7 +34,7 @@ const DestinationCard = ({
         alt={name}
         className={`object-cover ${
           isCol
-            ? "h-64 w-[352px] rounded-4xl object-cover sm:h-80"
+            ? "h-64 w-[256px] rounded-2xl object-cover sm:h-64"
             : "h-40 w-40 rounded-2xl sm:h-54 sm:w-54"
         }`}
       />

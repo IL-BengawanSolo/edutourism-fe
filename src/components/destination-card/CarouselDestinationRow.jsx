@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import DestinationCard from "@/components/DestinationCard.jsx";
+import DestinationCard from "@/components/destination-card/DestinationCard.jsx";
 import { Link } from "react-router-dom";
 
 const CarouselDestinationRow = ({ destinations }) => {
@@ -20,15 +20,15 @@ const CarouselDestinationRow = ({ destinations }) => {
       >
         <CarouselContent>
           {destinations.map((destination, index) => (
-            <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/2">
-              <div className="p-1">
+            <CarouselItem key={index} className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+      
                 <Link
                   key={destination.slug}
                   to={`/destinations/${destination.slug}`}
                   className="no-underline"
                 >
                   <DestinationCard
-                    variant="row"
+                    variant="col"
                     name={destination.name}
                     categories={destination.categories || []}
                     placeTypes={destination.place_types}
@@ -40,7 +40,7 @@ const CarouselDestinationRow = ({ destinations }) => {
                     shortAgeIcon
                   />
                 </Link>
-              </div>
+          
             </CarouselItem>
           ))}
         </CarouselContent>
