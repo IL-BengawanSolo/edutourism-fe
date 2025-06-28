@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-import JumbotronNotTest from "@/components/JumbotronNotTest.jsx";
-import JumbotronNotLogin from "@/components/JumbotronNotLogin.jsx";
-import PreferenceTest from "@/components/PreferenceTest.jsx";
-import JumbotronTestProgress from "@/components/JumbotronTestProgress.jsx";
-import JumbotronTestCompleted from "@/components/JumbotronTestCompleted.jsx";
+import JumbotronNotTest from "@/components/recommendation/JumbotronNotTest.jsx";
+import JumbotronNotLogin from "@/components/recommendation/JumbotronNotLogin.jsx";
+import PreferenceTest from "@/components/recommendation/PreferenceTest.jsx";
+import JumbotronTestProgress from "@/components/recommendation/JumbotronTestProgress.jsx";
+import JumbotronTestCompleted from "@/components/recommendation/JumbotronTestCompleted.jsx";
 
 const Recommendation = () => {
   const [isLogin, setIsLogin] = useState(false);

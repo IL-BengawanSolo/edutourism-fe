@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 
 
 import React from "react";
-import CarouselDestinationRow from "@/components/CarouselDestinationRow.jsx";
+import CarouselDestinationRow from "@/components/destination-card/CarouselDestinationRow.jsx";
+
 
 const TopDestinationsCarousel = () => {
   return (
@@ -18,7 +19,7 @@ const TopDestinationsCarousel = () => {
           Lihat semua
         </Link>
       </div>
-      <CarouselDestinationRow />
+      {/* <CarouselDestinationRow /> */}
     </section>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
-import AutoSizeResponsiveAsset from "./ResponsiveAsset.jsx";
-import { Button } from "./ui/button.jsx";
+import AutoSizeResponsiveAsset from "../ResponsiveAsset.jsx";
+import { Button } from "../ui/button.jsx";
 import { Link } from "react-router-dom";
 
 const JumbotronNotLogin = ({onLoginClick}) => {

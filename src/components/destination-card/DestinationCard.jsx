@@ -1,19 +1,26 @@
 import React from "react";
 import DestinationCardContent from "./DestinationCardContent";
+import { getPriceLabel } from "@/lib/utils.js";
 
 const DestinationCard = ({
   variant = "col",
   className = "",
   imageSrc = "/src/assets/images/kampung-batik-laweyan.jpeg",
-  title = "Museum Manusia Purba Sangiran Klaster Krikilan",
-  location = "Surakarta",
-  categoryBadge = ["Sains", "Lingkungan"],
-  subCategoryBadge = "Cagar Budaya Hindu-Buddha & Arkeologi",
-  price = "25.000 - 50.000",
-  match = "84% Match dengan kamu",
+  name = "Kampung Batik Laweyan",
+  region_name = "Surakarta",
+  categories = ["Sains", "Lingkungan", "Sejarah"],
+  placeTypes = ["Kampung Batik"],
+  minPrice = "25.000",
+  maxPrice = "50.000",
+  match = "",
+  ageCategories = undefined,
+  shortPrice = false,
+  shortAgeIcon = false,
   ...props
 }) => {
   const isCol = variant === "col";
+
+  const priceLabel = getPriceLabel(minPrice, maxPrice, shortPrice);
 
   return (
     <div
@@ -24,33 +31,24 @@ const DestinationCard = ({
     >
       <img
         src={imageSrc}
-        alt={title}
+        alt={name}
         className={`object-cover ${
           isCol
-            ? "h-64 w-full rounded-4xl sm:h-80"
+            ? "h-64 w-[256px] rounded-2xl object-cover sm:h-64"
             : "h-40 w-40 rounded-2xl sm:h-54 sm:w-54"
         }`}
       />
-
-      {/* <img
-        src={imageSrc}
-        alt={title}
-        className={`aspect-[3/4] object-cover ${
-          isCol
-            ? "h-auto max-h-80 w-full rounded-4xl"
-            : "h-40 w-40 rounded-2xl sm:h-64 sm:w-48"
-        }`}
-      /> */}
-
       <div className={`${isCol ? "mt-5" : "my-3 ml-6 flex-1"}`}>
         <DestinationCardContent
           variant={variant}
-          title={title}
-          location={location}
-          categoryBadge={categoryBadge}
-          subCategoryBadge={subCategoryBadge}
-          price={price}
+          name={name}
+          region_name={region_name}
+          categories={categories}
+          placeTypes={placeTypes}
+          price={priceLabel}
           match={match}
+          ageCategories={ageCategories}
+          shortAgeIcon={shortAgeIcon}
         />
       </div>
     </div>

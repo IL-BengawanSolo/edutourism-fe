@@ -1,6 +1,6 @@
 import React from "react";
-import AutoSizeResponsiveAsset from "./ResponsiveAsset.jsx";
-import { Button } from "./ui/button.jsx";
+import AutoSizeResponsiveAsset from "../ResponsiveAsset.jsx";
+import { Button } from "../ui/button.jsx";
 
 const JumbotronNotTest = ({ onTestClick }) => {
   return (
