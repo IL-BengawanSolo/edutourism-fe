@@ -25,6 +25,7 @@ const DestinationLocation = ({ destination }) => (
       <DestinationMap
         destinations={destination}
         center={[destination.latitude, destination.longitude]}
+        disablePopup
       />
     </div>
   </div>

@@ -14,11 +14,13 @@ const DestinationCard = ({
   maxPrice = "50.000",
   match = "84% Match dengan kamu",
   ageCategories = undefined,
+  shortPrice = false,
+  shortAgeIcon = false,
   ...props
 }) => {
   const isCol = variant === "col";
 
-  const priceLabel = getPriceLabel(minPrice, maxPrice);
+  const priceLabel = getPriceLabel(minPrice, maxPrice, shortPrice);
 
   return (
     <div
@@ -46,6 +48,7 @@ const DestinationCard = ({
           price={priceLabel}
           match={match}
           ageCategories={ageCategories}
+          shortAgeIcon={shortAgeIcon}
         />
       </div>
     </div>

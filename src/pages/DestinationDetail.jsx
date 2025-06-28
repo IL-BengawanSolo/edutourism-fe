@@ -4,6 +4,7 @@ import { getPriceLabel } from "@/lib/utils.js";
 
 import { useParams } from "react-router-dom";
 import useFetchDestinationBySlug from "@/api/useFetchDestinationBySlug.js";
+import useFetchSimilarDestinations from "@/api/useFetchSimilarDestinations.js";
 import CarouselDestinationRow from "@/components/CarouselDestinationRow.jsx";
 
 import DestinationImages from "@/components/destination-detail/DestinationImages.jsx";
@@ -16,7 +17,9 @@ import DestinationTabs from "@/components/destination-detail/DestinationTabs.jsx
 const DestinationDetail = () => {
   const { slug } = useParams();
   const { destination, loading, error } = useFetchDestinationBySlug(slug);
-  console.log(destination);
+  const { similar, loading: loadingSimilar } =
+    useFetchSimilarDestinations(slug);
+  console.log(slug);
 
   if (loading) {
     return <div className="py-10 text-center">Memuat data destinasi...</div>;
@@ -57,7 +60,7 @@ const DestinationDetail = () => {
             Tempat Wisata Serupa
           </h1>
         </div>
-        {/* <CarouselDestinationRow /> */}
+        <CarouselDestinationRow destinations={similar} />
       </section>
     </>
   );

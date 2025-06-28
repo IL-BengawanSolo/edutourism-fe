@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import React from "react";
 import CarouselDestinationRow from "@/components/CarouselDestinationRow.jsx";
 
+
 const TopDestinationsCarousel = () => {
   return (
     <section className="max-container mx-auto mt-20 mb-10 w-10/12">
@@ -18,7 +19,7 @@ const TopDestinationsCarousel = () => {
           Lihat semua
         </Link>
       </div>
-      <CarouselDestinationRow />
+      {/* <CarouselDestinationRow /> */}
     </section>
   );
 };

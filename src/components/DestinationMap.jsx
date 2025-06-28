@@ -8,6 +8,12 @@ import {
   Tooltip,
   GeoJSON,
 } from "react-leaflet";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMoneyBillWave,
+} from "@fortawesome/free-solid-svg-icons";
+
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/styles";
 
@@ -17,7 +23,11 @@ import { Badge } from "./ui/badge.jsx";
 import { Separator } from "./ui/separator.jsx";
 import { getPriceLabel } from "@/lib/utils.js";
 
-const DestinationMap = ({ destinations, center = [-7.560421, 110.826454] }) => {
+const DestinationMap = ({
+  destinations,
+  center = [-7.560421, 110.826454],
+  disablePopup = false,
+}) => {
   // SVG Iconly Location sebagai string (tanpa background)
   const svgIcon = encodeURIComponent(`
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -105,61 +115,68 @@ const DestinationMap = ({ destinations, center = [-7.560421, 110.826454] }) => {
             position={[destination.latitude, destination.longitude]}
             icon={createDivIcon(destination.name)}
           >
-            <Popup >
-              <div className="font-montserrat flex min-w-xs flex-col pr-4">
-                <h3 className="text-neutral-black text-xl font-bold">
-                  {destination.name}
-                </h3>
+            {!disablePopup && (
+              <Popup>
+                <div className="font-montserrat flex min-w-xs flex-col pr-4">
+                  <h3 className="text-neutral-black text-xl font-bold">
+                    {destination.name}
+                  </h3>
 
-                <Separator className="mt-2" />
+                  <Separator className="mt-2" />
 
-                <div className="my-2 flex flex-col">
-                  <div className="flex flex-row flex-wrap gap-2">
-                    {destination.categories.map((cat) => (
-                      <Badge key={cat} className="text-xs" variant="custom">
-                        {cat || []}
-                      </Badge>
-                    ))}
+                  <div className="my-2 flex flex-col">
+                    <div className="flex flex-row flex-wrap gap-2">
+                      {destination.categories.map((cat) => (
+                        <Badge key={cat} className="text-xs" variant="custom">
+                          {cat || []}
+                        </Badge>
+                      ))}
 
-                    {destination.place_types.map((ptypes) => (
-                      <Badge
-                        key={ptypes}
-                        className="text-xs"
-                        variant="custom_secondary"
-                      >
-                        {ptypes || []}
-                      </Badge>
-                    ))}
+                      {destination.place_types.map((ptypes) => (
+                        <Badge
+                          key={ptypes}
+                          className="text-xs"
+                          variant="custom_secondary"
+                        >
+                          {ptypes || []}
+                        </Badge>
+                      ))}
+                    </div>
+
+                    <p className="text-neutral-dark-grey !mt-2 !mb-0 font-medium">
+                      <span>
+                        <FontAwesomeIcon
+                          className="mr-1 h-5 w-5"
+                          icon={faMoneyBillWave}
+                        />
+                      </span>
+                      <span className="font-semibold">
+                        {getPriceLabel(
+                          destination.ticket_price_min,
+                          destination.ticket_price_max,
+                        )}
+                      </span>
+                    </p>
                   </div>
 
-                  <p className="text-neutral-dark-grey !mt-2 !mb-0 font-medium">
-                    <span className="hidden md:inline">Harga Tiket Masuk </span>
-                    <span className="font-semibold">
-                      {getPriceLabel(
-                        destination.ticket_price_min,
-                        destination.ticket_price_max,
-                      )}
-                    </span>
+                  <Separator />
+                  <p className="!my-2 line-clamp-3 text-sm text-neutral-700">
+                    {destination.description}
                   </p>
+
+                  <img
+                    src="/src/assets/images/kampung-batik-laweyan.jpeg"
+                    alt=""
+                  />
+                  <a
+                    href={`/destinations/${destination.slug}`}
+                    className="text-primary mt-3 text-sm font-semibold hover:underline"
+                  >
+                    Lihat Detail
+                  </a>
                 </div>
-
-                <Separator />
-                <p className="!my-2 line-clamp-3 text-sm text-neutral-700">
-                  {destination.description}
-                </p>
-
-                <img
-                  src="/src/assets/images/kampung-batik-laweyan.jpeg"
-                  alt=""
-                />
-                <a
-                  href={`/destinations/${destination.slug}`}
-                  className="text-primary mt-3 text-sm font-semibold hover:underline"
-                >
-                  Lihat Detail
-                </a>
-              </div>
-            </Popup>
+              </Popup>
+            )}
           </Marker>
         ))}
       </MarkerClusterGroup>

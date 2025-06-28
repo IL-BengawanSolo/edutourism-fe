@@ -7,8 +7,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import DestinationCard from "@/components/DestinationCard.jsx";
+import { Link } from "react-router-dom";
 
-const CarouselDestinationRow = () => {
+const CarouselDestinationRow = ({ destinations }) => {
   return (
     <div className="mt-16 gap-4 lg:gap-8">
       <Carousel
@@ -18,31 +19,30 @@ const CarouselDestinationRow = () => {
         className="w-full"
       >
         <CarouselContent>
-          <CarouselItem className="md:basis-1/1 lg:basis-1/2">
-            <div className="p-1">
-              <DestinationCard
-                variant="row"
-                ageCategories="remaja"
-                imageSrc="/src/assets/images/kauman.jpg"
-                name="Kampung Batik Kauman"
-                categories={["Budaya", "Seni", "Kreativitas"]}
-                price="Gratis"
-              />
-            </div>
-          </CarouselItem>
-          <CarouselItem className="md:basis-1/1 lg:basis-1/2">
-            <div className="p-1">
-              <DestinationCard
-                variant="row"
-                ageCategories="all"
-                imageSrc="/src/assets/images/radya.jpg"
-                name="Museum Radya Pustaka"
-                categories={["Sejarah", "Budaya"]}
-                placeTypes={["Kampung Wisata / Desa Adat"]}
-                price="5.000 - 20.000"
-              />
-            </div>
-          </CarouselItem>
+          {destinations.map((destination, index) => (
+            <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/2">
+              <div className="p-1">
+                <Link
+                  key={destination.slug}
+                  to={`/destinations/${destination.slug}`}
+                  className="no-underline"
+                >
+                  <DestinationCard
+                    variant="row"
+                    name={destination.name}
+                    categories={destination.categories || []}
+                    placeTypes={destination.place_types}
+                    region_name={destination.region_name}
+                    minPrice={destination.ticket_price_min}
+                    maxPrice={destination.ticket_price_max}
+                    ageCategories={destination.age_categories}   
+                    shortPrice
+                    shortAgeIcon
+                  />
+                </Link>
+              </div>
+            </CarouselItem>
+          ))}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
