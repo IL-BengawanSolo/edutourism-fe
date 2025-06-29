@@ -1,5 +1,5 @@
-import { LoginForm } from "@/components/LoginForm.jsx";
+import LoginForm from "@/components/auth/LoginForm.jsx";
 
-export default function LoginPage() {
+export default function Login() {
   return <LoginForm />;
 }

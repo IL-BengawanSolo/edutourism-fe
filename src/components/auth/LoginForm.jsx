@@ -15,6 +15,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   email: z
@@ -38,7 +39,7 @@ const formSchema = z.object({
     }),
 });
 
-export function LoginForm({ className, ...props }) {
+const LoginForm = ({ className, ...props }) => {
   const { login, error } = useLogin();
 
   const form = useForm({
@@ -47,15 +48,15 @@ export function LoginForm({ className, ...props }) {
       email: "",
       password: "",
     },
-
   });
   const handleLogin = async (values) => {
     try {
       await login(values);
-    // eslint-disable-next-line no-unused-vars
-    } catch (err) { /* empty */ }
+      // eslint-disable-next-line no-unused-vars
+    } catch (err) {
+      /* empty */
+    }
   };
-
 
   return (
     <Form {...form}>
@@ -108,6 +109,7 @@ export function LoginForm({ className, ...props }) {
                   <FormControl>
                     <Input
                       type="password"
+                      placeholder="Masukkan kata sandi"
                       className="h-12 bg-white"
                       {...field}
                     />
@@ -171,11 +173,13 @@ export function LoginForm({ className, ...props }) {
 
         <div className="text-center text-sm">
           Belum punya akun?{" "}
-          <a href="#" className="underline underline-offset-4">
+          <Link to="/register" className="underline underline-offset-4">
             Daftar
-          </a>
+          </Link>
         </div>
       </form>
     </Form>
   );
-}
+};
+
+export default LoginForm;

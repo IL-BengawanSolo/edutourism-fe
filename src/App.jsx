@@ -12,6 +12,7 @@ import SetupProfile from "./pages/SetupProfile.jsx";
 import Recommendation from "./pages/Recommendation.jsx";
 import Home from "./pages/Home.jsx";
 import DestinationDetail from "./pages/DestinationDetail.jsx";
+import RegisterPage from "./pages/Register.jsx";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
       {/* Auth Layout */}
       <Route element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
         <Route path="setup-profile" element={<SetupProfile />} />
       </Route>
     </Routes>

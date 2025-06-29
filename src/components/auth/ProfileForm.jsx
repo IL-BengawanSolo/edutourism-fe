@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function ProfileForm({ className, ...props }) {
+const ProfileForm = ({ className, ...props }) => {
   return (
     <form className={cn("flex flex-col gap-8", className)} {...props}>
       <div className="flex flex-col items-center gap-4 text-center">
         <h1 className="text-2xl font-bold">Lengkapi Profil Anda</h1>
-        <p className="text-muted-foreground text-sm text-left">
-          Selamat, kamu sudah selesai mendaftarkan email di sistem EduSolo, sekarang lengkapi identitas kamu untuk menyelesaikan pendaftaran.
+        <p className="text-muted-foreground text-left text-sm">
+          Selamat, kamu sudah selesai mendaftarkan email di sistem EduSolo,
+          sekarang lengkapi identitas kamu untuk menyelesaikan pendaftaran.
         </p>
       </div>
       <div className="grid gap-4">
@@ -42,10 +43,15 @@ export function ProfileForm({ className, ...props }) {
             required
           />
         </div>
-        <Button type="submit" className="mt-2 h-12 w-full font-semibold rounded-xl">
+        <Button
+          type="submit"
+          className="mt-2 h-12 w-full rounded-xl font-semibold"
+        >
           Simpan Profil
         </Button>
       </div>
     </form>
   );
-}
+};
+
+export default ProfileForm;

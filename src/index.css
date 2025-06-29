@@ -234,6 +234,9 @@
   --font-montserrat: "Montserrat", sans-serif;
 
   --color-state-error: #fc2824;
+  --color-state-success: #1EAE5B;
+  --color-state-warning: #FFBD4B;
+  --color-state-info: #2F80ED;
 
   --animate-typing-dot-bounce: typing-dot-bounce 1.25s ease-out infinite;
 
