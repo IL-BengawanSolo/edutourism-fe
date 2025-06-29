@@ -1,74 +1,152 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
+import useLogin from "@/api/useLogin";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const formSchema = z.object({
+  email: z
+    .string()
+    .min(1, {
+      message: "Email tidak boleh kosong.",
+    })
+    .email({
+      message: "Email tidak valid.",
+    }),
+  password: z
+    .string()
+    .min(1, {
+      message: "Kata sandi tidak boleh kosong.",
+    })
+    .min(6, {
+      message: "Kata sandi harus memiliki minimal 6 karakter.",
+    })
+    .max(50, {
+      message: "Kata sandi tidak boleh lebih dari 50 karakter.",
+    }),
+});
 
 export function LoginForm({ className, ...props }) {
-  const navigate = useNavigate(); // Inisialisasi hook
+  const { login, error } = useLogin();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // ...proses login di sini...
-    navigate("/setup-profile"); // Navigasi ke halaman setup profile
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+
+  });
+  const handleLogin = async (values) => {
+    try {
+      await login(values);
+    // eslint-disable-next-line no-unused-vars
+    } catch (err) { /* empty */ }
   };
 
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={cn("flex flex-col gap-8", className)}
-      {...props}
-    >
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-2xl font-bold">Masuk ke akun Anda</h1>
-        <p className="text-muted-foreground text-left text-sm">
-          Ayo login dan dapatkan rekomendasi tempat wisata terbaik untuk dirimu
-          dengan berbasis AI!
-        </p>
-      </div>
-      <div className="grid gap-4">
-        <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="contoh@email.com"
-            className="h-12 bg-white"
-            
-          />
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleLogin)}
+        className={cn("flex flex-col gap-8", className)}
+        {...props}
+      >
+        <div className="flex flex-col items-center gap-4 text-center">
+          <h1 className="text-2xl font-bold">Masuk ke akun Anda</h1>
+          <p className="text-muted-foreground text-left text-sm">
+            Ayo login dan dapatkan rekomendasi tempat wisata terbaik untuk kamu
+            dengan berbasis AI!
+          </p>
         </div>
-        <div className="grid gap-2">
-          <div className="flex items-center">
-            <Label htmlFor="password">Kata Sandi</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Lupa kata sandi Anda?
-            </a>
+
+        {error && (
+          <div className="bg-state-error/10 text-state-error rounded-md px-4 py-2 text-sm font-semibold">
+            {error}
           </div>
-          <Input
-            id="password"
-            type="password"
-            className="h-12 bg-white"
-            
-          />
+        )}
+
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="contoh@email.com"
+                      className="h-12 bg-white"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="grid gap-2">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Kata Sandi</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      className="h-12 bg-white"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex items-center">
+              <a
+                href="#"
+                className="ml-auto text-sm underline-offset-4 hover:underline"
+              >
+                Lupa kata sandi Anda?
+              </a>
+            </div>
+          </div>
         </div>
-        <Button type="submit" className="mt-2 h-12 w-full font-semibold rounded-xl">
+
+        <Button
+          type="submit"
+          className="mt-2 h-12 w-full rounded-xl font-semibold"
+        >
           Masuk
         </Button>
+
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-neutral-bg text-muted-foreground relative z-10 px-2">
             Atau lanjutkan dengan
           </span>
         </div>
+
         <Button
           variant="outline"
           className="h-12 w-full rounded-full font-medium"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="!h-6 !w-6" // Memaksa ukuran SVG
+            className="!h-6 !w-6"
             viewBox="0 0 48 48"
           >
             <path
@@ -90,13 +168,14 @@ export function LoginForm({ className, ...props }) {
           </svg>
           Masuk dengan Google
         </Button>
-      </div>
-      <div className="text-center text-sm">
-        Belum punya akun?{" "}
-        <a href="#" className="underline underline-offset-4">
-          Daftar
-        </a>
-      </div>
-    </form>
+
+        <div className="text-center text-sm">
+          Belum punya akun?{" "}
+          <a href="#" className="underline underline-offset-4">
+            Daftar
+          </a>
+        </div>
+      </form>
+    </Form>
   );
 }
