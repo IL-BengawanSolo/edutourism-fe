@@ -22,9 +22,9 @@ import { Link } from "react-router-dom";
 import useRegister from "@/api/useRegister.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCircleExclamation,
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import ErrorAlert from "./ErrorAlert.jsx";
 
 const formSchema = z
   .object({
@@ -79,7 +79,6 @@ const RegisterForm = ({ className, ...props }) => {
     try {
       await register(values);
       setIsSuccess(true);
-      console.log("Pendaftaran berhasil:", values);
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
       /* empty */
@@ -111,10 +110,9 @@ const RegisterForm = ({ className, ...props }) => {
         </Alert>
 
         <div className="mt-6 text-center">
-
           <Button
             type="submit"
-            className="mt-2 h-12 w-full rounded-xl font-semibold bg-state-info"
+            className="bg-state-info mt-2 h-12 w-full rounded-xl font-semibold"
             asChild
           >
             <Link to="/login">Kembali ke Halaman Login</Link>
@@ -138,21 +136,7 @@ const RegisterForm = ({ className, ...props }) => {
           </p>
         </div>
 
-        {error && (
-          <Alert
-            variant="destructive"
-            className="bg-state-error/10 text-state-error"
-          >
-            <FontAwesomeIcon
-              icon={faCircleExclamation}
-              className="text-state-error"
-              size="lg"
-            />
-            <AlertTitle className="font-semibold">
-              Email sudah terdaftar.
-            </AlertTitle>
-          </Alert>
-        )}
+        {error && <ErrorAlert error={error} />}
 
         <div className="grid gap-6">
           <div className="grid grid-cols-2 gap-2">

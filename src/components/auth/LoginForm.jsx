@@ -15,7 +15,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ErrorAlert from "./ErrorAlert.jsx";
 
 const formSchema = z.object({
   email: z
@@ -41,6 +42,7 @@ const formSchema = z.object({
 
 const LoginForm = ({ className, ...props }) => {
   const { login, error } = useLogin();
+  const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -52,6 +54,7 @@ const LoginForm = ({ className, ...props }) => {
   const handleLogin = async (values) => {
     try {
       await login(values);
+      navigate("/", { replace: true });
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
       /* empty */
@@ -74,9 +77,7 @@ const LoginForm = ({ className, ...props }) => {
         </div>
 
         {error && (
-          <div className="bg-state-error/10 text-state-error rounded-md px-4 py-2 text-sm font-semibold">
-            {error}
-          </div>
+          <ErrorAlert error={error} />
         )}
 
         <div className="grid gap-4">
