@@ -10,7 +10,7 @@ const useFetchCategories = () => {
     const fetchCategories = async () => {
       setLoading(true);
       try {
-        const response = await axiosInstance.get("/categories");
+        const response = await axiosInstance.get("/destinations/categories");
         setCategories(response.data.data);
       } catch (error) {
         setError(error);
