@@ -1,26 +1,13 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { navLinks } from "@/constants/index.js";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo.jsx";
-import { Link, NavLink, useLocation } from "react-router";
-import { useAuth } from "@/components/utils/AuthProvider";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown, Logout } from "react-iconly";
+import { NavLink, useLocation } from "react-router";
+import AuthButtonGroup from "./AuthButtonGroup";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { user, logout } = useAuth();
 
   // Ganti warna background jika di path "/"
   const headerBg = location.pathname === "/" ? "bg-pr-blue-50" : "bg-white";
@@ -58,49 +45,7 @@ const Navbar = () => {
 
         {/* Buttons */}
         <div className="hidden items-center space-x-4 lg:flex">
-          {!user ? (
-            <Link to="/login">
-              <Button size="custom">Masuk Akun</Button>
-            </Link>
-          ) : (
-            <>
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button variant="ghost" size="custom" className="rounded-sm font-semibold">
-                    <span>
-                      <Avatar className="size-8">
-                        {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-                        <AvatarFallback className="bg-primary text-white">
-                          {" "}
-                          {user.first_name?.[0]?.toUpperCase() || ""}
-                          {user.last_name?.[0]?.toUpperCase() || ""}
-                        </AvatarFallback>
-                      </Avatar>
-                    </span>
-                    <span className="text-neutral-black font-semibold">
-                      {user.first_name
-                        ? user.first_name.slice(0, 12).charAt(0).toUpperCase() +
-                          user.first_name.slice(1, 12)
-                        : ""}
-                      {user.last_name
-                        ? " " +
-                          user.last_name.slice(0, 12).charAt(0).toUpperCase() +
-                          user.last_name.slice(1, 12)
-                        : ""}
-                    </span>
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-                  {/* <DropdownMenuSeparator /> */}
-                  <DropdownMenuItem onClick={logout} className="text-neutral-black">Logout
-                    <Logout className="h-4 w-4 text-neutral-black" />
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          )}
+          <AuthButtonGroup />
         </div>
 
         {/* Mobile Menu Button */}
@@ -109,9 +54,9 @@ const Navbar = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? (
-            <X className="h-6 w-6" />
+            <X className="h-6 w-6 cursor-pointer" />
           ) : (
-            <Menu className="h-6 w-6" />
+            <Menu className="h-6 w-6 cursor-pointer" />
           )}
         </button>
       </div>
@@ -143,11 +88,9 @@ const Navbar = () => {
               </li>
             ))}
             <div className="mt-4 flex flex-col items-center gap-y-2">
-              <Link to="/login" className="w-full">
-                <Button size="custom" className="w-full">
-                  Masuk Akun
-                </Button>
-              </Link>
+              <AuthButtonGroup
+                buttonClass="w-full"
+              />
             </div>
           </ul>
         </nav>
