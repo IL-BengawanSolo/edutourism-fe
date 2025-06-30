@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { navLinks } from "@/constants/index.js";
-import { Menu, X } from "lucide-react"; // Ikon untuk menu hamburger
+import { Menu, X } from "lucide-react";
 import Logo from "./Logo.jsx";
-import { Link, NavLink, useLocation } from "react-router";
+import { NavLink, useLocation } from "react-router";
+import AuthButtonGroup from "./AuthButtonGroup";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -45,9 +45,7 @@ const Navbar = () => {
 
         {/* Buttons */}
         <div className="hidden items-center space-x-4 lg:flex">
-          <Link to="/login">
-            <Button size="custom">Masuk Akun</Button>
-          </Link>
+          <AuthButtonGroup />
         </div>
 
         {/* Mobile Menu Button */}
@@ -56,9 +54,9 @@ const Navbar = () => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? (
-            <X className="h-6 w-6" />
+            <X className="h-6 w-6 cursor-pointer" />
           ) : (
-            <Menu className="h-6 w-6" />
+            <Menu className="h-6 w-6 cursor-pointer" />
           )}
         </button>
       </div>
@@ -90,11 +88,9 @@ const Navbar = () => {
               </li>
             ))}
             <div className="mt-4 flex flex-col items-center gap-y-2">
-              <Link to="/login" className="w-full">
-                <Button size="custom" className="w-full">
-                  Masuk Akun
-                </Button>
-              </Link>
+              <AuthButtonGroup
+                buttonClass="w-full"
+              />
             </div>
           </ul>
         </nav>

@@ -21,7 +21,7 @@ const AuthLayout = () => {
               <Logo />
             </header>
             <div className="flex flex-1 items-center justify-center">
-              <div className="w-full max-w-md">
+              <div className="w-full max-w-lg">
                 <Outlet />
               </div>
             </div>
