@@ -6,17 +6,25 @@ import JumbotronNotLogin from "@/components/recommendation/JumbotronNotLogin.jsx
 import PreferenceTest from "@/components/recommendation/PreferenceTest.jsx";
 import JumbotronTestProgress from "@/components/recommendation/JumbotronTestProgress.jsx";
 import JumbotronTestCompleted from "@/components/recommendation/JumbotronTestCompleted.jsx";
+import useCheckRecommendationSession from "@/api/useCheckRecommendationSession";
 
 const Recommendation = () => {
   const { user, checking } = useAuth();
+  const { hasSession, loading: sessionLoading } =
+    useCheckRecommendationSession();
   const [isTested, setIsTested] = useState(false);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
 
-  if (checking) return null; // atau spinner/loading
+  if (checking || sessionLoading) return null; // atau spinner/loading
 
   // Jika belum login, tampilkan JumbotronNotLogin
   if (!user) {
     return <JumbotronNotLogin />;
+  }
+
+  // Jika user sudah pernah tes
+  if (hasSession) {
+    return <JumbotronTestCompleted />;
   }
 
   // Jika sudah login dan belum test
