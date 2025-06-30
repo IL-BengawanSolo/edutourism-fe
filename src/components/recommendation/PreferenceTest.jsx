@@ -14,6 +14,7 @@ const PreferenceTest = ({
   onPrev,
   isFirst,
   isLast,
+  onSubmit,
 }) => {
    // Handler saat user toggle pilihan
   const handleToggle = (value) => {
@@ -83,7 +84,7 @@ const PreferenceTest = ({
           <Button
             size="custom"
             className="h-12 rounded-full text-xl md:mb-0 md:h-18"
-            onClick={handleNext}
+            onClick={onSubmit}
           >
             Selesai
           </Button>

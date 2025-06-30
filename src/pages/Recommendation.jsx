@@ -8,10 +8,12 @@ import JumbotronTestProgress from "@/components/recommendation/JumbotronTestProg
 import JumbotronTestCompleted from "@/components/recommendation/JumbotronTestCompleted.jsx";
 import useCheckRecommendationSession from "@/api/useCheckRecommendationSession";
 import useFetchQuestions from "@/api/useFetchQuestions";
+import usePostAIRecommendations from "@/api/usePostAIRecommendations";
+import usePostRecommendationSession from "@/api/usePostRecommendationSession";
 
 const Recommendation = () => {
   const { user, checking } = useAuth();
-  const { hasSession, loading: sessionLoading } =
+  const { hasSession, loading: hasSessionLoading } =
     useCheckRecommendationSession();
   const {
     questions,
@@ -19,6 +21,20 @@ const Recommendation = () => {
     error: questionsError,
     fetchQuestions,
   } = useFetchQuestions();
+
+  const {
+    postRecommendations,
+    loading: aiLoading,
+    error: aiError,
+    data: aiData,
+  } = usePostAIRecommendations();
+
+  const {
+    postSession,
+    loading: sessionLoading,
+    error: sessionError,
+    data: sessionData,
+  } = usePostRecommendationSession();
 
   const [beginTest, setBeginTest] = useState(false);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
@@ -39,8 +55,22 @@ const Recommendation = () => {
       return newAnswers;
     });
   };
+  console.log(sessionData);
 
-  if (checking || sessionLoading || questionsLoading) return null; // atau spinner/loading
+  const handleSubmitAIRecommendations = async () => {
+    const preferred_categories = answers[0] || [];
+    const n = 5;
+    try {
+      await postSession();
+      console.log(sessionData)
+      await postRecommendations({ preferred_categories, n, session_id: sessionData.id });
+      console.log(aiData);
+    } catch (err) {
+      console.error("Error submitting AI recommendations:", err);
+    }
+  };
+
+  if (checking || hasSessionLoading || questionsLoading) return null; // atau spinner/loading
 
   // Jika belum login, tampilkan JumbotronNotLogin
   if (!user) {
@@ -92,6 +122,7 @@ const Recommendation = () => {
           }}
           isLast={currentQuestion === questions.length - 1}
           isFirst={currentQuestion === 0}
+          onSubmit={handleSubmitAIRecommendations}
         />
       </>
     );
