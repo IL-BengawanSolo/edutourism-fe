@@ -1,9 +1,13 @@
 import React from "react";
 import AutoSizeResponsiveAsset from "../ResponsiveAsset.jsx";
 import { Button } from "../ui/button.jsx";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const JumbotronNotLogin = ({onLoginClick}) => {
+const JumbotronNotLogin = () => {
+  const location = useLocation();
+  const redirect = encodeURIComponent(
+    location.pathname + location.search + location.hash
+  );
   return (
     <div className="max-container mx-auto my-auto flex w-10/12 flex-col items-center">
       <div className="mt-4 mb-4 grid w-full grid-cols-6 gap-4">
@@ -45,16 +49,17 @@ const JumbotronNotLogin = ({onLoginClick}) => {
             </h1>
 
             <div className="mt-8 flex flex-row justify-start gap-3">
-              <Button
-                size="custom"
-                variant="lite"
-                className="sm:h-14 sm:min-w-[140px]"
-                onClick={onLoginClick}
-              >
-                Login
-              </Button>
+              <Link to={`/login?redirect=${redirect}`}>
+                <Button
+                  size="custom"
+                  variant="lite"
+                  className="sm:h-14 sm:min-w-[140px]"
+                >
+                  Login
+                </Button>
+              </Link>
 
-              <Link to="/login">
+              <Link to="/register">
                 <Button size="custom" className="sm:h-14 sm:min-w-[140px]">
                   Register
                 </Button>

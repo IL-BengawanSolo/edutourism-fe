@@ -16,7 +16,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ErrorAlert from "./ErrorAlert.jsx";
 
 const formSchema = z.object({
@@ -45,6 +45,7 @@ const LoginForm = ({ className, ...props }) => {
   const { login: loginApi, error } = useLogin();
   const { login: loginContext } = useAuth();
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const form = useForm({
@@ -59,7 +60,12 @@ const LoginForm = ({ className, ...props }) => {
       const { token } = await loginApi(values);
       await loginContext(token);
 
-      navigate("/", { replace: true });
+      const params = new URLSearchParams(location.search);
+      const redirect = params.get("redirect")
+        ? decodeURIComponent(params.get("redirect"))
+        : "/";
+      console.log("Redirect value:", redirect); // Tambahkan ini
+      navigate(redirect, { replace: true });
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
       /* empty */
