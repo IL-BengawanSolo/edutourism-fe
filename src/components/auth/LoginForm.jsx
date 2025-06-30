@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useLogin from "@/api/useLogin";
+import { useAuth } from "@/components/utils/AuthProvider";
 
 import {
   Form,
@@ -41,7 +42,9 @@ const formSchema = z.object({
 });
 
 const LoginForm = ({ className, ...props }) => {
-  const { login, error } = useLogin();
+  const { login: loginApi, error } = useLogin();
+  const { login: loginContext } = useAuth();
+
   const navigate = useNavigate();
 
   const form = useForm({
@@ -53,7 +56,9 @@ const LoginForm = ({ className, ...props }) => {
   });
   const handleLogin = async (values) => {
     try {
-      await login(values);
+      const { token } = await loginApi(values);
+      await loginContext(token);
+
       navigate("/", { replace: true });
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
@@ -76,9 +81,7 @@ const LoginForm = ({ className, ...props }) => {
           </p>
         </div>
 
-        {error && (
-          <ErrorAlert error={error} />
-        )}
+        {error && <ErrorAlert error={error} />}
 
         <div className="grid gap-4">
           <div className="grid gap-2">

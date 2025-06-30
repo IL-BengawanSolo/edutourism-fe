@@ -13,21 +13,10 @@ import Recommendation from "./pages/Recommendation.jsx";
 import Home from "./pages/Home.jsx";
 import DestinationDetail from "./pages/DestinationDetail.jsx";
 import RegisterPage from "./pages/Register.jsx";
+import GuestRoute from "./components/utils/GuestRoute.jsx";
 
 function App() {
   return (
-    // <>
-    //   <Navbar />
-    //   <div className="flex flex-col bg-neutral-bg items-center justify-center gap-5">
-    //     <SearchBar />
-    //     <Button size="custom">Custom Default</Button>
-    //     <Button size="custom" variant="lite">
-    //       Custom Lite
-    //     </Button>
-    //     <DestinationCard variant="col" />
-    //     <DestinationCard variant="row" />
-    //   </div>
-    // </>
     <Routes>
       {/* Main Layout */}
       <Route element={<MainLayout />}>
@@ -39,9 +28,22 @@ function App() {
 
       {/* Auth Layout */}
       <Route element={<AuthLayout />}>
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        <Route path="setup-profile" element={<SetupProfile />} />
+        <Route
+          path="login"
+          element={
+            <GuestRoute>
+              <LoginPage />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="register"
+          element={
+            <GuestRoute>
+              <RegisterPage />
+            </GuestRoute>
+          }
+        />
       </Route>
     </Routes>
   );

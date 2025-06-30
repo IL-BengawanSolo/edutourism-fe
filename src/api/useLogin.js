@@ -20,11 +20,9 @@ const useLogin = () => {
         email,
         password,
       });
-      // Simpan token ke localStorage/sessionStorage sesuai kebutuhan
       const { token, user } = response.data.data;
-      localStorage.setItem("token", token);
       setData(user);
-      return response.data;
+      return { token, user };
     } catch (err) {
       if (err.response?.status === 401) {
         setError("Email atau kata sandi salah.");
@@ -32,7 +30,7 @@ const useLogin = () => {
         setError(
           err.response?.data?.message ||
             err.message ||
-            "Terjadi kesalahan saat login",
+            "Terjadi kesalahan saat login"
         );
       }
       throw err;
