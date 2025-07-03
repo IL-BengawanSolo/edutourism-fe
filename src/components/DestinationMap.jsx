@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   MapContainer,
@@ -7,12 +7,11 @@ import {
   Popup,
   Tooltip,
   GeoJSON,
+  useMap,
 } from "react-leaflet";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMoneyBillWave,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
 
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/styles";
@@ -90,21 +89,53 @@ const DestinationMap = ({
     };
   };
 
+  const mapRef = useRef(null);
+
   // Normalize destinations: support array or single object
-  const destinationList = Array.isArray(destinations)
-    ? destinations
-    : destinations
-      ? [destinations]
-      : [];
+  const destinationList = React.useMemo(
+    () =>
+      Array.isArray(destinations)
+        ? destinations
+        : destinations
+          ? [destinations]
+          : [],
+    [destinations],
+  );
+
+  // Komponen untuk menyesuaikan peta berdasarkan destinasi
+  const FitBounds = () => {
+    const map = useMap(); // Akses instance peta
+
+    useEffect(() => {
+      if (destinationList.length > 0) {
+        const bounds = destinationList.map((destination) => [
+          destination.latitude,
+          destination.longitude,
+        ]);
+        map.fitBounds(bounds); // Sesuaikan peta agar mencakup semua destinasi
+      }
+    }, [map]);
+
+    return null;
+  };
+
   console.log(destinations);
   return (
-    <MapContainer center={center} zoom={12} scrollWheelZoom={false} minZoom={9}>
+    <MapContainer
+      center={center}
+      zoom={12}
+      scrollWheelZoom={false}
+      minZoom={9}
+      ref={mapRef}
+    >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         subdomains={"abcd"}
         detectRetina={true}
       />
+
+      <FitBounds />
 
       <GeoJSON data={geoJsonData} style={getStyle} />
 
