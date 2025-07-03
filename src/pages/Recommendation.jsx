@@ -10,6 +10,8 @@ import useCheckRecommendationSession from "@/api/useCheckRecommendationSession";
 import useFetchQuestions from "@/api/useFetchQuestions";
 import usePostAIRecommendations from "@/api/usePostAIRecommendations";
 import usePostRecommendationSession from "@/api/usePostRecommendationSession";
+import useFetchLastRecommendationSession from "@/api/useFetchLastRecommendationSession";
+import useFetchDestinationsFromRecommendationResult from "@/api/useFetchDestinationsFromRecommendationResult";
 
 const Recommendation = () => {
   const { user, checking } = useAuth();
@@ -36,6 +38,20 @@ const Recommendation = () => {
     data: sessionData,
   } = usePostRecommendationSession();
 
+  const {
+    session: lastSession,
+    loading: lastSessionLoading,
+    error: lastSessionError,
+    refetch: refetchLastSession,
+  } = useFetchLastRecommendationSession();
+
+  const {
+    destinations,
+    loading: destinationsLoading,
+    error: destinationsError,
+    refetch: refetchDestinations,
+  } = useFetchDestinationsFromRecommendationResult(lastSession?.id);
+
   const [beginTest, setBeginTest] = useState(false);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -59,11 +75,15 @@ const Recommendation = () => {
 
   const handleSubmitAIRecommendations = async () => {
     const preferred_categories = answers[0] || [];
-    const n = 5;
+    const n = 8;
     try {
       await postSession();
-      console.log(sessionData)
-      await postRecommendations({ preferred_categories, n, session_id: sessionData.id });
+      console.log(sessionData);
+      await postRecommendations({
+        preferred_categories,
+        n,
+        session_id: sessionData.id,
+      });
       console.log(aiData);
     } catch (err) {
       console.error("Error submitting AI recommendations:", err);
@@ -79,7 +99,7 @@ const Recommendation = () => {
 
   // Jika user sudah pernah tes
   if (hasSession) {
-    return <JumbotronTestCompleted />;
+    return <JumbotronTestCompleted destinations={destinations} />;
   }
 
   // Jika sudah login dan belum test
@@ -88,7 +108,7 @@ const Recommendation = () => {
   }
 
   // Jika sedang test dan belum selesai
-  if (beginTest && !isTestCompleted) {
+  if (beginTest) {
     if (questionsError) {
       return (
         <div className="text-red-500">
@@ -129,8 +149,8 @@ const Recommendation = () => {
   }
 
   // Jika test sudah selesai
-  if (isTestCompleted) {
-    return <JumbotronTestCompleted />;
+  if (destinations) {
+    return <JumbotronTestCompleted destinations={destinations} />;
   }
 
   return null;

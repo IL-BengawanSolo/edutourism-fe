@@ -118,7 +118,7 @@ const DestinationCardContent = ({
         <AgeIcons ages={ages} shortAgeIcon className="flex flex-row gap-3" />
       )}
       {variant === "col" && match && (
-        <p className={`${textSize} text-pr-blue-800 font-bold`}>{match}</p>
+        <p className={`${textSize} text-pr-blue-800 font-bold mt-2`}>{match}% cocok dengan kamu</p>
       )}
     </div>
   );

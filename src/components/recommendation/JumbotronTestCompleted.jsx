@@ -2,8 +2,9 @@ import React from "react";
 import { Button } from "../ui/button.jsx";
 import CarouselDestinationRow from "../destination-card/CarouselDestinationRow.jsx";
 import DestinationCard from "../destination-card/DestinationCard.jsx";
+import { Link } from "react-router-dom";
 
-const JumbotronTestCompleted = () => {
+const JumbotronTestCompleted = ({ destinations }) => {
   return (
     <>
       <div className="bg-neutral-light-grey flex w-full flex-row items-center justify-start xl:justify-between">
@@ -56,29 +57,33 @@ const JumbotronTestCompleted = () => {
           </h1>
         </div>
 
-        <div className="flex w-full flex-col flex-wrap items-center justify-center gap-6 sm:flex-row sm:items-stretch sm:gap-6">
-          <DestinationCard
-            variant="col"
-            title="Kampung Batik Laweyan"
-            categoryBadge={["Budaya", "Seni", "Kreativitas"]}
-          />
-          <DestinationCard
-            variant="col"
-            imageSrc="/src/assets/images/kauman.jpg"
-            title="Kampung Batik Kauman"
-            categoryBadge={["Budaya", "Seni", "Kreativitas"]}
-            match="78% Match dengan kamu"
-            price="Gratis"
-          />
-          <DestinationCard
-            variant="col"
-            imageSrc="/src/assets/images/radya.jpg"
-            title="Museum Radya Pustaka"
-            categoryBadge={["Sejarah", "Budaya"]}
-            subCategoryBadge="Museum Sejarah"
-            match="71% Match dengan kamu"
-            price="5.000 - 20.000"
-          />
+        <div className="flex w-full flex-row flex-wrap items-start justify-center gap-4">
+          {destinations && destinations.length > 0 ? (
+            destinations.map((destination) => (
+              <Link to={`/destinations/${destination.slug}`}>
+                <DestinationCard
+                  key={destination.place_id}
+                  variant="col"
+                  name={destination.name}
+                  categories={destination.categories || []}
+                  placeTypes={destination.place_types}
+                  region_name={destination.region_name}
+                  minPrice={destination.ticket_price_min}
+                  maxPrice={destination.ticket_price_max}
+                  ageCategories={destination.age_categories}
+                  match={
+                    typeof destination.score === "number"
+                      ? Number(destination.score).toFixed(1)
+                      : destination.score
+                  }
+                />
+              </Link>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">
+              Tidak ada rekomendasi destinasi yang ditemukan.
+            </p>
+          )}
         </div>
       </section>
     </>
