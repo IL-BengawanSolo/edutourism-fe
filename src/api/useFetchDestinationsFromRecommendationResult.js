@@ -1,17 +1,16 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { axiosInstance } from "../lib/axios";
 
 /**
  * Hook untuk fetch destinasi dari hasil rekomendasi berdasarkan session_id.
- * @param {string} sessionId
  * @returns { destinations, loading, error, refetch }
  */
-const useFetchDestinationsFromRecommendationResult = (sessionId) => {
+const useFetchDestinationsFromRecommendationResult = () => {
   const [destinations, setDestinations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchDestinations = useCallback(async () => {
+  const fetchDestinations = useCallback(async (sessionId) => {
     if (!sessionId) {
       setDestinations([]);
       setLoading(false);
@@ -28,7 +27,6 @@ const useFetchDestinationsFromRecommendationResult = (sessionId) => {
         },
       });
       setDestinations(res.data.data || []);
-      console.log(sessionId);
       console.log("Destinations fetched:", res.data.data);
     } catch (err) {
       setError(
@@ -40,11 +38,7 @@ const useFetchDestinationsFromRecommendationResult = (sessionId) => {
     } finally {
       setLoading(false);
     }
-  }, [sessionId]);
-
-  useEffect(() => {
-    fetchDestinations();
-  }, [fetchDestinations]);
+  }, []);
 
   return { destinations, loading, error, refetch: fetchDestinations };
 };

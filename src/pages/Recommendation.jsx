@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "@/components/utils/AuthProvider";
 
 import JumbotronNotTest from "@/components/recommendation/JumbotronNotTest.jsx";
@@ -6,6 +6,7 @@ import JumbotronNotLogin from "@/components/recommendation/JumbotronNotLogin.jsx
 import PreferenceTest from "@/components/recommendation/PreferenceTest.jsx";
 import JumbotronTestProgress from "@/components/recommendation/JumbotronTestProgress.jsx";
 import JumbotronTestCompleted from "@/components/recommendation/JumbotronTestCompleted.jsx";
+
 import useCheckRecommendationSession from "@/api/useCheckRecommendationSession";
 import useFetchQuestions from "@/api/useFetchQuestions";
 import usePostAIRecommendations from "@/api/usePostAIRecommendations";
@@ -15,6 +16,8 @@ import useFetchDestinationsFromRecommendationResult from "@/api/useFetchDestinat
 
 const Recommendation = () => {
   const { user, checking } = useAuth();
+
+  // Hooks for session and questions
   const { hasSession, loading: hasSessionLoading } =
     useCheckRecommendationSession();
   const {
@@ -23,42 +26,31 @@ const Recommendation = () => {
     error: questionsError,
     fetchQuestions,
   } = useFetchQuestions();
-
-  const {
-    postRecommendations,
-    loading: aiLoading,
-    error: aiError,
-    data: aiData,
-  } = usePostAIRecommendations();
-
-  const {
-    postSession,
-    loading: sessionLoading,
-    error: sessionError,
-    data: sessionData,
-  } = usePostRecommendationSession();
-
-  const {
-    session: lastSession,
-    loading: lastSessionLoading,
-    error: lastSessionError,
-    refetch: refetchLastSession,
-  } = useFetchLastRecommendationSession();
-
+  const { postRecommendations } = usePostAIRecommendations();
+  const { postSession } = usePostRecommendationSession();
+  const { session: lastSession } = useFetchLastRecommendationSession();
   const {
     destinations,
     loading: destinationsLoading,
     error: destinationsError,
-    refetch: refetchDestinations,
-  } = useFetchDestinationsFromRecommendationResult(lastSession?.id);
+    refetch: fetchDestinations,
+  } = useFetchDestinationsFromRecommendationResult();
 
+  // State
   const [beginTest, setBeginTest] = useState(false);
   const [isTestCompleted, setIsTestCompleted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState([]); // Array of array, satu index = satu pertanyaan
+  const [answers, setAnswers] = useState([]);
 
-  console.log("answers", answers);
+  // Derived sessionId
+  const sessionId = lastSession?.id;
 
+  // Fetch destinations when sessionId is available
+  useEffect(() => {
+    if (sessionId) fetchDestinations(sessionId);
+  }, [sessionId, fetchDestinations]);
+
+  // Handlers
   const handleStartTest = () => {
     setBeginTest(true);
     fetchQuestions();
@@ -71,52 +63,41 @@ const Recommendation = () => {
       return newAnswers;
     });
   };
-  console.log(sessionData);
 
   const handleSubmitAIRecommendations = async () => {
     const preferred_categories = answers[0] || [];
     const n = 8;
+
     try {
-      await postSession();
-      console.log(sessionData);
+      const newSession = await postSession();
       await postRecommendations({
         preferred_categories,
         n,
-        session_id: sessionData.id,
+        session_id: newSession.id,
       });
-      console.log(aiData);
+      await fetchDestinations(newSession.id);
+      setIsTestCompleted(true);
     } catch (err) {
       console.error("Error submitting AI recommendations:", err);
     }
   };
 
-  if (checking || hasSessionLoading || questionsLoading) return null; // atau spinner/loading
+  // Render logic
+  if (checking || hasSessionLoading || questionsLoading)
+    return <div>Loading...</div>;
 
-  // Jika belum login, tampilkan JumbotronNotLogin
-  if (!user) {
-    return <JumbotronNotLogin />;
-  }
+  if (!user) return <JumbotronNotLogin />;
 
-  // Jika user sudah pernah tes
-  if (hasSession) {
-    return <JumbotronTestCompleted destinations={destinations} />;
-  }
+  if (hasSession) return <JumbotronTestCompleted destinations={destinations} />;
 
-  // Jika sudah login dan belum test
-  if (!hasSession && !beginTest) {
-    return <JumbotronNotTest onTestClick={handleStartTest} />;
-  }
+  if (!beginTest) return <JumbotronNotTest onTestClick={handleStartTest} />;
 
-  // Jika sedang test dan belum selesai
-  if (beginTest) {
-    if (questionsError) {
+  if (beginTest && !isTestCompleted) {
+    if (questionsError)
       return (
-        <div className="text-red-500">
-          Gagal mengambil data pertanyaan: {questionsError.message}
-        </div>
+        <div className="text-red-500">Error: {questionsError.message}</div>
       );
-    }
-    if (questionsLoading) return <div>Loading questions...</div>;
+
     const question = questions[currentQuestion];
     return (
       <>
@@ -129,13 +110,10 @@ const Recommendation = () => {
           questionText={question?.question_text || ""}
           answerChoices={question?.answer_choices || []}
           selected={answers[currentQuestion] || []}
-          setSelected={(selected) => handleAnswer(selected)}
+          setSelected={handleAnswer}
           onNext={() => {
-            if (currentQuestion < questions.length - 1) {
+            if (currentQuestion < questions.length - 1)
               setCurrentQuestion((prev) => prev + 1);
-            } else {
-              setIsTestCompleted(true);
-            }
           }}
           onPrev={() => {
             if (currentQuestion > 0) setCurrentQuestion((prev) => prev - 1);
@@ -148,9 +126,13 @@ const Recommendation = () => {
     );
   }
 
-  // Jika test sudah selesai
-  if (destinations) {
-    return <JumbotronTestCompleted destinations={destinations} />;
+  if (isTestCompleted) {
+    if (destinationsLoading) return <div>Loading destinations...</div>;
+    if (destinationsError)
+      return <div className="text-red-500">{destinationsError}</div>;
+    if (destinations.length > 0)
+      return <JumbotronTestCompleted destinations={destinations} />;
+    return <div>No destinations found.</div>;
   }
 
   return null;
