@@ -25,7 +25,7 @@ const DestinationCard = ({
   return (
     <div
       className={`flex overflow-hidden rounded-2xl bg-white ${className} ${
-        isCol ? "max-w-sm flex-col p-4" : "max-h-[236px] w-full flex-row p-2.5"
+        isCol ? "max-w-[288px] flex-col p-4" : "max-h-[236px] w-full flex-row p-2.5"
       }`}
       {...props}
     >
@@ -34,7 +34,7 @@ const DestinationCard = ({
         alt={name}
         className={`object-cover ${
           isCol
-            ? "h-64 w-[256px] rounded-2xl object-cover sm:h-64"
+            ? "h-64 w-full rounded-2xl object-cover"
             : "h-40 w-40 rounded-2xl sm:h-54 sm:w-54"
         }`}
       />

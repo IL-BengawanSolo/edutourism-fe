@@ -10,7 +10,7 @@ const useFetchAgeCategories = () => {
     const fetchAgeCategories = async () => {
       setLoading(true);
       try {
-        const response = await axiosInstance.get("/age-categories");
+        const response = await axiosInstance.get("/destinations/age-categories");
         setAgeCategories(response.data.data);
       } catch (error) {
         setError(error);

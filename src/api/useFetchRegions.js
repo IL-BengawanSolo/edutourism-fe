@@ -10,7 +10,7 @@ const useFetchRegions = () => {
     const fetchRegions = async () => {
       setLoading(true);
       try {
-        const response = await axiosInstance.get("/regions");
+        const response = await axiosInstance.get("/destinations/regions");
         setRegions(response.data.data);
       } catch (error) {
         setError(error);

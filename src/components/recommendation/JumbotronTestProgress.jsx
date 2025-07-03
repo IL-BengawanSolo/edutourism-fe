@@ -1,6 +1,7 @@
 import React from "react";
+import { Progress } from "@/components/ui/progress"
 
-const JumbotronTestProgress = () => {
+const JumbotronTestProgress = ({ current = 1, total = 1 }) => {
   return (
     <div className="bg-neutral-light-grey flex w-full flex-row items-center justify-start xl:justify-between">
       {/* Left Image */}
@@ -32,11 +33,11 @@ const JumbotronTestProgress = () => {
 
         {/* Progress Bar */}
         <div className="mt-3 flex w-full max-w-xs items-center gap-2 md:mt-4 lg:mt-8 lg:max-w-[512px] xl:max-w-[712px]">
-          <div className="h-3 flex-1 rounded-full bg-white lg:h-5">
-            <div className="bg-pr-blue-800 h-full w-2/5 rounded-full"></div>
-          </div>
+          <Progress
+            value={(current / total) * 100}
+          />
           <span className="text-pr-blue-800 text-xs font-bold whitespace-nowrap md:text-base lg:text-xl">
-            2/5
+            {current}/{total}
           </span>
         </div>
       </div>
