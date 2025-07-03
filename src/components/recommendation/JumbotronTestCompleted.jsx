@@ -1,10 +1,9 @@
 import React from "react";
 import { Button } from "../ui/button.jsx";
-import CarouselDestinationRow from "../destination-card/CarouselDestinationRow.jsx";
 import DestinationCard from "../destination-card/DestinationCard.jsx";
 import { Link } from "react-router-dom";
 
-const JumbotronTestCompleted = ({ destinations }) => {
+const JumbotronTestCompleted = ({ destinations, onRetakeTest }) => {
   return (
     <>
       <div className="bg-neutral-light-grey flex w-full flex-row items-center justify-start xl:justify-between">
@@ -35,6 +34,7 @@ const JumbotronTestCompleted = ({ destinations }) => {
             variant="secondary"
             size="custom"
             className="mt-3 h-8 max-w-xs rounded-full text-sm font-bold shadow-lg transition-all duration-150 hover:scale-105 hover:shadow-xl md:h-10 lg:h-14 lg:min-w-[140px] lg:text-lg"
+            onClick={onRetakeTest}
           >
             Lakukan Test Ulang
           </Button>

@@ -27,7 +27,6 @@ const useFetchDestinationsFromRecommendationResult = () => {
         },
       });
       setDestinations(res.data.data || []);
-      console.log("Destinations fetched:", res.data.data);
     } catch (err) {
       setError(
         err.response?.data?.message ||

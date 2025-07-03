@@ -41,6 +41,7 @@ const Recommendation = () => {
   const [isTestCompleted, setIsTestCompleted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
+  const [isRetakingTest, setIsRetakingTest] = useState(false);
 
   // Derived sessionId
   const sessionId = lastSession?.id;
@@ -82,13 +83,27 @@ const Recommendation = () => {
     }
   };
 
+  const handleRetakeTest = () => {
+    setIsRetakingTest(true);
+    setBeginTest(false);
+    setIsTestCompleted(false);
+    setCurrentQuestion(0);
+    setAnswers([]);
+  };
+
   // Render logic
   if (checking || hasSessionLoading || questionsLoading)
     return <div>Loading...</div>;
 
   if (!user) return <JumbotronNotLogin />;
 
-  if (hasSession) return <JumbotronTestCompleted destinations={destinations} />;
+  if (hasSession && !isRetakingTest)
+    return (
+      <JumbotronTestCompleted
+        destinations={destinations}
+        onRetakeTest={handleRetakeTest}
+      />
+    );
 
   if (!beginTest) return <JumbotronNotTest onTestClick={handleStartTest} />;
 
@@ -130,8 +145,14 @@ const Recommendation = () => {
     if (destinationsLoading) return <div>Loading destinations...</div>;
     if (destinationsError)
       return <div className="text-red-500">{destinationsError}</div>;
-    if (destinations.length > 0)
-      return <JumbotronTestCompleted destinations={destinations} />;
+    if (destinations.length > 0) {
+      return (
+        <JumbotronTestCompleted
+          destinations={destinations}
+          onRetakeTest={handleRetakeTest}
+        />
+      );
+    }
     return <div>No destinations found.</div>;
   }
 
