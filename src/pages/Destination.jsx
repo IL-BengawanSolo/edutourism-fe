@@ -10,7 +10,7 @@ import useSearchAndFilterDestinations from "@/api/useSearchAndFilterDestinations
 import StickyHeader from "@/components/StickyHeader.jsx";
 
 const Destination = () => {
-  const { destinations, loading, error, searchAndFilter } =
+  const { destinations, searchAndFilter } =
     useSearchAndFilterDestinations();
   console.log("Destinations:", destinations);
 

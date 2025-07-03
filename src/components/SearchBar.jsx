@@ -1,23 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "react-iconly";
 
 const SearchBar = ({ value, onSubmit }) => {
   const [input, setInput] = useState(value || "");
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
 
   // Sync input jika value dari parent berubah
-  React.useEffect(() => {
+  useEffect(() => {
     setInput(value || "");
   }, [value]);
 
   const handleInputChange = (e) => {
-    setInput(e.target.value);
+    const newValue = e.target.value;
+    setInput(newValue);
+
+    // Debounce logic
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout); // Clear timeout jika user mengetik lagi
+    }
+
+    const timeout = setTimeout(() => {
+      if (onSubmit) onSubmit(newValue); // Auto-submit setelah 300ms
+    }, 700); // Delay 500ms
+
+    setDebounceTimeout(timeout);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onSubmit) onSubmit(input);
+    if (onSubmit) onSubmit(input); // Submit saat tombol "Cari" ditekan
   };
 
   return (
