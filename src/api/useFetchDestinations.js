@@ -1,16 +1,19 @@
 import React from "react";
 import { axiosInstance } from "../lib/axios";
 
-const useFetchDestinations = () => {
+const useFetchDestinations = (params = {}) => {
   const [destinations, setDestinations] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
     const fetchDestinations = async () => {
+      setLoading(true);
       try {
-        const response = await axiosInstance.get("/destinations");
-        setDestinations(response.data.data);
+        const response = await axiosInstance.get("/destinations/search", {
+          params,
+        });
+        setDestinations(response.data.data || []);
       } catch (error) {
         setError(error);
       } finally {
@@ -19,7 +22,8 @@ const useFetchDestinations = () => {
     };
 
     fetchDestinations();
-  }, []);
+  // Gunakan JSON.stringify agar hanya fetch jika isi params berubah
+  }, [JSON.stringify(params)]);
 
   return { destinations, loading, error };
 };

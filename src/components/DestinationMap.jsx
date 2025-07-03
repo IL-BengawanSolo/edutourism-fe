@@ -215,4 +215,11 @@ const DestinationMap = ({
   );
 };
 
-export default DestinationMap;
+export default React.memo(DestinationMap, (prevProps, nextProps) => {
+  // Cek shallow equality array destinations
+  if (prevProps.destinations.length !== nextProps.destinations.length) return false;
+  for (let i = 0; i < prevProps.destinations.length; i++) {
+    if (prevProps.destinations[i].uuid !== nextProps.destinations[i].uuid) return false;
+  }
+  return true;
+});
