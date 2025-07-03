@@ -55,17 +55,23 @@ const getAgeIcon = (age, short = false) => {
   }
 };
 
-
-const AgeIcons = ({ ages = [], shortAgeIcon = false, className = "" }) => (
+const AgeIcons = ({
+  ages = [],
+  shortAgeIcon = false,
+  className = "",
+  hideLabel = false,
+}) => (
   <div className={`${className}`}>
     {ages.map(
       (age) =>
         getAgeIcon(age, shortAgeIcon) && (
           <span key={age} className="flex items-center gap-1">
             {getAgeIcon(age, shortAgeIcon)}
-            <span className="text-xs text-neutral-700">
-              {shortAgeIcon ? AGE_LABEL_SHORT[age] || age : age}
-            </span>
+            {!hideLabel && (
+              <span className="text-xs text-neutral-700">
+                {shortAgeIcon ? AGE_LABEL_SHORT[age] || age : age}
+              </span>
+            )}
           </span>
         ),
     )}

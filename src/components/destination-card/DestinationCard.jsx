@@ -16,6 +16,7 @@ const DestinationCard = ({
   ageCategories = undefined,
   shortPrice = false,
   shortAgeIcon = false,
+  hideLabel = false,
   ...props
 }) => {
   const isCol = variant === "col";
@@ -49,6 +50,7 @@ const DestinationCard = ({
           match={match}
           ageCategories={ageCategories}
           shortAgeIcon={shortAgeIcon}
+          hideLabel={hideLabel}
         />
       </div>
     </div>

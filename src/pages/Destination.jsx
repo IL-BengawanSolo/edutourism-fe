@@ -9,8 +9,14 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import useSearchAndFilterDestinations from "@/api/useSearchAndFilterDestinations.js";
 import StickyHeader from "@/components/StickyHeader.jsx";
 import useFetchDestinations from "@/api/useFetchDestinations";
+import { Search } from "react-iconly";
+import { useMediaQuery } from "react-responsive";
+
 
 const Destination = () => {
+  const isSm = useMediaQuery({ maxWidth: 640 });
+  const isMd = useMediaQuery({ minWidth: 641, maxWidth: 1024 });
+
   const { destinations, searchAndFilter } = useSearchAndFilterDestinations();
   console.log("Destinations:", destinations);
 
@@ -70,13 +76,12 @@ const Destination = () => {
     [searchAndFilter, searchValue, filters],
   );
 
-  const { destinations: mapDestinations } =
-    useFetchDestinations({
-      search: searchValue,
-      ...filters,
-      page: 1,
-      limit: 1000, // atau limit besar
-    });
+  const { destinations: mapDestinations } = useFetchDestinations({
+    search: searchValue,
+    ...filters,
+    page: 1,
+    limit: 1000, // atau limit besar
+  });
 
   // Fetch data saat search/filter berubah
   useEffect(() => {
@@ -181,32 +186,52 @@ const Destination = () => {
   return (
     <div>
       <StickyHeader>
-        <section className="max-container mx-auto w-11/12 sm:w-10/12">
+        <section className="max-container mx-auto w-11/12 sm:w-11/12">
           <SearchBar value={searchValue} onSubmit={handleSearchChange} />
           <FilterBar filters={filters} setFilters={handleFilterChange} />
         </section>
       </StickyHeader>
 
       {/* Main Layout */}
-      <section className="max-container mx-auto grid w-11/12 grid-cols-1 gap-6 sm:w-10/12 lg:grid-cols-5">
+      <section className="max-container mx-auto grid w-11/12 grid-cols-1 gap-6 sm:w-11/12 lg:grid-cols-10">
         {/* Destination Cards */}
-        <div className="col-span-3 flex flex-col gap-4">
+        <div className="col-span-1 flex flex-col gap-4 lg:col-span-7 xl:col-span-6">
           <InfiniteScroll
             dataLength={allDestinations.length}
             next={fetchMoreData}
             hasMore={hasMore}
             loader={<h4 className="py-4 text-center">Memuat...</h4>}
             endMessage={
-              <p className="py-4 text-center text-neutral-500">
-                Semua destinasi sudah ditampilkan.
-              </p>
+              allDestinations.length > 0 && (
+                <p className="py-4 text-center text-neutral-500">
+                  Semua destinasi sudah ditampilkan.
+                </p>
+              )
             }
             className="flex flex-col gap-4"
           >
-            <p>
-              Ditemukan {allDestinations.length} destinasi
-              {searchValue && ` untuk "${searchValue}"`}
-            </p>
+            <div className="">
+              {mapDestinations.length > 0 ? (
+                <p>
+                  Ditemukan {mapDestinations.length} destinasi
+                  {searchValue && ` untuk "${searchValue}"`}
+                </p>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-8">
+                  <Search className="text-state-error mb-2" size="xlarge" />
+
+                  <span className="text-state-error text-center font-semibold">
+                    Tidak ada destinasi yang cocok dengan filter atau pencarian
+                    Anda.
+                  </span>
+                  <br />
+                  <span className="text-center text-neutral-500">
+                    Coba ubah kata kunci atau filter untuk menemukan destinasi
+                    menarik lainnya!
+                  </span>
+                </div>
+              )}
+            </div>
             {allDestinations.map((destination) => (
               <Link
                 key={destination.slug}
@@ -222,6 +247,8 @@ const Destination = () => {
                   minPrice={destination.ticket_price_min}
                   maxPrice={destination.ticket_price_max}
                   ageCategories={destination.age_categories}
+                  hideLabel={isSm}
+                  shortAgeIcon={isMd}
                 />
               </Link>
             ))}
@@ -229,7 +256,7 @@ const Destination = () => {
         </div>
 
         {/* Map */}
-        <div className="sticky top-38 col-span-1 h-[calc(100vh-14rem)] lg:col-span-2">
+        <div className="sticky top-38 col-span-1 h-[calc(100vh-14rem)] lg:col-span-3 xl:col-span-4">
           <DestinationMap
             key={mapDestinations.map((d) => d.uuid).join(",")}
             destinations={mapDestinations}

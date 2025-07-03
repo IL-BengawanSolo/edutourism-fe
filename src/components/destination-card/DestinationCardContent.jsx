@@ -21,6 +21,7 @@ const DestinationCardContent = ({
   match,
   ageCategories,
   shortAgeIcon,
+  hideLabel
 }) => {
   const titleSize =
     variant === "col" ? "text-lg sm:text-xl" : "text-lg sm:text-xl";
@@ -111,6 +112,7 @@ const DestinationCardContent = ({
             ages={ages}
             shortAgeIcon={shortAgeIcon}
             className="ml-4 flex items-center gap-3"
+            hideLabel={hideLabel}
           />
         )}
       </div>
