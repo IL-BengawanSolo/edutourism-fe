@@ -11,13 +11,14 @@ import StickyHeader from "@/components/StickyHeader.jsx";
 import useFetchDestinations from "@/api/useFetchDestinations";
 import { Search } from "react-iconly";
 import { useMediaQuery } from "react-responsive";
-
+import { SpinnerCircular } from "spinners-react";
 
 const Destination = () => {
   const isSm = useMediaQuery({ maxWidth: 640 });
   const isMd = useMediaQuery({ minWidth: 641, maxWidth: 1024 });
 
-  const { destinations, searchAndFilter } = useSearchAndFilterDestinations();
+  const { destinations, searchAndFilter, loading } =
+    useSearchAndFilterDestinations();
   console.log("Destinations:", destinations);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,12 +77,13 @@ const Destination = () => {
     [searchAndFilter, searchValue, filters],
   );
 
-  const { destinations: mapDestinations } = useFetchDestinations({
-    search: searchValue,
-    ...filters,
-    page: 1,
-    limit: 1000, // atau limit besar
-  });
+  const { destinations: mapDestinations, loading: mapLoading } =
+    useFetchDestinations({
+      search: searchValue,
+      ...filters,
+      page: 1,
+      limit: 1000, // atau limit besar
+    });
 
   // Fetch data saat search/filter berubah
   useEffect(() => {
@@ -200,7 +202,20 @@ const Destination = () => {
             dataLength={allDestinations.length}
             next={fetchMoreData}
             hasMore={hasMore}
-            loader={<h4 className="py-4 text-center">Memuat...</h4>}
+            loader={
+              <div className="flex justify-center py-8">
+                <SpinnerCircular
+                  size={40}
+                  thickness={100}
+                  speed={100}
+                  color="#3b82f6"
+                  secondaryColor="#e5e7eb"
+                />
+                <span className="ml-2 text-neutral-500">
+                  Memuat destinasi...
+                </span>
+              </div>
+            }
             endMessage={
               allDestinations.length > 0 && (
                 <p className="py-4 text-center text-neutral-500">
@@ -211,7 +226,18 @@ const Destination = () => {
             className="flex flex-col gap-4"
           >
             <div className="">
-              {mapDestinations.length > 0 ? (
+              {mapLoading ? (
+                <div className="flex flex-row items-center justify-center gap-2 py-8">
+                  <SpinnerCircular
+                    size={48}
+                    thickness={100}
+                    speed={100}
+                    color="#3b82f6"
+                    secondaryColor="#e5e7eb"
+                  />
+                  <span className="text-neutral-500">Memuat destinasi...</span>
+                </div>
+              ) : mapDestinations.length > 0 ? (
                 <p>
                   Ditemukan {mapDestinations.length} destinasi
                   {searchValue && ` untuk "${searchValue}"`}
@@ -219,7 +245,6 @@ const Destination = () => {
               ) : (
                 <div className="flex flex-col items-center justify-center py-8">
                   <Search className="text-state-error mb-2" size="xlarge" />
-
                   <span className="text-state-error text-center font-semibold">
                     Tidak ada destinasi yang cocok dengan filter atau pencarian
                     Anda.
@@ -257,10 +282,22 @@ const Destination = () => {
 
         {/* Map */}
         <div className="sticky top-38 col-span-1 h-[calc(100vh-14rem)] lg:col-span-3 xl:col-span-4">
-          <DestinationMap
-            key={mapDestinations.map((d) => d.uuid).join(",")}
-            destinations={mapDestinations}
-          />
+          {mapLoading ? (
+            <div className="flex h-full items-center justify-center">
+              <SpinnerCircular
+                size={48}
+                thickness={100}
+                speed={100}
+                color="#3b82f6"
+                secondaryColor="#e5e7eb"
+              />
+            </div>
+          ) : (
+            <DestinationMap
+              key={mapDestinations.map((d) => d.uuid).join(",")}
+              destinations={mapDestinations}
+            />
+          )}
         </div>
       </section>
     </div>
