@@ -38,6 +38,7 @@ const CarouselDestinationRow = ({ destinations }) => {
                     ageCategories={destination.age_categories}   
                     shortPrice
                     shortAgeIcon
+                    imageSrc={destination.thumbnail_url}
                   />
                 </Link>
           

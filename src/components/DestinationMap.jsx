@@ -22,11 +22,15 @@ import { Badge } from "./ui/badge.jsx";
 import { Separator } from "./ui/separator.jsx";
 import { getPriceLabel } from "@/lib/utils.js";
 
+
+
 const DestinationMap = ({
   destinations,
   center = [-7.560421, 110.826454],
   disablePopup = false,
 }) => {
+  const fallbackImage = "/src/assets/images/default-placeholder.png";
+
   // SVG Iconly Location sebagai string (tanpa background)
   const svgIcon = encodeURIComponent(`
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -196,8 +200,9 @@ const DestinationMap = ({
                   </p>
 
                   <img
-                    src="/src/assets/images/kampung-batik-laweyan.jpeg"
+                    src={destination.thumbnail_url || fallbackImage}
                     alt=""
+                    className="mt-2 h-48 w-full rounded-lg object-cover"
                   />
                   <a
                     href={`/destinations/${destination.slug}`}
