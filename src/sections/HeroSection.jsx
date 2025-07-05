@@ -37,7 +37,7 @@ const HeroSection = () => {
           >
             <span className="relative z-10 flex items-center gap-2 font-bold">
               <img
-                src="/src/assets/icons8-ai-48.png"
+                src="/src/assets/icons/icons8-ai-48.png"
                 alt="AI Icon"
                 className="pointer-events-none h-8 w-8 select-none"
               />

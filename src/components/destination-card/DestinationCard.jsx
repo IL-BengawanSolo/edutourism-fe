@@ -2,10 +2,12 @@ import React from "react";
 import DestinationCardContent from "./DestinationCardContent";
 import { getPriceLabel } from "@/lib/utils.js";
 
+const fallbackImage = "/src/assets/images/default-placeholder.png";
+
 const DestinationCard = ({
   variant = "col",
   className = "",
-  imageSrc = "/src/assets/images/kampung-batik-laweyan.jpeg",
+  imageSrc = fallbackImage,
   name = "Kampung Batik Laweyan",
   region_name = "Surakarta",
   categories = ["Sains", "Lingkungan", "Sejarah"],
@@ -23,15 +25,19 @@ const DestinationCard = ({
 
   const priceLabel = getPriceLabel(minPrice, maxPrice, shortPrice);
 
+  const validImageSrc = imageSrc ? imageSrc : fallbackImage;
+
   return (
     <div
       className={`flex overflow-hidden rounded-2xl bg-white ${className} ${
-        isCol ? "max-w-[288px] flex-col p-4" : "max-h-[236px] w-full flex-row p-2.5"
+        isCol
+          ? "max-w-[288px] flex-col p-4"
+          : "max-h-[236px] w-full flex-row p-2.5"
       }`}
       {...props}
     >
       <img
-        src={imageSrc}
+        src={validImageSrc}
         alt={name}
         className={`object-cover ${
           isCol

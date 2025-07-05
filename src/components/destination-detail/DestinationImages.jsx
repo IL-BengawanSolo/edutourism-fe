@@ -3,11 +3,11 @@ import useFetchDestinationImages from "@/api/useFetchDestinationImages";
 import { SpinnerCircular } from "spinners-react";
 
 const fallbackImages = [
-  "/src/assets/images/laweyan/laweyan1.jpg",
-  "/src/assets/images/laweyan/laweyan2.jpg",
-  "/src/assets/images/laweyan/laweyan3.jpg",
-  "/src/assets/images/laweyan/laweyan4.jpg",
-  "/src/assets/images/laweyan/laweyan5.jpg",
+  "/src/assets/images/default-placeholder.png",
+  "/src/assets/images/default-placeholder.png",
+  "/src/assets/images/default-placeholder.png",
+  "/src/assets/images/default-placeholder.png",
+  "/src/assets/images/default-placeholder.png",
 ];
 
 const DestinationImages = ({ destination_uuid }) => {

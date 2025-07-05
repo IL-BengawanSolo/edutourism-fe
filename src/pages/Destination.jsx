@@ -271,6 +271,7 @@ const Destination = () => {
                   minPrice={destination.ticket_price_min}
                   maxPrice={destination.ticket_price_max}
                   ageCategories={destination.age_categories}
+                  imageSrc={destination.thumbnail_url || ""}
                   hideLabel={isSm}
                   shortAgeIcon={isMd}
                 />

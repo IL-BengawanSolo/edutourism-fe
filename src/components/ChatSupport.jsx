@@ -38,7 +38,7 @@ export default function ChatSupport() {
       <ExpandableChatHeader className="flex-col items-start justify-center text-center">
         <div className="flex items-center gap-2">
           <img
-            src="/src/assets/home/chat-bot-icon.png"
+            src="/src/assets/images/home/chat-bot-icon.png"
             alt="Chat Bot Icon"
             className="h-6 w-6 object-contain sm:h-8 sm:w-8 md:h-10 md:w-10 rotate-y-180"
           />

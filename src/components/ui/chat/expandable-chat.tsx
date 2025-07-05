@@ -141,7 +141,7 @@ const ExpandableChatToggle: React.FC<ExpandableChatToggleProps> = ({
     ) : (
       icon || (
         <img
-          src="/src/assets/home/edubot-icon.svg"
+          src="/src/assets/images/home/edubot-icon.svg"
           alt="Chatbot"
           className="h-12 w-12 pointer-events-none select-none rotate-y-180"
         />
