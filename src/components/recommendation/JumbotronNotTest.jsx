@@ -8,28 +8,28 @@ const JumbotronNotTest = ({ onTestClick }) => {
       <div className="mt-4 mb-4 grid w-full grid-cols-6 gap-4">
         <div className="bg-neutral-light-grey relative col-span-6 min-h-[512px] gap-4 rounded-[40px] p-12 md:col-span-4 md:col-start-2">
           <AutoSizeResponsiveAsset
-            src="/src/assets/recommendation/sun.png"
+            src="/src/assets/images/recommendation/sun.png"
             alt="Cloud Background"
             className="absolute !h-auto rounded-tr-[40px]"
             top={0}
             right={0}
           />
           <AutoSizeResponsiveAsset
-            src="/src/assets/recommendation/cloud.png"
+            src="/src/assets/images/recommendation/cloud.png"
             alt="Cloud Background"
             className="absolute !h-auto rounded-tl-[40px]"
             top={0}
             left={0}
           />
           <AutoSizeResponsiveAsset
-            src="/src/assets/recommendation/plane.png"
+            src="/src/assets/images/recommendation/plane.png"
             alt="Plane Background"
             className="absolute !h-auto w-6/12 rotate-y-180 rounded-br-[40px]"
             bottom={0}
             left={0}
           />
           <AutoSizeResponsiveAsset
-            src="/src/assets/recommendation/girl.png"
+            src="/src/assets/images/recommendation/girl.png"
             alt="Girl Background"
             className="absolute !h-auto w-6/12 rotate-y-180 sm:w-auto md:w-[35%]"
             bottom={0}
