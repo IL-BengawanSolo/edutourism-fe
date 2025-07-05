@@ -17,9 +17,8 @@ const Destination = () => {
   const isSm = useMediaQuery({ maxWidth: 640 });
   const isMd = useMediaQuery({ minWidth: 641, maxWidth: 1024 });
 
-  const { destinations, searchAndFilter, loading } =
+  const { searchAndFilter } =
     useSearchAndFilterDestinations();
-  console.log("Destinations:", destinations);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("search") || "";

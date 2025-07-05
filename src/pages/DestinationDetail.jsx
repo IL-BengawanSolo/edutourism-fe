@@ -17,7 +17,7 @@ import DestinationTabs from "@/components/destination-detail/DestinationTabs.jsx
 const DestinationDetail = () => {
   const { slug } = useParams();
   const { destination, loading, error } = useFetchDestinationBySlug(slug);
-  const { similar, loading: loadingSimilar } =
+  const { similar } =
     useFetchSimilarDestinations(slug);
   console.log(slug);
 
@@ -42,7 +42,7 @@ const DestinationDetail = () => {
   return (
     <>
       <section className="max-container mx-auto w-full sm:w-10/12">
-        <DestinationImages />
+        <DestinationImages destination_uuid={destination.uuid} />
         <DestinationTabs />
         <DestinationGeneralInfo
           destination={destination}
