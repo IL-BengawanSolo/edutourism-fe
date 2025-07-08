@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Send } from "lucide-react";
+import { DeleteIcon, Send, Trash2 } from "lucide-react";
 import {
   ChatBubble,
   ChatBubbleMessage,
@@ -14,6 +14,7 @@ import {
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list.js";
 import { Button } from "./ui/button.jsx";
 import ReactMarkdown from "react-markdown";
+import { Delete } from "react-iconly";
 
 const LOCAL_STORAGE_KEY = "edubot_chat_history";
 
@@ -22,6 +23,8 @@ export default function ChatSupport() {
     role: "assistant",
     content: "Halo! 👋 Ada yang bisa EduBot bantu hari ini?",
   };
+
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [messages, setMessages] = useState(() => {
     try {
@@ -89,27 +92,47 @@ export default function ChatSupport() {
       LOCAL_STORAGE_KEY,
       JSON.stringify([initialBotMessage]),
     );
+    setShowConfirm(false);
   };
 
   return (
     <ExpandableChat size="md" position="bottom-right">
-      <ExpandableChatHeader className="flex-col items-start justify-center text-center">
-        <div className="flex items-center gap-2">
+      <ExpandableChatHeader className="relative flex-col items-start justify-center text-center">
+        <div className="flex w-full items-center gap-2 min-h-12">
           <img
             src="/src/assets/images/home/chat-bot-icon.png"
             alt="Chat Bot Icon"
             className="h-6 w-6 rotate-y-180 object-contain sm:h-8 sm:w-8 md:h-10 md:w-10"
           />
           <h3 className="text-pr-blue-900 text-xl font-bold">EduBot</h3>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="text-state-error hover:bg-state-error/10 hover:text-state-error absolute top-2 right-14 size-12 p-2"
+            title="Reset Chat"
+            onClick={() => setShowConfirm(true)}
+          >
+            <Trash2 className="size-6"  />
+          </Button>
         </div>
-        <Button
-          size="sm"
-          className="mt-2"
-          variant="outline"
-          onClick={handleReset}
-        >
-          Reset Chat
-        </Button>
+        {/* Konfirmasi Reset */}
+        {showConfirm && (
+          <div className="absolute top-10 right-2 z-10 flex flex-col gap-2 rounded border bg-white p-3 shadow-md">
+            <span>Yakin ingin reset chat?</span>
+            <div className="flex justify-end gap-2">
+              <Button size="sm" variant="destructive" onClick={handleReset}>
+                Ya, Reset
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowConfirm(false)}
+              >
+                Batal
+              </Button>
+            </div>
+          </div>
+        )}
       </ExpandableChatHeader>
       <ExpandableChatBody>
         <ChatMessageList>
@@ -147,7 +170,7 @@ export default function ChatSupport() {
             minRows={1}
             maxRows={6}
             className="bg-background min-h-12 shadow-none"
-            placeholder="Tanya sesuatu ke Edu Bot..."
+            placeholder="Tanya sesuatu ke EduBot..."
             value={input}
             onChange={handleInputChange}
             disabled={isLoading}
