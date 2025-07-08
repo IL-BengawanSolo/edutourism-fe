@@ -1,7 +1,7 @@
 const DestinationOpeningHours = ({ opening_hours }) => (
   <div
     id="opening-hours"
-    className="col-span-1 flex flex-col gap-4 rounded-2xl bg-white p-8 lg:col-span-2"
+    className="col-span-1 flex flex-col gap-4 rounded-2xl bg-white p-8 lg:col-span-2 self-center"
   >
     <h1 className="text-2xl font-bold">Jam Buka</h1>
     <div className="mt-2 flex flex-col gap-2">
@@ -30,3 +30,4 @@ const DestinationOpeningHours = ({ opening_hours }) => (
   </div>
 );
 export default DestinationOpeningHours;
+

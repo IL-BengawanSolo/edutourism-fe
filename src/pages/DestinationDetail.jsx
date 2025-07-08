@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { getPriceLabel } from "@/lib/utils.js";
 
@@ -14,11 +14,44 @@ import DestinationLocation from "@/components/destination-detail/DestinationLoca
 import DestinationOpeningHours from "@/components/destination-detail/DestinationOpeningHours.jsx";
 import DestinationTabs from "@/components/destination-detail/DestinationTabs.jsx";
 
+const TAB_SECTIONS = [
+  { id: "general-info", sectionId: "general-info" },
+  { id: "facilities", sectionId: "facilities" },
+  { id: "location", sectionId: "location" },
+  { id: "opening-hours", sectionId: "opening-hours" },
+  { id: "gallery", sectionId: "gallery" },
+];
+
+const SCROLL_OFFSET = 60; // px, sesuaikan dengan tinggi sticky header/tab
+
 const DestinationDetail = () => {
+  const [activeTab, setActiveTab] = useState("general-info");
+
+  // Scroll handler untuk update active tab
+  const handleScroll = useCallback(() => {
+    let found = "general-info";
+    for (let i = 0; i < TAB_SECTIONS.length; i++) {
+      const { id, sectionId } = TAB_SECTIONS[i];
+      const el = document.getElementById(sectionId);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top - SCROLL_OFFSET <= 0) {
+          found = id;
+        }
+      }
+    }
+    setActiveTab(found);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   const { slug } = useParams();
   const { destination, loading, error } = useFetchDestinationBySlug(slug);
-  const { similar } =
-    useFetchSimilarDestinations(slug);
+  const { similar } = useFetchSimilarDestinations(slug);
   console.log(slug);
 
   if (loading) {
@@ -43,7 +76,7 @@ const DestinationDetail = () => {
     <>
       <section className="max-container mx-auto w-full sm:w-10/12">
         <DestinationImages destination_uuid={destination.uuid} />
-        <DestinationTabs />
+        <DestinationTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         <DestinationGeneralInfo
           destination={destination}
           priceLabel={priceLabel}
