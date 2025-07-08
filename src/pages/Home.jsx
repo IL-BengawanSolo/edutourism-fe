@@ -12,7 +12,7 @@ const Home = () => {
     <> 
       {/* <ChatBotTemp /> */}
       <ChatBotTooltip />
-      <ChatSupport />
+      {/* <ChatSupport /> */}
       <HeroSection />
       <FeaturesSection />
       <TopDestinationsCarousel />
