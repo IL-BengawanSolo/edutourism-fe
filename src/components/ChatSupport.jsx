@@ -15,6 +15,7 @@ import {
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list.js";
 import { Button } from "./ui/button.jsx";
 import ReactMarkdown from "react-markdown";
+import useChatbotFetch from "@/api/useChatbotFetch.js";
 
 const LOCAL_STORAGE_KEY = "edubot_chat_history";
 
@@ -27,7 +28,11 @@ export default function ChatSupport() {
 
   function getTimestamp() {
     const now = new Date();
-    return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+    return now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
   }
 
   const [showConfirm, setShowConfirm] = useState(false);
@@ -48,7 +53,7 @@ export default function ChatSupport() {
   });
 
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { fetchChatbot, loading: isLoading } = useChatbotFetch();
 
   // Save chat history to localStorage whenever messages change
   useEffect(() => {
@@ -60,13 +65,11 @@ export default function ChatSupport() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
-    // Buat pesan user dengan timestamp untuk tampilan
     const userMessage = {
       role: "user",
       content: input,
       timestamp: getTimestamp(),
     };
-    // Kirim ke backend TANPA timestamp
     const backendMessages = messages
       .map(({ role, content }) => ({ role, content }))
       .concat({
@@ -74,14 +77,8 @@ export default function ChatSupport() {
         content: input,
       });
     setMessages([...messages, userMessage]);
-    setIsLoading(true);
     try {
-      const res = await fetch("http://localhost:5500/api/v1/chatbot/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: backendMessages }),
-      });
-      const data = await res.json();
+      const data = await fetchChatbot(backendMessages);
       setMessages((prev) => [
         ...prev,
         {
@@ -100,7 +97,6 @@ export default function ChatSupport() {
         },
       ]);
     }
-    setIsLoading(false);
     setInput("");
   };
 
