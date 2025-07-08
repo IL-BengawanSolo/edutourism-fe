@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import { DeleteIcon, Send, Trash2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Send, Trash2 } from "lucide-react";
 import {
   ChatBubble,
   ChatBubbleMessage,
+  ChatBubbleTimestamp,
 } from "@/components/ui/chat/chat-bubble.js";
 import { ChatInput } from "@/components/ui/chat/chat-input.js";
 import {
@@ -14,7 +15,6 @@ import {
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list.js";
 import { Button } from "./ui/button.jsx";
 import ReactMarkdown from "react-markdown";
-import { Delete } from "react-iconly";
 
 const LOCAL_STORAGE_KEY = "edubot_chat_history";
 
@@ -22,7 +22,13 @@ export default function ChatSupport() {
   const initialBotMessage = {
     role: "assistant",
     content: "Halo! 👋 Ada yang bisa EduBot bantu hari ini?",
+    timestamp: getTimestamp(),
   };
+
+  function getTimestamp() {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+  }
 
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -54,15 +60,26 @@ export default function ChatSupport() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
-    const userMessage = { role: "user", content: input };
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
+    // Buat pesan user dengan timestamp untuk tampilan
+    const userMessage = {
+      role: "user",
+      content: input,
+      timestamp: getTimestamp(),
+    };
+    // Kirim ke backend TANPA timestamp
+    const backendMessages = messages
+      .map(({ role, content }) => ({ role, content }))
+      .concat({
+        role: "user",
+        content: input,
+      });
+    setMessages([...messages, userMessage]);
     setIsLoading(true);
     try {
       const res = await fetch("http://localhost:5500/api/v1/chatbot/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ messages: backendMessages }),
       });
       const data = await res.json();
       setMessages((prev) => [
@@ -70,6 +87,7 @@ export default function ChatSupport() {
         {
           role: "assistant",
           content: data.reply || "Maaf, tidak ada jawaban dari AI.",
+          timestamp: getTimestamp(),
         },
       ]);
     } catch {
@@ -78,6 +96,7 @@ export default function ChatSupport() {
         {
           role: "assistant",
           content: "Terjadi kesalahan pada server.",
+          timestamp: getTimestamp(),
         },
       ]);
     }
@@ -96,9 +115,9 @@ export default function ChatSupport() {
   };
 
   return (
-    <ExpandableChat size="md" position="bottom-right">
+    <ExpandableChat size="sm" position="bottom-right">
       <ExpandableChatHeader className="relative flex-col items-start justify-center text-center">
-        <div className="flex w-full items-center gap-2 min-h-12">
+        <div className="flex min-h-12 w-full items-center gap-2">
           <img
             src="/src/assets/images/home/chat-bot-icon.png"
             alt="Chat Bot Icon"
@@ -112,7 +131,7 @@ export default function ChatSupport() {
             title="Reset Chat"
             onClick={() => setShowConfirm(true)}
           >
-            <Trash2 className="size-6"  />
+            <Trash2 className="size-6" />
           </Button>
         </div>
         {/* Konfirmasi Reset */}
@@ -149,6 +168,9 @@ export default function ChatSupport() {
                   className={`text-sm font-medium ${message.role === "user" ? "bg-pr-blue-600" : "bg-neutral-bg"} `}
                 >
                   <ReactMarkdown>{message.content}</ReactMarkdown>
+                  {message.timestamp && (
+                    <ChatBubbleTimestamp timestamp={message.timestamp} />
+                  )}
                 </ChatBubbleMessage>
               </ChatBubble>
             );
