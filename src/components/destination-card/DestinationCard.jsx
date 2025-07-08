@@ -31,7 +31,7 @@ const DestinationCard = ({
     <div
       className={`flex overflow-hidden rounded-2xl bg-white ${className} ${
         isCol
-          ? "max-w-[288px] flex-col p-4"
+          ? "max-w-[288px] flex-col p-4 min-h-[600px]"
           : "max-h-[236px] w-full flex-row p-2.5"
       }`}
       {...props}
