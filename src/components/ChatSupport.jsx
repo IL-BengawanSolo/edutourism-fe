@@ -18,15 +18,26 @@ import ReactMarkdown from "react-markdown";
 const LOCAL_STORAGE_KEY = "edubot_chat_history";
 
 export default function ChatSupport() {
+  const initialBotMessage = {
+    role: "assistant",
+    content: "Halo! 👋 Ada yang bisa EduBot bantu hari ini?",
+  };
+
   const [messages, setMessages] = useState(() => {
-    // Hanya load sekali dari localStorage saat inisialisasi
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Jika chat kosong, tambahkan sapaan awal
+        return parsed.length > 0 ? parsed : [initialBotMessage];
+      }
+      // Jika belum ada chat, tambahkan sapaan awal
+      return [initialBotMessage];
     } catch {
-      return [];
+      return [initialBotMessage];
     }
   });
+
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -73,8 +84,11 @@ export default function ChatSupport() {
 
   // Optional: Tombol reset chat
   const handleReset = () => {
-    setMessages([]);
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    setMessages([initialBotMessage]);
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY,
+      JSON.stringify([initialBotMessage]),
+    );
   };
 
   return (
