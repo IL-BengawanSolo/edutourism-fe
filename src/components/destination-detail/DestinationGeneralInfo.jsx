@@ -2,8 +2,11 @@ import React from "react";
 import { Badge } from "@/components/ui/badge.jsx";
 import { Location } from "react-iconly";
 import { Separator } from "@/components/ui/separator.jsx";
+import AgeIcons from "../destination-card/AgeIcons.jsx";
+
 
 const DestinationGeneralInfo = ({ destination, priceLabel }) => {
+  console.log("DestinationGeneralInfo", destination);
   return (
     <div  className="mt-4 mb-4 flex flex-col gap-4 rounded-none bg-white p-8 sm:rounded-2xl">
       {/* Destination name */}
@@ -29,6 +32,12 @@ const DestinationGeneralInfo = ({ destination, priceLabel }) => {
             {text}
           </Badge>
         ))}{" "}
+        <Separator orientation="vertical" className="mx-1 h-5" />
+        {/* Age categories */}
+        <AgeIcons
+          ages={destination.age_categories}
+          className="flex items-center gap-2"
+        />
       </div>
 
       {/* Price label */}
