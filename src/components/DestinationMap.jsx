@@ -5,7 +5,6 @@ import {
   TileLayer,
   Marker,
   Popup,
-  Tooltip,
   GeoJSON,
   useMap,
 } from "react-leaflet";
@@ -123,7 +122,6 @@ const DestinationMap = ({
     return null;
   };
 
-  console.log(destinations);
   return (
     <MapContainer
       center={center}

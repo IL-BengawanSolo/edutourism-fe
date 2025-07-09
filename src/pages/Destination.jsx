@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import DestinationCard from "@/components/destination-card/DestinationCard.jsx";
 import FilterBar from "@/components/filter/FilterBar.jsx";
 import DestinationMap from "@/components/DestinationMap.jsx";
-// import useFetchDestinations from "@/api/useFetchDestinations.js";
 import { Link, useSearchParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useSearchAndFilterDestinations from "@/api/useSearchAndFilterDestinations.js";
@@ -17,8 +16,7 @@ const Destination = () => {
   const isSm = useMediaQuery({ maxWidth: 640 });
   const isMd = useMediaQuery({ minWidth: 641, maxWidth: 1024 });
 
-  const { searchAndFilter } =
-    useSearchAndFilterDestinations();
+  const { searchAndFilter } = useSearchAndFilterDestinations();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("search") || "";
@@ -181,8 +179,6 @@ const Destination = () => {
       return params;
     });
   };
-
-  console.log("All Destinations:", allDestinations);
 
   return (
     <div>

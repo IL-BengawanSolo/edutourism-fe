@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { Show, Hide, Danger } from "react-iconly";
+import { Show, Hide } from "react-iconly";
 
 import {
   Form,
@@ -34,7 +34,6 @@ const formSchema = z
       .max(50, { message: "Nama depan maksimal 50 karakter." }),
     last_name: z
       .string()
-      .min(1, { message: "Nama belakang minimal 1 karakter." })
       .max(50, { message: "Nama belakang maksimal 50 karakter." }),
     phone: z
       .string()

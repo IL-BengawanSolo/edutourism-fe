@@ -6,7 +6,6 @@ import AgeIcons from "../destination-card/AgeIcons.jsx";
 
 
 const DestinationGeneralInfo = ({ destination, priceLabel }) => {
-  console.log("DestinationGeneralInfo", destination);
   return (
     <div  className="mt-4 mb-4 flex flex-col gap-4 rounded-none bg-white p-8 sm:rounded-2xl">
       {/* Destination name */}
