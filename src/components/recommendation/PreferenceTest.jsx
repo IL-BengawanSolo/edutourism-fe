@@ -41,6 +41,7 @@ const PreferenceTest = ({
           </div>
           <h2 className="text-pr-blue-950 mb-6 w-full text-lg font-bold md:text-2xl lg:text-3xl xl:text-4xl">
             {questionText}
+            <br />(boleh pilih lebih dari 1)
           </h2>
         </div>
       </div>

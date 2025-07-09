@@ -37,7 +37,7 @@ const JumbotronTestProgress = ({ current = 1, total = 1 }) => {
             value={(current / total) * 100}
           />
           <span className="text-pr-blue-800 text-xs font-bold whitespace-nowrap md:text-base lg:text-xl">
-            {current}/{total}
+            {current} dari {total} pertanyaan
           </span>
         </div>
       </div>
