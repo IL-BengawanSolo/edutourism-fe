@@ -14,12 +14,15 @@ import usePostRecommendationSession from "@/api/usePostRecommendationSession";
 import useFetchLastRecommendationSession from "@/api/useFetchLastRecommendationSession";
 import useFetchDestinationsFromRecommendationResult from "@/api/useFetchDestinationsFromRecommendationResult";
 
+import { SpinnerCircular } from "spinners-react";
+
 const Recommendation = () => {
   const { user, checking } = useAuth();
 
   // Hooks for session and questions
   const { hasSession, loading: hasSessionLoading } =
     useCheckRecommendationSession();
+
   const {
     questions,
     loading: questionsLoading,
@@ -42,6 +45,8 @@ const Recommendation = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [isRetakingTest, setIsRetakingTest] = useState(false);
+  const [processingRecommendation, setProcessingRecommendation] =
+    useState(false);
 
   // Derived sessionId
   const sessionId = lastSession?.id;
@@ -69,6 +74,7 @@ const Recommendation = () => {
     const preferred_categories = answers[0] || [];
     const n = 8;
 
+    setProcessingRecommendation(true); // Mulai loading gimmick
     try {
       const newSession = await postSession();
       await postRecommendations({
@@ -80,6 +86,9 @@ const Recommendation = () => {
       setIsTestCompleted(true);
     } catch (err) {
       console.error("Error submitting AI recommendations:", err);
+    } finally {
+      // Delay 1 detik agar loading terasa
+      setTimeout(() => setProcessingRecommendation(false), 1000);
     }
   };
 
@@ -91,9 +100,37 @@ const Recommendation = () => {
     setAnswers([]);
   };
 
+  if (processingRecommendation) {
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80">
+        <SpinnerCircular
+          size={96}
+          thickness={100}
+          color="#3b82f6"
+          secondaryColor="#e5e7eb"
+        />
+        <span className="mt-4 text-neutral-500">
+          Memproses rekomendasi destinasi untukmu...
+        </span>
+      </div>
+    );
+  }
+
   // Render logic
   if (checking || hasSessionLoading || questionsLoading)
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <SpinnerCircular
+          size={48}
+          thickness={100}
+          color="#3b82f6"
+          secondaryColor="#e5e7eb"
+        />
+        <span className="mt-4 text-neutral-500">
+          Memuat data rekomendasi...
+        </span>
+      </div>
+    );
 
   if (!user) return <JumbotronNotLogin />;
 
@@ -142,7 +179,18 @@ const Recommendation = () => {
   }
 
   if (isTestCompleted) {
-    if (destinationsLoading) return <div>Loading destinations...</div>;
+    if (destinationsLoading)
+      return (
+        <div className="flex flex-col items-center justify-center py-20">
+          <SpinnerCircular
+            size={48}
+            thickness={100}
+            color="#3b82f6"
+            secondaryColor="#e5e7eb"
+          />
+          <span className="mt-4 text-neutral-500">Memuat destinasi...</span>
+        </div>
+      );
     if (destinationsError)
       return <div className="text-red-500">{destinationsError}</div>;
     if (destinations.length > 0) {
@@ -150,6 +198,8 @@ const Recommendation = () => {
         <JumbotronTestCompleted
           destinations={destinations}
           onRetakeTest={handleRetakeTest}
+          onlyWithThumbnail
+          loading={destinationsLoading}
         />
       );
     }

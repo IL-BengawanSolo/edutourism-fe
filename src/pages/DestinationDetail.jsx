@@ -16,6 +16,7 @@ import DestinationTabs from "@/components/destination-detail/DestinationTabs.jsx
 import DestinationListSection from "@/components/destination-detail/DestinationListSection.jsx";
 import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 import DestinationRating from "@/components/destination-detail/DestinationRating.jsx";
+import { SpinnerCircular } from "spinners-react";
 
 const TAB_SECTIONS = [
   { id: "general-info", sectionId: "general-info" },
@@ -55,10 +56,17 @@ const DestinationDetail = () => {
   const { slug } = useParams();
   const { destination, loading, error } = useFetchDestinationBySlug(slug);
   const { similar } = useFetchSimilarDestinations(slug);
-  console.log(slug);
 
   if (loading) {
-    return <div className="py-10 text-center">Memuat data destinasi...</div>;
+    <div className="flex flex-col items-center justify-center py-20">
+      <SpinnerCircular
+        size={48}
+        thickness={100}
+        color="#3b82f6"
+        secondaryColor="#e5e7eb"
+      />
+      <span className="mt-4 text-neutral-500">Memuat data destinasi...</span>
+    </div>;
   }
   if (error) {
     return (
@@ -99,7 +107,7 @@ const DestinationDetail = () => {
           <DestinationLocation destination={destination} />
           <DestinationOpeningHours opening_hours={destination.opening_hours} />
         </div>
-        <DestinationRating />
+        {/* <DestinationRating /> */}
       </section>
       <section className="max-container mx-auto mt-10 mb-40 w-10/12">
         <div className="flex flex-col justify-center gap-6 sm:flex-row sm:items-center">

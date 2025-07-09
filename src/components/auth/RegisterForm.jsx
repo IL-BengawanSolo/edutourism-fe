@@ -21,9 +21,7 @@ import { z } from "zod";
 import { Link } from "react-router-dom";
 import useRegister from "@/api/useRegister.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleCheck,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import ErrorAlert from "./ErrorAlert.jsx";
 
 const formSchema = z
@@ -239,6 +237,7 @@ const RegisterForm = ({ className, ...props }) => {
                     />
                     <Button
                       type="button"
+                      tabIndex={-1}
                       className="absolute top-1/2 right-2 -translate-y-1/2"
                       variant="ghost"
                       onClick={() => setShowPassword(!showPassword)}
@@ -278,6 +277,7 @@ const RegisterForm = ({ className, ...props }) => {
                       />
                       <Button
                         type="button"
+                        tabIndex={-1}
                         className="absolute top-1/2 right-2 -translate-y-1/2"
                         variant="ghost"
                         onClick={() =>
