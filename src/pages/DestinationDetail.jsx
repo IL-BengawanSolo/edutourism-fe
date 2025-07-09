@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getPriceLabel } from "@/lib/utils.js";
 
 import { useParams } from "react-router-dom";
@@ -9,10 +10,11 @@ import CarouselDestinationRow from "@/components/destination-card/CarouselDestin
 
 import DestinationImages from "@/components/destination-detail/DestinationImages.jsx";
 import DestinationGeneralInfo from "@/components/destination-detail/DestinationGeneralInfo.jsx";
-import DestinationFacilities from "@/components/destination-detail/DestinationFacilities.jsx";
 import DestinationLocation from "@/components/destination-detail/DestinationLocation.jsx";
 import DestinationOpeningHours from "@/components/destination-detail/DestinationOpeningHours.jsx";
 import DestinationTabs from "@/components/destination-detail/DestinationTabs.jsx";
+import DestinationListSection from "@/components/destination-detail/DestinationListSection.jsx";
+import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 
 const TAB_SECTIONS = [
   { id: "general-info", sectionId: "general-info" },
@@ -81,7 +83,17 @@ const DestinationDetail = () => {
           destination={destination}
           priceLabel={priceLabel}
         />
-        <DestinationFacilities facilities={destination.facilities} />
+        <DestinationListSection
+          id="activities"
+          title="Aktivitas"
+          items={destination.activities}
+          icon={faPersonRunning}
+        />
+        <DestinationListSection
+          id="facilities"
+          title="Fasilitas"
+          items={destination.facilities}
+        />
         <div className="mt-4 mb-4 grid grid-cols-1 gap-4 rounded-none lg:grid-cols-6">
           <DestinationLocation destination={destination} />
           <DestinationOpeningHours opening_hours={destination.opening_hours} />
