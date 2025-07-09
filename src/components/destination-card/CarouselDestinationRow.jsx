@@ -36,8 +36,8 @@ const CarouselDestinationRow = ({ destinations }) => {
                     minPrice={destination.ticket_price_min}
                     maxPrice={destination.ticket_price_max}
                     ageCategories={destination.age_categories}   
-                    shortPrice
-                    shortAgeIcon
+                    imageSrc={destination.thumbnail_url}
+                    className="!min-h-[560px]"
                   />
                 </Link>
           

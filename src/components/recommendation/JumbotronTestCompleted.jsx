@@ -1,9 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button.jsx";
 import DestinationCard from "../destination-card/DestinationCard.jsx";
 import { Link } from "react-router-dom";
+import { SpinnerCircular } from "spinners-react";
 
-const JumbotronTestCompleted = ({ destinations, onRetakeTest }) => {
+const JumbotronTestCompleted = ({
+  destinations,
+  onRetakeTest,
+  onlyWithThumbnail = true,
+  loading = false,
+}) => {
+  // Filter destinasi jika onlyWithThumbnail true
+  const filteredDestinations = onlyWithThumbnail
+    ? (destinations || []).filter((d) => !!d.thumbnail_url)
+    : destinations || [];
+
+  const [rendering, setRendering] = useState(true);
+
+  // Skeleton loading saat render banyak card
+  useEffect(() => {
+    setRendering(true);
+    const timeout = setTimeout(() => setRendering(false), 300); // 500ms delay
+    return () => clearTimeout(timeout);
+  }, [destinations]);
+
+  if (loading || rendering) {
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80">
+        <SpinnerCircular
+          size={96}
+          thickness={100}
+          color="#3b82f6"
+          secondaryColor="#e5e7eb"
+        />
+        <span className="mt-4 text-neutral-500">
+          Memuat rekomendasi destinasi...
+        </span>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="bg-neutral-light-grey flex w-full flex-row items-center justify-start xl:justify-between">
@@ -11,13 +47,13 @@ const JumbotronTestCompleted = ({ destinations, onRetakeTest }) => {
         <div className="mt-6 flex max-w-[350px] min-w-[120px] items-center md:w-auto">
           {/* Desktop image */}
           <img
-            src="/src/assets/images/girl.png"
+            src="/src/assets/images/recommendation/girl-heading.png"
             alt="Traveler Girl"
             className="hidden max-h-[260px] object-cover lg:block"
           />
           {/* Mobile image */}
           <img
-            src="/src/assets/images/girl-mobile.png"
+            src="/src/assets/images/recommendation/girl-mobile.png"
             alt="Traveler Girl Mobile"
             className="block max-h-[260px] w-36 object-cover md:max-w-[220px] lg:hidden"
           />
@@ -43,7 +79,7 @@ const JumbotronTestCompleted = ({ destinations, onRetakeTest }) => {
         {/* Right Image */}
         <div className="mt-6 hidden max-w-[350px] min-w-[120px] items-center md:w-auto xl:block">
           <img
-            src="/src/assets/images/plane.png"
+            src="/src/assets/images/recommendation/plane-heading.png"
             alt="Airplane"
             className="h-auto w-[355px] object-cover pb-22"
           />
@@ -58,11 +94,13 @@ const JumbotronTestCompleted = ({ destinations, onRetakeTest }) => {
         </div>
 
         <div className="flex w-full flex-row flex-wrap items-start justify-center gap-4">
-          {destinations && destinations.length > 0 ? (
-            destinations.map((destination) => (
-              <Link to={`/destinations/${destination.slug}`}>
+          {filteredDestinations.length > 0 ? (
+            filteredDestinations.map((destination) => (
+              <Link
+                to={`/destinations/${destination.slug}`}
+                key={destination.place_id}
+              >
                 <DestinationCard
-                  key={destination.place_id}
                   variant="col"
                   name={destination.name}
                   categories={destination.categories || []}
@@ -71,6 +109,7 @@ const JumbotronTestCompleted = ({ destinations, onRetakeTest }) => {
                   minPrice={destination.ticket_price_min}
                   maxPrice={destination.ticket_price_max}
                   ageCategories={destination.age_categories}
+                  imageSrc={destination.thumbnail_url}
                   match={
                     typeof destination.score === "number"
                       ? Number(destination.score).toFixed(1)

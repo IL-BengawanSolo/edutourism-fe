@@ -1,14 +1,9 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import DestinationCard from "./components/destination-card/DestinationCard.jsx";
-import SearchBar from "./components/SearchBar.jsx";
-import Navbar from "./components/Navbar.jsx";
 import Destination from "./pages/Destination.jsx";
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/Login.jsx";
 import MainLayout from "./layouts/MainLayout.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx";
-import SetupProfile from "./pages/SetupProfile.jsx";
 import Recommendation from "./pages/Recommendation.jsx";
 import Home from "./pages/Home.jsx";
 import DestinationDetail from "./pages/DestinationDetail.jsx";

@@ -74,7 +74,7 @@ const ChatBubbleAvatar: React.FC<ChatBubbleAvatarProps> = ({
 );
 
 // ChatBubbleMessage
-const chatBubbleMessageVariants = cva("p-4", {
+const chatBubbleMessageVariants = cva("p-3", {
   variants: {
     variant: {
       received:
@@ -117,7 +117,7 @@ const ChatBubbleMessage = React.forwardRef<
       {isLoading ? (
         <div className="flex items-center space-x-2">
           {/* <MessageLoading /> */}
-          <img src="/src/assets/home/edubot-icon.svg" alt="Edu Bot" className="pointer-events-none h-7 w-7 select-none" />
+          <img src="/src/assets/images/home/edubot-icon.svg" alt="Edu Bot" className="pointer-events-none h-7 w-7 select-none" />
           <p className="italic font-normal">Edu Bot sedang berpikir</p>
           <TypingIndicator />
         </div>
@@ -140,7 +140,7 @@ const ChatBubbleTimestamp: React.FC<ChatBubbleTimestampProps> = ({
   className,
   ...props
 }) => (
-  <div className={cn("text-xs mt-2 text-right", className)} {...props}>
+  <div className={cn("text-[10px] mt-2 text-right", className)} {...props}>
     {timestamp}
   </div>
 );

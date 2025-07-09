@@ -16,12 +16,12 @@ const PreferenceTest = ({
   isLast,
   onSubmit,
 }) => {
-   // Handler saat user toggle pilihan
+  // Handler saat user toggle pilihan
   const handleToggle = (value) => {
     setSelected(
       selected.includes(value)
         ? selected.filter((v) => v !== value)
-        : [...selected, value]
+        : [...selected, value],
     );
   };
 
@@ -41,6 +41,7 @@ const PreferenceTest = ({
           </div>
           <h2 className="text-pr-blue-950 mb-6 w-full text-lg font-bold md:text-2xl lg:text-3xl xl:text-4xl">
             {questionText}
+            <br />(boleh pilih lebih dari 1)
           </h2>
         </div>
       </div>
@@ -85,6 +86,7 @@ const PreferenceTest = ({
             size="custom"
             className="h-12 rounded-full text-xl md:mb-0 md:h-18"
             onClick={onSubmit}
+            disabled={selected.length === 0}
           >
             Selesai
           </Button>
@@ -93,6 +95,7 @@ const PreferenceTest = ({
             size="custom"
             className="bg-primary hover:bg-primary/85 mb-4 h-12 w-12 rounded-full text-white md:mb-0 md:h-18 md:w-18"
             onClick={handleNext}
+            disabled={selected.length === 0}
           >
             <ArrowRight className="size-8 md:size-10" stroke="bold" />
           </Button>

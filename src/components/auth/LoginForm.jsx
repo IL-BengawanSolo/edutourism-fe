@@ -1,3 +1,5 @@
+import React from "react";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import ErrorAlert from "./ErrorAlert.jsx";
+import { Hide, Show } from "react-iconly";
 
 const formSchema = z.object({
   email: z
@@ -64,13 +67,14 @@ const LoginForm = ({ className, ...props }) => {
       const redirect = params.get("redirect")
         ? decodeURIComponent(params.get("redirect"))
         : "/";
-      console.log("Redirect value:", redirect); // Tambahkan ini
       navigate(redirect, { replace: true });
       // eslint-disable-next-line no-unused-vars
     } catch (err) {
       /* empty */
     }
   };
+
+  const [showPassword, setShowPassword] = React.useState(false);
 
   return (
     <Form {...form}>
@@ -116,26 +120,45 @@ const LoginForm = ({ className, ...props }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Kata Sandi</FormLabel>
-                  <FormControl>
+                  <div className="relative">
                     <Input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="Masukkan kata sandi"
-                      className="h-12 bg-white"
+                      className="h-12 bg-white pr-10"
                       {...field}
                     />
-                  </FormControl>
+                    <Button
+                      type="button"
+                      tabIndex={-1}
+                      className="absolute top-1/2 right-2 -translate-y-1/2"
+                      variant="ghost"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <Show
+                          set="bold"
+                          className="text-neutral-dark-grey !h-5 !w-5"
+                        />
+                      ) : (
+                        <Hide
+                          set="bold"
+                          className="text-neutral-dark-grey !h-5 !w-5"
+                        />
+                      )}
+                    </Button>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <a
                 href="#"
                 className="ml-auto text-sm underline-offset-4 hover:underline"
               >
                 Lupa kata sandi Anda?
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -146,7 +169,7 @@ const LoginForm = ({ className, ...props }) => {
           Masuk
         </Button>
 
-        <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+        {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-neutral-bg text-muted-foreground relative z-10 px-2">
             Atau lanjutkan dengan
           </span>
@@ -179,7 +202,7 @@ const LoginForm = ({ className, ...props }) => {
             ></path>
           </svg>
           Masuk dengan Google
-        </Button>
+        </Button> */}
 
         <div className="text-center text-sm">
           Belum punya akun?{" "}

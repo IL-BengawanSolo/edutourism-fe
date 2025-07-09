@@ -5,7 +5,7 @@ import useFetchPlaceTypes from "@/api/useFetchPlaceTypes.js";
 import useFetchAgeCategories from "@/api/useFetchAgeCategories.js";
 import FilterDialog from "./FilterDialog.jsx";
 
-import { People, Wallet, Swap, Star } from "react-iconly";
+import { People, Wallet, Swap } from "react-iconly";
 import useFetchRegions from "@/api/useFetchRegions.js";
 
 const FilterBar = ({ filters, setFilters }) => {

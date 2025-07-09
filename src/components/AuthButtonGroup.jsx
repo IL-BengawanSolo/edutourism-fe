@@ -31,7 +31,7 @@ const AuthButtonGroup = ({ buttonClass = ""}) => {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             size="custom"

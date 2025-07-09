@@ -13,28 +13,28 @@ const JumbotronNotLogin = () => {
       <div className="mt-4 mb-4 grid w-full grid-cols-6 gap-4">
         <div className="bg-neutral-light-grey relative col-span-6 min-h-[586px] gap-4 rounded-[40px] p-12 md:col-span-4 md:col-start-2">
           <AutoSizeResponsiveAsset
-            src="/src/assets/auth/scenery.png"
+            src="/src/assets/images/recommendation/scenery.png"
             alt="Cloud Background"
             className="absolute !h-auto rounded-b-[40px]"
             bottom={0}
             left={0}
           />
           <AutoSizeResponsiveAsset
-            src="/src/assets/auth/sun.png"
+            src="/src/assets/images/recommendation/sun.png"
             alt="Cloud Background"
             className="absolute !h-auto rounded-tr-[40px]"
             top={0}
             right={0}
           />
           <AutoSizeResponsiveAsset
-            src="/src/assets/auth/cloud.png"
+            src="/src/assets/images/recommendation/cloud.png"
             alt="Cloud Background"
             className="absolute !h-auto rounded-tl-[40px]"
             top={0}
             left={0}
           />
           <AutoSizeResponsiveAsset
-            src="/src/assets/auth/boy.png"
+            src="/src/assets/images/recommendation/boy.png"
             alt="Cloud Background"
             className="absolute !h-auto w-8/12 rounded-br-[40px] sm:w-auto md:w-5/12"
             bottom={0}

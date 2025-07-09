@@ -18,6 +18,7 @@ const useSearchAndFilterDestinations = () => {
         params,
       });
       setDestinations(res.data.data || []);
+      return res.data.data;
     } catch (err) {
       setError(err);
     } finally {

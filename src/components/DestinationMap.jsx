@@ -1,18 +1,16 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
-  Tooltip,
   GeoJSON,
+  useMap,
 } from "react-leaflet";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMoneyBillWave,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
 
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/styles";
@@ -23,11 +21,15 @@ import { Badge } from "./ui/badge.jsx";
 import { Separator } from "./ui/separator.jsx";
 import { getPriceLabel } from "@/lib/utils.js";
 
+
+
 const DestinationMap = ({
   destinations,
   center = [-7.560421, 110.826454],
   disablePopup = false,
 }) => {
+  const fallbackImage = "/src/assets/images/default-placeholder.png";
+
   // SVG Iconly Location sebagai string (tanpa background)
   const svgIcon = encodeURIComponent(`
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,21 +92,52 @@ const DestinationMap = ({
     };
   };
 
+  const mapRef = useRef(null);
+
   // Normalize destinations: support array or single object
-  const destinationList = Array.isArray(destinations)
-    ? destinations
-    : destinations
-      ? [destinations]
-      : [];
-  console.log(destinations);
+  const destinationList = React.useMemo(
+    () =>
+      Array.isArray(destinations)
+        ? destinations
+        : destinations
+          ? [destinations]
+          : [],
+    [destinations],
+  );
+
+  // Komponen untuk menyesuaikan peta berdasarkan destinasi
+  const FitBounds = () => {
+    const map = useMap(); // Akses instance peta
+
+    useEffect(() => {
+      if (destinationList.length > 0) {
+        const bounds = destinationList.map((destination) => [
+          destination.latitude,
+          destination.longitude,
+        ]);
+        map.fitBounds(bounds); // Sesuaikan peta agar mencakup semua destinasi
+      }
+    }, [map]);
+
+    return null;
+  };
+
   return (
-    <MapContainer center={center} zoom={12} scrollWheelZoom={false} minZoom={9}>
+    <MapContainer
+      center={center}
+      zoom={12}
+      scrollWheelZoom={false}
+      minZoom={9}
+      ref={mapRef}
+    >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
         subdomains={"abcd"}
         detectRetina={true}
       />
+
+      <FitBounds />
 
       <GeoJSON data={geoJsonData} style={getStyle} />
 
@@ -165,8 +198,9 @@ const DestinationMap = ({
                   </p>
 
                   <img
-                    src="/src/assets/images/kampung-batik-laweyan.jpeg"
+                    src={destination.thumbnail_url || fallbackImage}
                     alt=""
+                    className="mt-2 h-48 w-full rounded-lg object-cover"
                   />
                   <a
                     href={`/destinations/${destination.slug}`}
@@ -184,4 +218,11 @@ const DestinationMap = ({
   );
 };
 
-export default DestinationMap;
+export default React.memo(DestinationMap, (prevProps, nextProps) => {
+  // Cek shallow equality array destinations
+  if (prevProps.destinations.length !== nextProps.destinations.length) return false;
+  for (let i = 0; i < prevProps.destinations.length; i++) {
+    if (prevProps.destinations[i].uuid !== nextProps.destinations[i].uuid) return false;
+  }
+  return true;
+});

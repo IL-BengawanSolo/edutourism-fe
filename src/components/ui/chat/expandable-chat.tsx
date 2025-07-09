@@ -10,7 +10,7 @@ export type ChatSize = "sm" | "md" | "lg" | "xl" | "full";
 
 const chatConfig = {
   dimensions: {
-    sm: "sm:max-w-sm sm:max-h-[500px]",
+    sm: "sm:max-w-sm sm:max-h-[680px]",
     md: "sm:max-w-md sm:max-h-[600px]",
     lg: "sm:max-w-lg sm:max-h-[700px]",
     xl: "sm:max-w-xl sm:max-h-[800px]",
@@ -64,22 +64,25 @@ const ExpandableChat: React.FC<ExpandableChatProps> = ({
           isOpen ? chatConfig.states.open : chatConfig.states.closed,
           className,
         )}
+        style={{ display: isOpen ? "flex" : "none" }} // <-- hide chat when closed
       >
         {children}
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-2 right-2 sm:hidden"
-          onClick={toggleChat}
+          className="absolute top-2 right-2 text-state-error hover:bg-state-error/10 hover:text-state-error ml-auto size-12 p-2"
+          onClick={() => setIsOpen(false)} // <-- close chat
         >
-          <X className="h-4 w-4" />
+          <X className="size-6" />
         </Button>
       </div>
-      <ExpandableChatToggle
-        icon={icon}
-        isOpen={isOpen}
-        toggleChat={toggleChat}
-      />
+      {!isOpen && (
+        <ExpandableChatToggle
+          icon={icon}
+          isOpen={isOpen}
+          toggleChat={toggleChat}
+        />
+      )}
     </div>
   );
 };
@@ -91,7 +94,7 @@ const ExpandableChatHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   ...props
 }) => (
   <div
-    className={cn("flex items-center justify-between border-b p-4", className)}
+    className={cn("flex items-center justify-between border-b px-4 py-2", className)}
     {...props}
   />
 );
@@ -131,7 +134,7 @@ const ExpandableChatToggle: React.FC<ExpandableChatToggleProps> = ({
     size="icon"
     onClick={toggleChat}
     className={cn(
-      "flex h-20 w-20 items-center justify-center rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-black/30",
+      "flex h-18 w-18 items-center justify-center rounded-full shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-black/30",
       className,
     )}
     {...props}
@@ -141,9 +144,9 @@ const ExpandableChatToggle: React.FC<ExpandableChatToggleProps> = ({
     ) : (
       icon || (
         <img
-          src="/src/assets/home/edubot-icon.svg"
+          src="/src/assets/images/home/edubot-icon.svg"
           alt="Chatbot"
-          className="h-12 w-12 pointer-events-none select-none rotate-y-180"
+          className="pointer-events-none h-12 w-12 rotate-y-180 select-none"
         />
       )
     )}

@@ -8,10 +8,10 @@ function scrollToWithOffset(id, offset = -60) {
   }
 }
 
-const DestinationTabs = () => (
+const DestinationTabs = ({ activeTab }) => (
   <div className="sticky top-0 z-10">
     <div className="rounded-none bg-white shadow-[0px_4px_10px_-4px_rgba(0,0,0,0.16)] sm:rounded-b-2xl">
-      <Tabs defaultValue="general-info" className="w-full">
+      <Tabs value={activeTab} className="w-full">
         <TabsList className="flex w-full flex-wrap items-center gap-1 rounded-none bg-white p-2 sm:rounded-b-2xl">
           <TabsTrigger
             value="general-info"
@@ -22,6 +22,16 @@ const DestinationTabs = () => (
             }}
           >
             Info Umum
+          </TabsTrigger>
+          <TabsTrigger
+            value="activities"
+            className="min-w-[90px] flex-1 text-xs sm:text-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToWithOffset("activities");
+            }}
+          >
+            Aktivitas
           </TabsTrigger>
           <TabsTrigger
             value="facilities"
@@ -52,16 +62,6 @@ const DestinationTabs = () => (
             }}
           >
             Jam Buka
-          </TabsTrigger>
-          <TabsTrigger
-            value="gallery"
-            className="min-w-[90px] flex-1 text-xs sm:text-sm"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToWithOffset("gallery");
-            }}
-          >
-            Galeri
           </TabsTrigger>
         </TabsList>
       </Tabs>

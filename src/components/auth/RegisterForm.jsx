@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { Show, Hide, Danger } from "react-iconly";
+import { Show, Hide } from "react-iconly";
 
 import {
   Form,
@@ -21,9 +21,7 @@ import { z } from "zod";
 import { Link } from "react-router-dom";
 import useRegister from "@/api/useRegister.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleCheck,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import ErrorAlert from "./ErrorAlert.jsx";
 
 const formSchema = z
@@ -34,7 +32,6 @@ const formSchema = z
       .max(50, { message: "Nama depan maksimal 50 karakter." }),
     last_name: z
       .string()
-      .min(1, { message: "Nama belakang minimal 1 karakter." })
       .max(50, { message: "Nama belakang maksimal 50 karakter." }),
     phone: z
       .string()
@@ -240,6 +237,7 @@ const RegisterForm = ({ className, ...props }) => {
                     />
                     <Button
                       type="button"
+                      tabIndex={-1}
                       className="absolute top-1/2 right-2 -translate-y-1/2"
                       variant="ghost"
                       onClick={() => setShowPassword(!showPassword)}
@@ -279,6 +277,7 @@ const RegisterForm = ({ className, ...props }) => {
                       />
                       <Button
                         type="button"
+                        tabIndex={-1}
                         className="absolute top-1/2 right-2 -translate-y-1/2"
                         variant="ghost"
                         onClick={() =>

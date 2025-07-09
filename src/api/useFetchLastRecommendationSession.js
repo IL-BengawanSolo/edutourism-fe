@@ -13,8 +13,13 @@ const useFetchLastRecommendationSession = () => {
   const fetchSession = useCallback(async () => {
     setLoading(true);
     setError(null);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setSession(null);
+      setLoading(false);
+      return;
+    }
     try {
-      const token = localStorage.getItem("token");
       const res = await axiosInstance.get("/recommendations/last-session", {
         headers: {
           Authorization: token,

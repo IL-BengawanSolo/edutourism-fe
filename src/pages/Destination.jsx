@@ -1,18 +1,22 @@
 import SearchBar from "@/components/SearchBar.jsx";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DestinationCard from "@/components/destination-card/DestinationCard.jsx";
 import FilterBar from "@/components/filter/FilterBar.jsx";
 import DestinationMap from "@/components/DestinationMap.jsx";
-// import useFetchDestinations from "@/api/useFetchDestinations.js";
 import { Link, useSearchParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useSearchAndFilterDestinations from "@/api/useSearchAndFilterDestinations.js";
 import StickyHeader from "@/components/StickyHeader.jsx";
+import useFetchDestinations from "@/api/useFetchDestinations";
+import { Search } from "react-iconly";
+import { useMediaQuery } from "react-responsive";
+import { SpinnerCircular } from "spinners-react";
 
 const Destination = () => {
-  const { destinations, loading, error, searchAndFilter } =
-    useSearchAndFilterDestinations();
-  console.log("Destinations:", destinations);
+  const isSm = useMediaQuery({ maxWidth: 640 });
+  const isMd = useMediaQuery({ minWidth: 641, maxWidth: 1024 });
+
+  const { searchAndFilter } = useSearchAndFilterDestinations();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("search") || "";
@@ -29,6 +33,73 @@ const Destination = () => {
     [searchParams],
   );
 
+  // State untuk pagination
+  const [page, setPage] = useState(1); // Halaman saat ini
+  const [allDestinations, setAllDestinations] = useState([]); // Semua data destinasi
+  const [hasMore, setHasMore] = useState(true); // Apakah masih ada data untuk di-fetch
+
+  // Fungsi untuk fetch data
+  const fetchDestinations = useCallback(
+    async (page) => {
+      const limit = 10;
+      let response = [];
+      try {
+        response = await searchAndFilter({
+          search: searchValue,
+          page,
+          limit,
+          ...filters,
+        });
+      } catch (err) {
+        console.error("Gagal fetch destinasi:", err);
+        response = [];
+      }
+      if (!Array.isArray(response)) response = [];
+      if (response.length < limit) setHasMore(false);
+
+      setAllDestinations((prev) => {
+        const combined = [...prev, ...response];
+        const unique = [];
+        const seen = new Set();
+        for (const dest of combined) {
+          const key = dest.slug || dest.id || dest.uuid;
+          if (!seen.has(key)) {
+            seen.add(key);
+            unique.push(dest);
+          }
+        }
+        return unique;
+      });
+    },
+    [searchAndFilter, searchValue, filters],
+  );
+
+  const { destinations: mapDestinations, loading: mapLoading } =
+    useFetchDestinations({
+      search: searchValue,
+      ...filters,
+      page: 1,
+      limit: 1000, // atau limit besar
+    });
+
+  // Fetch data saat search/filter berubah
+  useEffect(() => {
+    setPage(1); // Reset ke halaman pertama
+    setAllDestinations([]); // Reset data destinasi
+    setHasMore(true); // Reset status hasMore
+    fetchDestinations(1); // Fetch halaman pertama
+  }, [
+    searchValue,
+    filters.region_id,
+    filters.category_id,
+    filters.place_type_id,
+    filters.open_days,
+    filters.age_category_id,
+    filters.price_range,
+    filters.sort_by,
+    fetchDestinations,
+  ]);
+
   // Handler SearchBar
   const handleSearchChange = (val) => {
     setSearchParams((prev) => {
@@ -40,6 +111,13 @@ const Destination = () => {
       }
       return params;
     });
+  };
+
+  // Infinite scroll handler
+  const fetchMoreData = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchDestinations(nextPage);
   };
 
   // Handler FilterBar
@@ -89,7 +167,6 @@ const Destination = () => {
         params.append("open_days", newFilters.open_days);
       }
 
-
       // Sisanya tetap pakai set
       ["age_category_id", "price_range", "sort_by"].forEach((key) => {
         if (newFilters[key]) {
@@ -103,59 +180,79 @@ const Destination = () => {
     });
   };
 
-  // Fetch data saat search/filter berubah
-  useEffect(() => {
-    searchAndFilter({ search: searchValue, ...filters });
-    setVisible(10); // reset infinite scroll saat filter/search berubah
-  }, [
-    searchValue,
-    filters.region_id,
-    filters.category_id,
-    filters.place_type_id,
-    filters.open_days,
-    filters.age_category_id,
-    filters.price_range,
-    filters.sort_by,
-    searchAndFilter,
-    filters,
-  ]);
-
-  // Infinite scroll state
-  const [visible, setVisible] = useState(10);
-  const fetchMoreData = () => {
-    setVisible((prev) => prev + 10);
-  };
-
   return (
     <div>
       <StickyHeader>
-        <section className="max-container mx-auto w-11/12 sm:w-10/12">
+        <section className="max-container mx-auto w-11/12 sm:w-11/12">
           <SearchBar value={searchValue} onSubmit={handleSearchChange} />
           <FilterBar filters={filters} setFilters={handleFilterChange} />
         </section>
       </StickyHeader>
 
       {/* Main Layout */}
-      <section className="max-container mx-auto grid w-11/12 grid-cols-1 gap-6 sm:w-10/12 lg:grid-cols-5">
+      <section className="max-container mx-auto grid w-11/12 grid-cols-1 gap-6 sm:w-11/12 lg:grid-cols-10">
         {/* Destination Cards */}
-        <div className="col-span-3 flex flex-col gap-4">
+        <div className="col-span-1 flex flex-col gap-4 lg:col-span-7 xl:col-span-6">
           <InfiniteScroll
-            dataLength={Math.min(visible, destinations.length)}
+            dataLength={allDestinations.length}
             next={fetchMoreData}
-            hasMore={visible < destinations.length}
-            loader={<h4 className="py-4 text-center">Memuat...</h4>}
+            hasMore={hasMore}
+            loader={
+              <div className="flex justify-center py-8">
+                <SpinnerCircular
+                  size={40}
+                  thickness={100}
+                  speed={100}
+                  color="#3b82f6"
+                  secondaryColor="#e5e7eb"
+                />
+                <span className="ml-2 text-neutral-500">
+                  Memuat destinasi...
+                </span>
+              </div>
+            }
             endMessage={
-              <p className="py-4 text-center text-neutral-500">
-                Semua destinasi sudah ditampilkan.
-              </p>
+              allDestinations.length > 0 && (
+                <p className="py-4 text-center text-neutral-500">
+                  Semua destinasi sudah ditampilkan.
+                </p>
+              )
             }
             className="flex flex-col gap-4"
           >
-            <p>
-              Ditemukan {destinations.length} destinasi
-              {searchValue && ` untuk "${searchValue}"`}
-            </p>
-            {destinations.slice(0, visible).map((destination) => (
+            <div className="">
+              {mapLoading ? (
+                <div className="flex flex-row items-center justify-center gap-2 py-8">
+                  <SpinnerCircular
+                    size={48}
+                    thickness={100}
+                    speed={100}
+                    color="#3b82f6"
+                    secondaryColor="#e5e7eb"
+                  />
+                  <span className="text-neutral-500">Memuat destinasi...</span>
+                </div>
+              ) : mapDestinations.length > 0 ? (
+                <p>
+                  Ditemukan {mapDestinations.length} destinasi
+                  {searchValue && ` untuk "${searchValue}"`}
+                </p>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-8">
+                  <Search className="text-state-error mb-2" size="xlarge" />
+                  <span className="text-state-error text-center font-semibold">
+                    Tidak ada destinasi yang cocok dengan filter atau pencarian
+                    Anda.
+                  </span>
+                  <br />
+                  <span className="text-center text-neutral-500">
+                    Coba ubah kata kunci atau filter untuk menemukan destinasi
+                    menarik lainnya!
+                  </span>
+                </div>
+              )}
+            </div>
+            {allDestinations.map((destination) => (
               <Link
                 key={destination.slug}
                 to={`/destinations/${destination.slug}`}
@@ -170,6 +267,9 @@ const Destination = () => {
                   minPrice={destination.ticket_price_min}
                   maxPrice={destination.ticket_price_max}
                   ageCategories={destination.age_categories}
+                  imageSrc={destination.thumbnail_url || ""}
+                  hideLabel={isSm}
+                  shortAgeIcon={isMd}
                 />
               </Link>
             ))}
@@ -177,11 +277,23 @@ const Destination = () => {
         </div>
 
         {/* Map */}
-        <div className="sticky top-38 col-span-1 h-[calc(100vh-14rem)] lg:col-span-2">
-          <DestinationMap
-            key={destinations.map((d) => d.uuid).join(",")}
-            destinations={destinations}
-          />
+        <div className="sticky top-38 col-span-1 h-[calc(100vh-14rem)] lg:col-span-3 xl:col-span-4">
+          {mapLoading ? (
+            <div className="flex h-full items-center justify-center">
+              <SpinnerCircular
+                size={48}
+                thickness={100}
+                speed={100}
+                color="#3b82f6"
+                secondaryColor="#e5e7eb"
+              />
+            </div>
+          ) : (
+            <DestinationMap
+              key={mapDestinations.map((d) => d.uuid).join(",")}
+              destinations={mapDestinations}
+            />
+          )}
         </div>
       </section>
     </div>

@@ -12,9 +12,7 @@ import {
 } from "@/components/ui/sidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBolt,
   faCalendarDays,
-  faHouseCircleCheck,
   faList,
   faMapLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
@@ -49,20 +47,20 @@ const FILTER_MENU = [
     sectionId: "hari-buka-section",
     key: "hariBuka",
   },
-  {
-    icon: <FontAwesomeIcon icon={faHouseCircleCheck} />,
-    label: "Fasilitas",
-    href: "#fasilitas",
-    sectionId: "fasilitas-section",
-    key: "fasilitas",
-  },
-  {
-    icon: <FontAwesomeIcon icon={faBolt} />,
-    label: "Aktivitas",
-    href: "#aktivitas",
-    sectionId: "aktivitas-section",
-    key: "aktivitas",
-  },
+  // {
+  //   icon: <FontAwesomeIcon icon={faHouseCircleCheck} />,
+  //   label: "Fasilitas",
+  //   href: "#fasilitas",
+  //   sectionId: "fasilitas-section",
+  //   key: "fasilitas",
+  // },
+  // {
+  //   icon: <FontAwesomeIcon icon={faBolt} />,
+  //   label: "Aktivitas",
+  //   href: "#aktivitas",
+  //   sectionId: "aktivitas-section",
+  //   key: "aktivitas",
+  // },
 ];
 
 function FilterSidebarMenu({
