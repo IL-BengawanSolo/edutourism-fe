@@ -128,14 +128,14 @@ const LoginForm = ({ className, ...props }) => {
                 </FormItem>
               )}
             />
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               <a
                 href="#"
                 className="ml-auto text-sm underline-offset-4 hover:underline"
               >
                 Lupa kata sandi Anda?
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -146,7 +146,7 @@ const LoginForm = ({ className, ...props }) => {
           Masuk
         </Button>
 
-        <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
+        {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
           <span className="bg-neutral-bg text-muted-foreground relative z-10 px-2">
             Atau lanjutkan dengan
           </span>
@@ -179,7 +179,7 @@ const LoginForm = ({ className, ...props }) => {
             ></path>
           </svg>
           Masuk dengan Google
-        </Button>
+        </Button> */}
 
         <div className="text-center text-sm">
           Belum punya akun?{" "}
