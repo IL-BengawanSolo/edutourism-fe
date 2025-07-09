@@ -71,6 +71,7 @@ const JumbotronTestCompleted = ({ destinations, onRetakeTest }) => {
                   minPrice={destination.ticket_price_min}
                   maxPrice={destination.ticket_price_max}
                   ageCategories={destination.age_categories}
+                  imageSrc={destination.thumbnail_url}
                   match={
                     typeof destination.score === "number"
                       ? Number(destination.score).toFixed(1)

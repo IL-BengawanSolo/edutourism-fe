@@ -15,6 +15,7 @@ import DestinationOpeningHours from "@/components/destination-detail/Destination
 import DestinationTabs from "@/components/destination-detail/DestinationTabs.jsx";
 import DestinationListSection from "@/components/destination-detail/DestinationListSection.jsx";
 import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
+import DestinationRating from "@/components/destination-detail/DestinationRating.jsx";
 
 const TAB_SECTIONS = [
   { id: "general-info", sectionId: "general-info" },
@@ -98,6 +99,7 @@ const DestinationDetail = () => {
           <DestinationLocation destination={destination} />
           <DestinationOpeningHours opening_hours={destination.opening_hours} />
         </div>
+        <DestinationRating />
       </section>
       <section className="max-container mx-auto mt-10 mb-40 w-10/12">
         <div className="flex flex-col justify-center gap-6 sm:flex-row sm:items-center">
