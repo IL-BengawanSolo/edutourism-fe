@@ -24,6 +24,16 @@ const DestinationTabs = ({ activeTab }) => (
             Info Umum
           </TabsTrigger>
           <TabsTrigger
+            value="activities"
+            className="min-w-[90px] flex-1 text-xs sm:text-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToWithOffset("activities");
+            }}
+          >
+            Aktivitas
+          </TabsTrigger>
+          <TabsTrigger
             value="facilities"
             className="min-w-[90px] flex-1 text-xs sm:text-sm"
             onClick={(e) => {
@@ -52,16 +62,6 @@ const DestinationTabs = ({ activeTab }) => (
             }}
           >
             Jam Buka
-          </TabsTrigger>
-          <TabsTrigger
-            value="gallery"
-            className="min-w-[90px] flex-1 text-xs sm:text-sm"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToWithOffset("gallery");
-            }}
-          >
-            Galeri
           </TabsTrigger>
         </TabsList>
       </Tabs>

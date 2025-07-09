@@ -18,10 +18,10 @@ import { faPersonRunning } from "@fortawesome/free-solid-svg-icons";
 
 const TAB_SECTIONS = [
   { id: "general-info", sectionId: "general-info" },
+  { id: "activities", sectionId: "activities" },
   { id: "facilities", sectionId: "facilities" },
   { id: "location", sectionId: "location" },
   { id: "opening-hours", sectionId: "opening-hours" },
-  { id: "gallery", sectionId: "gallery" },
 ];
 
 const SCROLL_OFFSET = 60; // px, sesuaikan dengan tinggi sticky header/tab
