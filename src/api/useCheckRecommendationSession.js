@@ -1,33 +1,25 @@
 import { useState, useEffect } from "react";
 import { axiosInstance } from "../lib/axios";
 
-/**
- * Hook untuk mengecek apakah user sudah pernah melakukan tes rekomendasi.
- * @returns { hasSession, loading, error, refetch }
- */
 const useCheckRecommendationSession = () => {
-  const [hasSession, setHasSession] = useState(null);
+  const [hasSession, setHasSession] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const fetchSession = async () => {
     setLoading(true);
-    setError(null);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setHasSession(false);
+      setLoading(false);
+      return;
+    }
     try {
-      const token = localStorage.getItem("token");
       const res = await axiosInstance.get("/recommendations/has-session", {
-        headers: {
-          Authorization: token,
-        },
+        headers: { Authorization: token },
       });
-      setHasSession(res.data.hasSession);
-    } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          err.message ||
-          "Gagal cek sesi rekomendasi"
-      );
-      setHasSession(null);
+      setHasSession(!!res.data.hasSession);
+    } catch {
+      setHasSession(false);
     } finally {
       setLoading(false);
     }
@@ -37,7 +29,7 @@ const useCheckRecommendationSession = () => {
     fetchSession();
   }, []);
 
-  return { hasSession, loading, error, refetch: fetchSession };
+  return { hasSession, loading, refetch: fetchSession };
 };
 
 export default useCheckRecommendationSession;
