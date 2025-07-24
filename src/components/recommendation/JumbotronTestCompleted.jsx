@@ -47,13 +47,13 @@ const JumbotronTestCompleted = ({
         <div className="mt-6 flex max-w-[350px] min-w-[120px] items-center md:w-auto">
           {/* Desktop image */}
           <img
-            src="/src/assets/images/recommendation/girl-heading.png"
+            src="/images/recommendation/girl-heading.png"
             alt="Traveler Girl"
             className="hidden max-h-[260px] object-cover lg:block"
           />
           {/* Mobile image */}
           <img
-            src="/src/assets/images/recommendation/girl-mobile.png"
+            src="/images/recommendation/girl-mobile.png"
             alt="Traveler Girl Mobile"
             className="block max-h-[260px] w-36 object-cover md:max-w-[220px] lg:hidden"
           />
@@ -79,7 +79,7 @@ const JumbotronTestCompleted = ({
         {/* Right Image */}
         <div className="mt-6 hidden max-w-[350px] min-w-[120px] items-center md:w-auto xl:block">
           <img
-            src="/src/assets/images/recommendation/plane-heading.png"
+            src="/images/recommendation/plane-heading.png"
             alt="Airplane"
             className="h-auto w-[355px] object-cover pb-22"
           />

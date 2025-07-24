@@ -117,7 +117,7 @@ const ChatBubbleMessage = React.forwardRef<
       {isLoading ? (
         <div className="flex items-center space-x-2">
           {/* <MessageLoading /> */}
-          <img src="/src/assets/images/home/edubot-icon.svg" alt="Edu Bot" className="pointer-events-none h-7 w-7 select-none" />
+          <img src="/images/home/edubot-icon.svg" alt="Edu Bot" className="pointer-events-none h-7 w-7 select-none" />
           <p className="italic font-normal">Edu Bot sedang berpikir</p>
           <TypingIndicator />
         </div>

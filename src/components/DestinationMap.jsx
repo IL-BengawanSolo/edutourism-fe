@@ -28,7 +28,7 @@ const DestinationMap = ({
   center = [-7.560421, 110.826454],
   disablePopup = false,
 }) => {
-  const fallbackImage = "/src/assets/images/default-placeholder.png";
+  const fallbackImage = "/images/default-placeholder.png";
 
   // SVG Iconly Location sebagai string (tanpa background)
   const svgIcon = encodeURIComponent(`
