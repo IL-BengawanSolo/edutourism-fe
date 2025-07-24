@@ -58,15 +58,17 @@ const DestinationDetail = () => {
   const { similar } = useFetchSimilarDestinations(slug);
 
   if (loading) {
-    <div className="flex flex-col items-center justify-center py-20">
-      <SpinnerCircular
-        size={48}
-        thickness={100}
-        color="#3b82f6"
-        secondaryColor="#e5e7eb"
-      />
-      <span className="mt-4 text-neutral-500">Memuat data destinasi...</span>
-    </div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <SpinnerCircular
+          size={48}
+          thickness={100}
+          color="#3b82f6"
+          secondaryColor="#e5e7eb"
+        />
+        <span className="mt-4 text-neutral-500">Memuat data destinasi...</span>
+      </div>
+    );
   }
   if (error) {
     return (
