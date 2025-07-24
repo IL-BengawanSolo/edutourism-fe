@@ -28,7 +28,11 @@ export default function ChatSupport() {
 
   function getTimestamp() {
     const now = new Date();
-    return now.toLocaleTimeString([], {
+    return now.toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }) + " " + now.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
@@ -53,7 +57,7 @@ export default function ChatSupport() {
   });
 
   const [input, setInput] = useState("");
-  const { fetchChatbot, loading: isLoading } = useChatbotFetch();
+  const { fetchChatbot, loading: isLoading, error  } = useChatbotFetch();
 
   // Save chat history to localStorage whenever messages change
   useEffect(() => {
@@ -92,7 +96,7 @@ export default function ChatSupport() {
         ...prev,
         {
           role: "assistant",
-          content: "Terjadi kesalahan pada server.",
+          content: error || "Terjadi kesalahan pada server.",
           timestamp: getTimestamp(),
         },
       ]);
