@@ -78,9 +78,9 @@ function FilterMainContent({
   return (
     <main
       id="filter-main-scroll"
-      className="flex h-[320px] flex-1 flex-col overflow-y-auto border-l-1 bg-white pl-6"
+      className="flex h-[320px] flex-1 flex-col overflow-y-auto md:border-l-1 bg-white pl-6"
     >
-      <div className="flex w-full flex-col border-t-1 pt-4 pb-45">
+      <div className="flex w-full flex-col pb-45">
         <section id="kategori-section">
           <ToggleFilter
             label={"Kategori"}

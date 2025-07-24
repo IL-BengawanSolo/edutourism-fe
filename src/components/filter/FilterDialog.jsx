@@ -44,7 +44,7 @@ const FilterDialog = ({
     (selectedCategories?.length || 0) +
     (selectedPlaceTypes?.length || 0) +
     (selectedRegion?.length || 0) +
-    (selectedOpenDays?.length || 0); 
+    (selectedOpenDays?.length || 0);
 
   // Scroll ke section saat klik menu
   const handleMenuClick = (sectionId) => {
@@ -88,19 +88,40 @@ const FilterDialog = ({
             <span className="text-3xl">Filter</span>
           </DialogTitle>
         </DialogHeader>
-        <DialogDescription className="text-neutral-dark-grey">
+        <DialogDescription className="text-neutral-dark-grey border-b pb-4">
           Pilih filter untuk menemukan tempat wisata yang sesuai dengan
           preferensimu.
         </DialogDescription>
 
-        <FilterSidebarMenu
-          activeSection={activeSection}
-          onMenuClick={handleMenuClick}
-          selectedCategories={selectedCategories}
-          selectedPlaceTypes={selectedPlaceTypes}
-          selectedRegions={selectedRegion}
-          selectedOpenDays={selectedOpenDays}
-        >
+        <div className="hidden md:block">
+          <FilterSidebarMenu
+            activeSection={activeSection}
+            onMenuClick={handleMenuClick}
+            selectedCategories={selectedCategories}
+            selectedPlaceTypes={selectedPlaceTypes}
+            selectedRegions={selectedRegion}
+            selectedOpenDays={selectedOpenDays}
+          >
+            <FilterMainContent
+              categoryItems={categoryItems}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+              placeTypeItems={placeTypeItems}
+              selectedPlaceTypes={selectedPlaceTypes}
+              handlePlaceTypeChange={handlePlaceTypeChange}
+              regionItems={regionItems}
+              setSelectedRegion={setSelectedRegion}
+              selectedRegion={selectedRegion}
+              openDaysItems={openDaysItems}
+              selectedOpenDays={selectedOpenDays}
+              setSelectedOpenDays={setSelectedOpenDays}
+              onSectionChange={setActiveSection}
+            />
+          </FilterSidebarMenu>
+        </div>
+
+        {/* Konten utama tetap tampil di layar kecil */}
+        <div className="block md:hidden">
           <FilterMainContent
             categoryItems={categoryItems}
             selectedCategories={selectedCategories}
@@ -114,9 +135,9 @@ const FilterDialog = ({
             openDaysItems={openDaysItems}
             selectedOpenDays={selectedOpenDays}
             setSelectedOpenDays={setSelectedOpenDays}
-            onSectionChange={setActiveSection}
           />
-        </FilterSidebarMenu>
+        </div>
+        
         <FilterDialogFooter
           isDirtySaveButton={isDirtySaveButton}
           isDirtyResetButton={isDirtyResetButton}
