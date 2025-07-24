@@ -23,7 +23,7 @@ const toggleVariants = cva(
         lg: "h-10 px-2.5 min-w-10",
         custom: "px-14 h-18 text-2xl",
         custom2: "px-6 py-2 text-base md:px-10 md:py-4 md:text-xl",
-        custom_sm: "text-xs md:px-3 md:py-2 md:text-sm",
+        custom_sm: "text-xs px-3 py-2 md:text-sm",
       },
     },
     defaultVariants: {
