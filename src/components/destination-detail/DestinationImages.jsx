@@ -6,11 +6,11 @@ import { Button } from "../ui/button.jsx";
 import { X } from "lucide-react";
 
 const fallbackImages = [
-  "/src/assets/images/default-placeholder.png",
-  "/src/assets/images/default-placeholder.png",
-  "/src/assets/images/default-placeholder.png",
-  "/src/assets/images/default-placeholder.png",
-  "/src/assets/images/default-placeholder.png",
+  "/images/default-placeholder.png",
+  "/images/default-placeholder.png",
+  "/images/default-placeholder.png",
+  "/images/default-placeholder.png",
+  "/images/default-placeholder.png",
 ];
 
 const DestinationImages = ({ destination_uuid }) => {

@@ -10,7 +10,7 @@ const AuthLayout = () => {
           {/* Kiri: Gambar */}
           <div className="sticky top-0 z-10 hidden h-screen w-full lg:block">
             <img
-              src="/src/assets/images/auth/auth-bg.png"
+              src="/images/auth/auth-bg.png"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover object-left"
             />

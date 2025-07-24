@@ -2,7 +2,7 @@ import React from "react";
 import DestinationCardContent from "./DestinationCardContent";
 import { getPriceLabel } from "@/lib/utils.js";
 
-const fallbackImage = "/src/assets/images/default-placeholder.png";
+const fallbackImage = "/images/default-placeholder.png";
 
 const DestinationCard = ({
   variant = "col",
