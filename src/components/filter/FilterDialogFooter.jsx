@@ -10,7 +10,7 @@ function FilterDialogFooter({
 }) {
   return (
     <>
-      {isDirtyResetButton | isDirtySaveButton && (
+      {(isDirtyResetButton || isDirtySaveButton) && (
         <DialogFooter
           className="absolute bottom-0 left-0 z-10 flex w-full gap-2 border-t border-neutral-200 bg-white px-6 py-4"
           style={{ boxShadow: "0 -2px 8px 0 rgba(0,0,0,0.03)" }}
