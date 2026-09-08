@@ -1,46 +1,54 @@
-import React from "react";
-import Destination from "./pages/Destination.jsx";
+import React, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/Login.jsx";
 import MainLayout from "./layouts/MainLayout.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx";
-import Recommendation from "./pages/Recommendation.jsx";
-import Home from "./pages/Home.jsx";
-import DestinationDetail from "./pages/DestinationDetail.jsx";
-import RegisterPage from "./pages/Register.jsx";
 import GuestRoute from "./components/utils/GuestRoute.jsx";
+import PageLoader from "./components/ui/PageLoader.jsx";
+
+const Home = lazy(() => import("./pages/Home.jsx"));
+const Destination = lazy(() => import("./pages/Destination.jsx"));
+const DestinationDetail = lazy(() => import("./pages/DestinationDetail.jsx"));
+const Recommendation = lazy(() => import("./pages/Recommendation.jsx"));
+const LoginPage = lazy(() => import("./pages/Login.jsx"));
+const RegisterPage = lazy(() => import("./pages/Register.jsx"));
+const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
 function App() {
   return (
-    <Routes>
-      {/* Main Layout */}
-      <Route element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="destinations" element={<Destination />} />
-        <Route path="destinations/:slug" element={<DestinationDetail />} />
-        <Route path="recommendations" element={<Recommendation />} />
-      </Route>
+    <Suspense fallback={<PageLoader message="Loading page..." />}>
+      <Routes>
+        {/* Main Layout */}
+        <Route element={<MainLayout />}>
+          <Route index element={<Home />} />
+          <Route path="destinations" element={<Destination />} />
+          <Route path="destinations/:slug" element={<DestinationDetail />} />
+          <Route path="recommendations" element={<Recommendation />} />
+        </Route>
 
-      {/* Auth Layout */}
-      <Route element={<AuthLayout />}>
-        <Route
-          path="login"
-          element={
-            <GuestRoute>
-              <LoginPage />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="register"
-          element={
-            <GuestRoute>
-              <RegisterPage />
-            </GuestRoute>
-          }
-        />
-      </Route>
-    </Routes>
+        {/* Auth Layout */}
+        <Route element={<AuthLayout />}>
+          <Route
+            path="login"
+            element={
+              <GuestRoute>
+                <LoginPage />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="register"
+            element={
+              <GuestRoute>
+                <RegisterPage />
+              </GuestRoute>
+            }
+          />
+        </Route>
+
+        {/* 404 Catch-all */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 }
 

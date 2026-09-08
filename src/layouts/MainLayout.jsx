@@ -1,7 +1,8 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import Navbar from "@/components/Navbar.jsx";
 import { Outlet } from "react-router-dom";
-import ChatSupport from "@/components/ChatSupport.jsx";
+
+const ChatSupport = lazy(() => import("@/components/ChatSupport.jsx"));
 
 const MainLayout = () => {
   return (
@@ -10,7 +11,9 @@ const MainLayout = () => {
       <main className="flex flex-1 flex-col">
         <Outlet />
       </main>
-      <ChatSupport />
+      <Suspense fallback={null}>
+        <ChatSupport />
+      </Suspense>
     </div>
   );
 };
