@@ -14,6 +14,7 @@ import usePostRecommendationSession from "@/api/usePostRecommendationSession";
 import useFetchLastRecommendationSession from "@/api/useFetchLastRecommendationSession";
 import useFetchDestinationsFromRecommendationResult from "@/api/useFetchDestinationsFromRecommendationResult";
 
+import { Helmet } from "react-helmet-async";
 import { SpinnerCircular } from "spinners-react";
 
 const Recommendation = () => {
@@ -102,57 +103,108 @@ const Recommendation = () => {
 
   if (processingRecommendation) {
     return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80">
-        <SpinnerCircular
-          size={96}
-          thickness={100}
-          color="#3b82f6"
-          secondaryColor="#e5e7eb"
-        />
-        <span className="mt-4 text-neutral-500">
-          Memproses rekomendasi destinasi untukmu...
-        </span>
-      </div>
+      <>
+        <Helmet>
+          <title>Generating Recommendations — EduSolo</title>
+        </Helmet>
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80">
+          <SpinnerCircular
+            size={96}
+            thickness={100}
+            color="#3b82f6"
+            secondaryColor="#e5e7eb"
+          />
+          <span className="mt-4 text-neutral-500">
+            Memproses rekomendasi destinasi untukmu...
+          </span>
+        </div>
+      </>
     );
   }
 
   // Render logic
   if (checking || hasSessionLoading || questionsLoading)
     return (
-      <div className="flex flex-col items-center justify-center py-20">
-        <SpinnerCircular
-          size={48}
-          thickness={100}
-          color="#3b82f6"
-          secondaryColor="#e5e7eb"
-        />
-        <span className="mt-4 text-neutral-500">
-          Memuat data rekomendasi...
-        </span>
-      </div>
+      <>
+        <Helmet>
+          <title>AI Recommendations — EduSolo</title>
+          <meta
+            name="description"
+            content="Get AI-powered educational tourism recommendations tailored for your family in Solo Raya."
+          />
+        </Helmet>
+        <div className="flex flex-col items-center justify-center py-20">
+          <SpinnerCircular
+            size={48}
+            thickness={100}
+            color="#3b82f6"
+            secondaryColor="#e5e7eb"
+          />
+          <span className="mt-4 text-neutral-500">
+            Memuat data rekomendasi...
+          </span>
+        </div>
+      </>
     );
 
-  if (!user) return <JumbotronNotLogin />;
+  if (!user)
+    return (
+      <>
+        <Helmet>
+          <title>AI Recommendations — Login Required | EduSolo</title>
+        </Helmet>
+        <JumbotronNotLogin />
+      </>
+    );
 
   if (hasSession && !isRetakingTest)
     return (
-      <JumbotronTestCompleted
-        destinations={destinations}
-        onRetakeTest={handleRetakeTest}
-      />
+      <>
+        <Helmet>
+          <title>Your Recommendations — EduSolo</title>
+          <meta
+            name="description"
+            content="Your personalized AI recommendations for Solo Raya educational tourism are ready."
+          />
+        </Helmet>
+        <JumbotronTestCompleted
+          destinations={destinations}
+          onRetakeTest={handleRetakeTest}
+        />
+      </>
     );
 
-  if (!beginTest) return <JumbotronNotTest onTestClick={handleStartTest} />;
+  if (!beginTest)
+    return (
+      <>
+        <Helmet>
+          <title>AI Recommendations — EduSolo</title>
+          <meta
+            name="description"
+            content="Take a quick preference quiz and get 8 personalized educational tourism recommendations in Solo Raya."
+          />
+        </Helmet>
+        <JumbotronNotTest onTestClick={handleStartTest} />
+      </>
+    );
 
   if (beginTest && !isTestCompleted) {
     if (questionsError)
       return (
-        <div className="text-red-500">Error: {questionsError.message}</div>
+        <>
+          <Helmet>
+            <title>Quiz Error — EduSolo</title>
+          </Helmet>
+          <div className="text-red-500">Error: {questionsError.message}</div>
+        </>
       );
 
     const question = questions[currentQuestion];
     return (
       <>
+        <Helmet>
+          <title>Preference Quiz — EduSolo</title>
+        </Helmet>
         <JumbotronTestProgress
           current={currentQuestion + 1}
           total={questions.length}
@@ -181,29 +233,53 @@ const Recommendation = () => {
   if (isTestCompleted) {
     if (destinationsLoading)
       return (
-        <div className="flex flex-col items-center justify-center py-20">
-          <SpinnerCircular
-            size={48}
-            thickness={100}
-            color="#3b82f6"
-            secondaryColor="#e5e7eb"
-          />
-          <span className="mt-4 text-neutral-500">Memuat destinasi...</span>
-        </div>
+        <>
+          <Helmet>
+            <title>Your Recommendations — EduSolo</title>
+          </Helmet>
+          <div className="flex flex-col items-center justify-center py-20">
+            <SpinnerCircular
+              size={48}
+              thickness={100}
+              color="#3b82f6"
+              secondaryColor="#e5e7eb"
+            />
+            <span className="mt-4 text-neutral-500">Memuat destinasi...</span>
+          </div>
+        </>
       );
     if (destinationsError)
-      return <div className="text-red-500">{destinationsError}</div>;
+      return (
+        <>
+          <Helmet>
+            <title>Recommendations Error — EduSolo</title>
+          </Helmet>
+          <div className="text-red-500">{destinationsError}</div>
+        </>
+      );
     if (destinations.length > 0) {
       return (
-        <JumbotronTestCompleted
-          destinations={destinations}
-          onRetakeTest={handleRetakeTest}
-          onlyWithThumbnail
-          loading={destinationsLoading}
-        />
+        <>
+          <Helmet>
+            <title>Your Recommendations — EduSolo</title>
+          </Helmet>
+          <JumbotronTestCompleted
+            destinations={destinations}
+            onRetakeTest={handleRetakeTest}
+            onlyWithThumbnail
+            loading={destinationsLoading}
+          />
+        </>
       );
     }
-    return <div>No destinations found.</div>;
+    return (
+      <>
+        <Helmet>
+          <title>No Results — EduSolo</title>
+        </Helmet>
+        <div>No destinations found.</div>
+      </>
+    );
   }
 
   return null;

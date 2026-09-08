@@ -19,7 +19,7 @@ const Navbar = () => {
         <Logo />
 
         {/* Desktop Navigation */}
-        <nav className="hidden gap-x-12 lg:flex">
+        <nav aria-label="Main navigation" className="hidden gap-x-12 lg:flex">
           {navLinks.map((link) => (
             <NavLink
               key={link.name}
@@ -50,20 +50,29 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <button
+          aria-label={
+            isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-nav"
           className="text-neutral-dark-grey hover:text-pr-blue-800 flex items-center justify-center rounded-md p-2 lg:hidden"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           {isMenuOpen ? (
-            <X className="h-6 w-6 cursor-pointer" />
+            <X className="h-6 w-6 cursor-pointer" aria-hidden="true" />
           ) : (
-            <Menu className="h-6 w-6 cursor-pointer" />
+            <Menu className="h-6 w-6 cursor-pointer" aria-hidden="true" />
           )}
         </button>
       </div>
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <nav className="bg-white shadow-sm lg:hidden">
+        <nav
+          id="mobile-nav"
+          aria-label="Mobile navigation"
+          className="bg-white shadow-sm lg:hidden"
+        >
           <ul className="flex flex-col items-center gap-y-4 p-4">
             {navLinks.map((link) => (
               <li key={link.name}>
@@ -88,9 +97,7 @@ const Navbar = () => {
               </li>
             ))}
             <div className="mt-4 flex flex-col items-center gap-y-2">
-              <AuthButtonGroup
-                buttonClass="w-full"
-              />
+              <AuthButtonGroup buttonClass="w-full" />
             </div>
           </ul>
         </nav>

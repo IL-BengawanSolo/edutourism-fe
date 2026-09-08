@@ -1,8 +1,7 @@
 import SearchBar from "@/components/SearchBar.jsx";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, Suspense, lazy } from "react";
 import DestinationCard from "@/components/destination-card/DestinationCard.jsx";
 import FilterBar from "@/components/filter/FilterBar.jsx";
-import DestinationMap from "@/components/DestinationMap.jsx";
 import { Link, useSearchParams } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useSearchAndFilterDestinations from "@/api/useSearchAndFilterDestinations.js";
@@ -11,6 +10,11 @@ import useFetchDestinations from "@/api/useFetchDestinations";
 import { Search } from "react-iconly";
 import { useMediaQuery } from "react-responsive";
 import { SpinnerCircular } from "spinners-react";
+import PageLoader from "@/components/ui/PageLoader.jsx";
+import { useDebounce } from "@/hooks/use-debounce.js";
+import { Helmet } from "react-helmet-async";
+
+const DestinationMap = lazy(() => import("@/components/DestinationMap.jsx"));
 
 const Destination = () => {
   const isSm = useMediaQuery({ maxWidth: 640 });
@@ -20,6 +24,7 @@ const Destination = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("search") || "";
+  const debouncedSearch = useDebounce(searchValue, 300);
   const filters = React.useMemo(
     () => ({
       region_id: searchParams.getAll("region_id"),
@@ -38,14 +43,14 @@ const Destination = () => {
   const [allDestinations, setAllDestinations] = useState([]); // Semua data destinasi
   const [hasMore, setHasMore] = useState(true); // Apakah masih ada data untuk di-fetch
 
-  // Fungsi untuk fetch data
+  // Fungsi untuk fetch data — uses debounced search to avoid 7 requests for "laweyan"
   const fetchDestinations = useCallback(
     async (page) => {
       const limit = 10;
       let response = [];
       try {
         response = await searchAndFilter({
-          search: searchValue,
+          search: debouncedSearch,
           page,
           limit,
           ...filters,
@@ -71,25 +76,25 @@ const Destination = () => {
         return unique;
       });
     },
-    [searchAndFilter, searchValue, filters],
+    [searchAndFilter, debouncedSearch, filters],
   );
 
   const { destinations: mapDestinations, loading: mapLoading } =
     useFetchDestinations({
-      search: searchValue,
+      search: debouncedSearch,
       ...filters,
       page: 1,
-      limit: 1000, // atau limit besar
+      limit: 1000,
     });
 
-  // Fetch data saat search/filter berubah
+  // Fetch data saat debounced search/filter berubah
   useEffect(() => {
-    setPage(1); // Reset ke halaman pertama
-    setAllDestinations([]); // Reset data destinasi
-    setHasMore(true); // Reset status hasMore
-    fetchDestinations(1); // Fetch halaman pertama
+    setPage(1);
+    setAllDestinations([]);
+    setHasMore(true);
+    fetchDestinations(1);
   }, [
-    searchValue,
+    debouncedSearch,
     filters.region_id,
     filters.category_id,
     filters.place_type_id,
@@ -182,6 +187,21 @@ const Destination = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>
+          {debouncedSearch
+            ? `Search "${debouncedSearch}" — Destinations | EduSolo`
+            : "Destinations — Explore Solo Raya | EduSolo"}
+        </title>
+        <meta
+          name="description"
+          content={
+            debouncedSearch
+              ? `Search results for "${debouncedSearch}" in Solo Raya educational tourism.`
+              : "Explore 200+ educational tourism destinations in Solo Raya. Filter by region, price, age and find your next family trip."
+          }
+        />
+      </Helmet>
       <StickyHeader>
         <section className="max-container mx-auto w-11/12 sm:w-11/12">
           <SearchBar value={searchValue} onSubmit={handleSearchChange} />
@@ -289,10 +309,18 @@ const Destination = () => {
               />
             </div>
           ) : (
-            <DestinationMap
-              key={mapDestinations.map((d) => d.uuid).join(",")}
-              destinations={mapDestinations}
-            />
+            <Suspense
+              fallback={
+                <div className="flex h-full items-center justify-center">
+                  <PageLoader message="Loading map..." />
+                </div>
+              }
+            >
+              <DestinationMap
+                key={mapDestinations.map((d) => d.uuid).join(",")}
+                destinations={mapDestinations}
+              />
+            </Suspense>
           )}
         </div>
       </section>

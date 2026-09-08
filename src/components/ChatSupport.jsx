@@ -15,6 +15,7 @@ import {
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list.js";
 import { Button } from "./ui/button.jsx";
 import ReactMarkdown from "react-markdown";
+import rehypeSanitize from "rehype-sanitize";
 import useChatbotFetch from "@/api/useChatbotFetch.js";
 
 const LOCAL_STORAGE_KEY = "edubot_chat_history";
@@ -28,15 +29,19 @@ export default function ChatSupport() {
 
   function getTimestamp() {
     const now = new Date();
-    return now.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }) + " " + now.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
+    return (
+      now.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }) +
+      " " +
+      now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+    );
   }
 
   const [showConfirm, setShowConfirm] = useState(false);
@@ -57,11 +62,12 @@ export default function ChatSupport() {
   });
 
   const [input, setInput] = useState("");
-  const { fetchChatbot, loading: isLoading, error  } = useChatbotFetch();
+  const { fetchChatbot, loading: isLoading, error } = useChatbotFetch();
 
-  // Save chat history to localStorage whenever messages change
+  // Save chat history to localStorage whenever messages change — capped to 50 to avoid unbounded growth
   useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
+    const capped = messages.slice(-50);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(capped));
   }, [messages]);
 
   const handleInputChange = (e) => setInput(e.target.value);
@@ -167,7 +173,9 @@ export default function ChatSupport() {
                   }
                   className={`text-sm font-medium ${message.role === "user" ? "bg-pr-blue-600" : "bg-neutral-bg"} `}
                 >
-                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                  <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
+                    {message.content}
+                  </ReactMarkdown>
                   {message.timestamp && (
                     <ChatBubbleTimestamp timestamp={message.timestamp} />
                   )}
