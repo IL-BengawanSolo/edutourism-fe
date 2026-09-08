@@ -54,7 +54,48 @@ const AutoSizeResponsiveAsset = ({
     right: rightPercent !== null ? `${rightPercent}%` : undefined,
   };
 
-  return <img ref={imgRef} src={src} alt={alt} style={style} className={className} />;
+  const isDecorative = alt?.startsWith("cloud") || alt?.startsWith("path");
+  const webpSrc =
+    src?.endsWith(".svg") || src?.endsWith(".webp")
+      ? null
+      : src?.replace(/\.(png|jpe?g)$/i, ".webp");
+  const altText = isDecorative ? "" : alt;
+
+  // Use eager for hero above-the-fold assets for LCP, lazy would delay
+  // Hero assets are decorative but part of initial viewport
+  const isHero = className?.includes("absolute");
+
+  if (webpSrc && webpSrc !== src) {
+    return (
+      <img
+        ref={imgRef}
+        src={webpSrc}
+        alt={altText}
+        style={style}
+        className={className}
+        loading={isHero ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={isHero ? "high" : "auto"}
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = src;
+        }}
+      />
+    );
+  }
+
+  return (
+    <img
+      ref={imgRef}
+      src={src}
+      alt={altText}
+      style={style}
+      className={className}
+      loading={isHero ? "eager" : "lazy"}
+      decoding="async"
+      fetchPriority={isHero ? "high" : "auto"}
+    />
+  );
 };
 
 export default AutoSizeResponsiveAsset;

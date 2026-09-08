@@ -31,7 +31,7 @@ const DestinationCard = ({
     <div
       className={`flex overflow-hidden rounded-2xl bg-white ${className} ${
         isCol
-          ? "max-w-[288px] flex-col p-4 min-h-[600px]"
+          ? "min-h-[600px] max-w-[288px] flex-col p-4"
           : "max-h-[236px] w-full flex-row p-2.5"
       }`}
       {...props}
@@ -39,6 +39,10 @@ const DestinationCard = ({
       <img
         src={validImageSrc}
         alt={name}
+        loading="lazy"
+        decoding="async"
+        width={isCol ? 288 : 216}
+        height={isCol ? 256 : 216}
         className={`object-cover ${
           isCol
             ? "h-64 w-full rounded-2xl object-cover"

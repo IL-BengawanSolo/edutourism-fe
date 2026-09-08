@@ -26,7 +26,7 @@ export default function CarouselGallery({ images, initialIndex = 0, onClose }) {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onClose]);
 
   if (!images || images.length === 0) return null;
@@ -53,6 +53,8 @@ export default function CarouselGallery({ images, initialIndex = 0, onClose }) {
                 width={image.width}
                 height={image.height}
                 className="h-full w-full object-cover"
+                loading={index === currentIndex ? "eager" : "lazy"}
+                decoding="async"
               />
             </div>
           ))}
@@ -60,6 +62,7 @@ export default function CarouselGallery({ images, initialIndex = 0, onClose }) {
         {/* Navigation buttons */}
         <Button
           size="icon"
+          aria-label="Previous image"
           className="absolute top-1/2 left-2 -translate-y-1/2 bg-black/60 px-3 py-1 text-xs text-white hover:bg-black/70"
           onClick={prevSlide}
         >
@@ -67,6 +70,7 @@ export default function CarouselGallery({ images, initialIndex = 0, onClose }) {
         </Button>
         <Button
           size="icon"
+          aria-label="Next image"
           className="absolute top-1/2 right-2 -translate-y-1/2 bg-black/60 px-3 py-1 text-xs text-white hover:bg-black/70"
           onClick={nextSlide}
         >
@@ -80,9 +84,12 @@ export default function CarouselGallery({ images, initialIndex = 0, onClose }) {
       {/* Thumbnails */}
       <div className="mt-4 flex gap-2 overflow-x-auto px-2 py-2">
         {images.map((image, index) => (
-          <utton
+          <button
             key={`thumb-${index}`}
-            className={`relative h-20 w-20 flex-shrink-0 transition-all duration-200 cursor-pointer ${
+            type="button"
+            aria-label={`Go to image ${index + 1}`}
+            aria-current={index === currentIndex}
+            className={`relative h-20 w-20 flex-shrink-0 cursor-pointer transition-all duration-200 ${
               index === currentIndex
                 ? "ring-primary ring-2 ring-offset-2"
                 : "opacity-70 hover:opacity-100"
@@ -94,9 +101,11 @@ export default function CarouselGallery({ images, initialIndex = 0, onClose }) {
               alt={`Thumbnail ${index + 1}`}
               width={80}
               height={80}
+              loading="lazy"
+              decoding="async"
               className="h-full w-full rounded-sm object-cover"
             />
-          </utton>
+          </button>
         ))}
       </div>
     </div>

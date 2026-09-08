@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getPriceLabel } from "@/lib/utils.js";
 
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import useFetchDestinationBySlug from "@/api/useFetchDestinationBySlug.js";
 import useFetchSimilarDestinations from "@/api/useFetchSimilarDestinations.js";
 import CarouselDestinationRow from "@/components/destination-card/CarouselDestinationRow.jsx";
@@ -31,20 +32,24 @@ const SCROLL_OFFSET = 60; // px, sesuaikan dengan tinggi sticky header/tab
 const DestinationDetail = () => {
   const [activeTab, setActiveTab] = useState("general-info");
 
-  // Scroll handler untuk update active tab
+  // Scroll handler — throttled via rAF to avoid 60fps setState churn
+  const ticking = React.useRef(false);
   const handleScroll = useCallback(() => {
-    let found = "general-info";
-    for (let i = 0; i < TAB_SECTIONS.length; i++) {
-      const { id, sectionId } = TAB_SECTIONS[i];
-      const el = document.getElementById(sectionId);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        if (rect.top - SCROLL_OFFSET <= 0) {
-          found = id;
+    if (ticking.current) return;
+    ticking.current = true;
+    requestAnimationFrame(() => {
+      let found = "general-info";
+      for (let i = 0; i < TAB_SECTIONS.length; i++) {
+        const { id, sectionId } = TAB_SECTIONS[i];
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top - SCROLL_OFFSET <= 0) found = id;
         }
       }
-    }
-    setActiveTab(found);
+      setActiveTab(found);
+      ticking.current = false;
+    });
   }, []);
 
   useEffect(() => {
@@ -87,6 +92,29 @@ const DestinationDetail = () => {
 
   return (
     <>
+      <Helmet>
+        <title>
+          {destination.name
+            ? `${destination.name} — EduSolo`
+            : "Destination — EduSolo"}
+        </title>
+        <meta
+          name="description"
+          content={
+            destination.description
+              ? destination.description.slice(0, 160)
+              : `Explore ${destination.name} in Solo Raya — educational tourism for families.`
+          }
+        />
+        <meta property="og:title" content={destination.name} />
+        <meta
+          property="og:description"
+          content={destination.description?.slice(0, 160)}
+        />
+        {destination.thumbnail_url && (
+          <meta property="og:image" content={destination.thumbnail_url} />
+        )}
+      </Helmet>
       <section className="max-container mx-auto w-full sm:w-10/12">
         <DestinationImages destination_uuid={destination.uuid} />
         <DestinationTabs activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -113,9 +141,9 @@ const DestinationDetail = () => {
       </section>
       <section className="max-container mx-auto mt-10 mb-40 w-10/12">
         <div className="flex flex-col justify-center gap-6 sm:flex-row sm:items-center">
-          <h1 className="text-center text-2xl font-bold sm:text-4xl">
+          <h2 className="text-center text-2xl font-bold sm:text-4xl">
             Tempat Wisata Serupa
-          </h1>
+          </h2>
         </div>
         <CarouselDestinationRow destinations={similar} />
       </section>

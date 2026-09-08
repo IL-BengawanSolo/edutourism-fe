@@ -1,10 +1,11 @@
 import { features } from "@/constants/index.js";
 import React from "react";
+import Picture from "@/components/ui/Picture.jsx";
 
 const FeaturesSection = () => {
   return (
     <section className="max-container mx-auto mt-20 w-10/12">
-      <h1 className="text-center text-5xl font-bold">Our Features</h1>
+      <h2 className="text-center text-5xl font-bold">Our Features</h2>
 
       <div className="mt-20 flex flex-col gap-14">
         {features.map((feature, index) => (
@@ -15,9 +16,11 @@ const FeaturesSection = () => {
             }`}
           >
             <div>
-              <img
+              <Picture
                 src={feature.image}
                 alt={feature.title}
+                loading="lazy"
+                decoding="async"
                 className="h-auto w-full max-w-[340px] flex-shrink-0 object-cover lg:max-w-[420px] xl:max-w-xl"
               />
             </div>

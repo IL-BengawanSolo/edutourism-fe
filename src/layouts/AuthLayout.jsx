@@ -1,6 +1,7 @@
 import Logo from "@/components/Logo.jsx";
 import React from "react";
 import { Outlet } from "react-router";
+import Picture from "@/components/ui/Picture.jsx";
 
 const AuthLayout = () => {
   return (
@@ -9,14 +10,16 @@ const AuthLayout = () => {
         <div className="grid min-h-screen lg:grid-cols-2">
           {/* Kiri: Gambar */}
           <div className="sticky top-0 z-10 hidden h-screen w-full lg:block">
-            <img
+            <Picture
               src="/images/auth/auth-bg.png"
-              alt="Image"
+              alt="Students enjoying educational tourism in Solo"
               className="absolute inset-0 h-full w-full object-cover object-left"
+              loading="eager"
+              fetchPriority="high"
             />
           </div>
           {/* Kanan: Form */}
-          <div className="flex min-h-screen flex-col justify-center p-6 md:px-8 md:py-4 ">
+          <div className="flex min-h-screen flex-col justify-center p-6 md:px-8 md:py-4">
             <header className="mb-4 flex items-center">
               <Logo />
             </header>

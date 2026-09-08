@@ -99,10 +99,22 @@ const DestinationImages = ({ destination_uuid }) => {
           <img
             src={displayImages[0].src}
             alt={displayImages[0].alt}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
             className="h-[300px] w-full cursor-pointer object-cover"
+            role="button"
+            tabIndex={0}
             onClick={() => {
               setActiveIndex(0);
               setGalleryOpen(true);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setActiveIndex(0);
+                setGalleryOpen(true);
+              }
             }}
           />
         </div>
@@ -113,12 +125,23 @@ const DestinationImages = ({ destination_uuid }) => {
               <img
                 src={img.src}
                 alt={img.alt}
+                loading="lazy"
+                decoding="async"
                 className={`h-full w-full cursor-pointer object-cover ${
                   idx === 3 ? "transition group-hover:brightness-60" : ""
                 }`}
+                role="button"
+                tabIndex={0}
                 onClick={() => {
                   setActiveIndex(idx + 1);
                   setGalleryOpen(true);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveIndex(idx + 1);
+                    setGalleryOpen(true);
+                  }
                 }}
               />
               {idx === 3 && (

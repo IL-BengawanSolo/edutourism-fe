@@ -15,13 +15,20 @@ import { faMoneyBillWave } from "@fortawesome/free-solid-svg-icons";
 import "leaflet/dist/leaflet.css";
 import "react-leaflet-markercluster/styles";
 
-import geoJsonData from "../lib/solo-raya.json";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { Badge } from "./ui/badge.jsx";
 import { Separator } from "./ui/separator.jsx";
 import { getPriceLabel } from "@/lib/utils.js";
 
-
+function escapeHtml(str) {
+  if (typeof str !== "string") return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 const DestinationMap = ({
   destinations,
@@ -30,19 +37,41 @@ const DestinationMap = ({
 }) => {
   const fallbackImage = "/images/default-placeholder.png";
 
-  // SVG Iconly Location sebagai string (tanpa background)
-  const svgIcon = encodeURIComponent(`
+  const [geoJsonData, setGeoJsonData] = React.useState(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    fetch("/solo-raya.json")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled) setGeoJsonData(data);
+      })
+      .catch(() => {
+        // Silently fail; map still works without GeoJSON layer
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // SVG Iconly Location sebagai string (tanpa background) — memoized
+  const svgIcon = React.useMemo(
+    () =>
+      encodeURIComponent(`
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g transform="translate(3.5,2)" fill="#0163D2">
       <path d="M8.49344564,0 C13.1561184,0 17,3.71789185 17,8.31775805 C17,10.6356906 16.1570081,12.787628 14.7695,14.611575 C13.2388042,16.6235165 11.3521561,18.3764655 9.22854262,19.7524254 C8.74251142,20.0704162 8.3038733,20.0944155 7.77044902,19.7524254 C5.63473516,18.3764655 3.74808708,16.6235165 2.23050003,14.611575 C0.84198351,12.787628 0,10.6356906 0,8.31775805 C0,3.71789185 3.84388161,0 8.49344564,0 Z M8.49344564,5.77683196 C6.95165787,5.77683196 5.6942286,7.04779499 5.6942286,8.57675052 C5.6942286,10.1177057 6.95165787,11.3296704 8.49344564,11.3296704 C10.0362418,11.3296704 11.3057714,10.1177057 11.3057714,8.57675052 C11.3057714,7.04779499 10.0362418,5.77683196 8.49344564,5.77683196 Z"/>
     </g>
   </svg>
-`);
+`),
+    [],
+  );
 
-  const createDivIcon = (label) =>
-    window.L.divIcon({
-      className: "custom-marker",
-      html: `
+  const createDivIcon = React.useCallback(
+    (label) =>
+      window.L.divIcon({
+        className: "custom-marker",
+        html: `
         <div style="
           display: flex;
           align-items: center;
@@ -57,19 +86,19 @@ const DestinationMap = ({
               letter-spacing: -0.1em;
               white-space: nowrap;
               text-shadow: 0 1px 2px #fff;
-              background: rgba(255, 255, 255, 0.8); /* biru muda transparan */
-              //  background: rgba(227, 240, 255, 0.7); /* biru muda transparan */
+              background: rgba(255, 255, 255, 0.8);
               border-radius: 999px;
               padding: 1px 4px;
               display: inline-block;
             ">
-              ${label}
+              ${escapeHtml(label)}
             </span>
         </div>
       `,
-      // anchor X = padding kiri (6) + setengah icon (12), anchor Y = tinggi icon (24)
-      iconAnchor: [12, 32], // [18, 32] agar anchor tetap di bawah icon, bukan di bawah label
-    });
+        iconAnchor: [12, 32],
+      }),
+    [svgIcon],
+  );
 
   // Fungsi untuk menentukan gaya berdasarkan atribut GeoJSON
   const getStyle = (feature) => {
@@ -107,7 +136,7 @@ const DestinationMap = ({
 
   // Komponen untuk menyesuaikan peta berdasarkan destinasi
   const FitBounds = () => {
-    const map = useMap(); // Akses instance peta
+    const map = useMap();
 
     useEffect(() => {
       if (destinationList.length > 0) {
@@ -115,9 +144,10 @@ const DestinationMap = ({
           destination.latitude,
           destination.longitude,
         ]);
-        map.fitBounds(bounds); // Sesuaikan peta agar mencakup semua destinasi
+        map.fitBounds(bounds);
       }
-    }, [map]);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [map, destinationList]);
 
     return null;
   };
@@ -139,7 +169,7 @@ const DestinationMap = ({
 
       <FitBounds />
 
-      <GeoJSON data={geoJsonData} style={getStyle} />
+      {geoJsonData && <GeoJSON data={geoJsonData} style={getStyle} />}
 
       <MarkerClusterGroup showCoverageOnHover={false}>
         {destinationList.map((destination) => (
@@ -199,7 +229,9 @@ const DestinationMap = ({
 
                   <img
                     src={destination.thumbnail_url || fallbackImage}
-                    alt=""
+                    alt={destination.name}
+                    loading="lazy"
+                    decoding="async"
                     className="mt-2 h-48 w-full rounded-lg object-cover"
                   />
                   <a
@@ -220,9 +252,11 @@ const DestinationMap = ({
 
 export default React.memo(DestinationMap, (prevProps, nextProps) => {
   // Cek shallow equality array destinations
-  if (prevProps.destinations.length !== nextProps.destinations.length) return false;
+  if (prevProps.destinations.length !== nextProps.destinations.length)
+    return false;
   for (let i = 0; i < prevProps.destinations.length; i++) {
-    if (prevProps.destinations[i].uuid !== nextProps.destinations[i].uuid) return false;
+    if (prevProps.destinations[i].uuid !== nextProps.destinations[i].uuid)
+      return false;
   }
   return true;
 });
