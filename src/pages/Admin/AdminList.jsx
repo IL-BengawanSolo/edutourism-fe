@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SpinnerCircular } from "spinners-react";
 import { Pencil, Trash2, Plus, Search } from "lucide-react";
+import { useAuth } from "@/components/utils/AuthProvider";
 import {
   Select,
   SelectContent,
@@ -28,6 +29,8 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function AdminList() {
+  const { user } = useAuth();
+  const isSuper = user?.role === "super_admin";
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
@@ -103,14 +106,23 @@ export default function AdminList() {
               Kelola Destinasi
             </h1>
             <p className="text-neutral-dark-grey mt-1 text-sm">
-              Daftar destinasi. Tambah, edit atau hapus.
+              {isSuper
+                ? "Daftar destinasi — tambah, edit atau hapus."
+                : "Mode lihat saja — akun admin hanya bisa melihat data."}
             </p>
+            {!isSuper && (
+              <span className="mt-2 inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
+                View only — hubungi super admin untuk CRUD
+              </span>
+            )}
           </div>
-          <Link to="/admin/destinations/new">
-            <Button className="h-12 rounded-xl">
-              <Plus className="mr-2 h-4 w-4" /> Tambah Baru
-            </Button>
-          </Link>
+          {isSuper && (
+            <Link to="/admin/destinations/new">
+              <Button className="h-12 rounded-xl">
+                <Plus className="mr-2 h-4 w-4" /> Tambah Baru
+              </Button>
+            </Link>
+          )}
         </div>
 
         <form
@@ -201,47 +213,55 @@ export default function AdminList() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex justify-end gap-2">
-                          <Link to={`/admin/destinations/${d.uuid}/edit`}>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="h-8 rounded-lg"
-                            >
-                              <Pencil className="mr-1 h-3 w-3" /> Edit
-                            </Button>
-                          </Link>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button
-                                size="sm"
-                                variant="destructive"
-                                className="h-8 rounded-lg"
-                              >
-                                <Trash2 className="mr-1 h-3 w-3" /> Hapus
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Hapus destinasi?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  {" "}
-                                  {d.name} akan dihapus permanen beserta
-                                  gambarnya.{" "}
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Batal</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => onDelete(d.uuid)}
-                                  className="bg-destructive"
+                          {isSuper ? (
+                            <>
+                              <Link to={`/admin/destinations/${d.uuid}/edit`}>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-8 rounded-lg"
                                 >
-                                  Hapus
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
+                                  <Pencil className="mr-1 h-3 w-3" /> Edit
+                                </Button>
+                              </Link>
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    className="h-8 rounded-lg"
+                                  >
+                                    <Trash2 className="mr-1 h-3 w-3" /> Hapus
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      Hapus destinasi?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      {" "}
+                                      {d.name} akan dihapus permanen beserta
+                                      gambarnya.{" "}
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Batal</AlertDialogCancel>
+                                    <AlertDialogAction
+                                      onClick={() => onDelete(d.uuid)}
+                                      className="bg-destructive"
+                                    >
+                                      Hapus
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </>
+                          ) : (
+                            <span className="text-neutral-grey text-xs">
+                              View only
+                            </span>
+                          )}
                         </div>
                       </td>
                     </tr>

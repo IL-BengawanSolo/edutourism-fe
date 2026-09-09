@@ -2,7 +2,11 @@ import { useAuth } from "./AuthProvider";
 import { Navigate, useLocation } from "react-router-dom";
 import PageLoader from "../ui/PageLoader.jsx";
 
-const ProtectedRoute = ({ children, requireAdmin = false }) => {
+const ProtectedRoute = ({
+  children,
+  requireAdmin = false,
+  requireSuperAdmin = false,
+}) => {
   const { user, checking } = useAuth();
   const location = useLocation();
 
@@ -13,7 +17,11 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
     return <Navigate to={`/login?redirect=${redirect}`} replace />;
   }
 
-  if (requireAdmin && user.role !== "admin") {
+  if (requireSuperAdmin && user.role !== "super_admin") {
+    return <Navigate to="/" replace />;
+  }
+
+  if (requireAdmin && user.role !== "admin" && user.role !== "super_admin") {
     return <Navigate to="/" replace />;
   }
 

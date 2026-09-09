@@ -40,7 +40,7 @@ function App() {
           <Route
             path="admin/destinations/new"
             element={
-              <ProtectedRoute requireAdmin>
+              <ProtectedRoute requireSuperAdmin>
                 <AdminDestinations />
               </ProtectedRoute>
             }
@@ -48,7 +48,7 @@ function App() {
           <Route
             path="admin/destinations/:uuid/edit"
             element={
-              <ProtectedRoute requireAdmin>
+              <ProtectedRoute requireSuperAdmin>
                 <AdminEdit />
               </ProtectedRoute>
             }

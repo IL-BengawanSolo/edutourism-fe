@@ -9,7 +9,7 @@ Backend API: [edusolo-general-api](https://github.com/IL-BengawanSolo/edusolo-ge
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Live Demo:** https://edusolo-fe.vercel.app  
+**Live Demo:** https://edusolo.vercel.app  
 **API:** https://edusolo-general-api.vercel.app/api/v1  
 **Backend Repo:** https://github.com/IL-BengawanSolo/edusolo-general-api
 
@@ -29,6 +29,7 @@ Built mobile-first with a focus on performance and accessibility.
 - **Destination Detail** — Image gallery with keyboard navigation, scroll-spy tabs, activities, facilities, location, opening hours, and a similar-destinations carousel.
 - **EduBot Chat** — Persistent chat history, markdown rendering with sanitization, and a streaming-ready API hook.
 - **Authentication** — JWT-based login/register, protected routes, and SPA fallback handling.
+- **Admin Panel** — Paginated destination list with `Terbaru/Terlama` sorting and full CRUD (create/update/delete, image upload, primary image). `admin` role is view-only for portfolio reviewers; `super_admin` has full write access.
 
 ## Tech Stack
 
@@ -134,6 +135,15 @@ Routing is lazy-loaded with `React.lazy` and `Suspense`. The map component and c
 | `npm run lint` | Lint with ESLint |
 | `npm run test` | Run tests with Vitest |
 | `npm run test:watch` | Watch mode |
+
+## Demo Accounts
+
+| Role | Email | Password | Access |
+|---|---|---|---|
+| Viewer (`admin`) | `demo@edusolo.local` | `Demo123!` | Can view `Admin → Manage Destinations` list, pagination and sorting — no create/edit/delete |
+| Owner (`super_admin`) | — | — | Full CRUD, not shared publicly |
+
+Login at `/login` then open `Admin` in the navbar (visible only for `admin`/`super_admin`). Viewers will see `View only` badge.
 
 ## Deployment
 
