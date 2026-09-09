@@ -1,11 +1,15 @@
 import axios from "axios";
 
+const baseURL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://edusolo-general-api.vercel.app/api/v1";
+
 if (!import.meta.env.VITE_API_BASE_URL) {
-  console.warn("[axios] VITE_API_BASE_URL is not set — API requests will fail");
+  console.warn("[axios] VITE_API_BASE_URL is not set — fallback to", baseURL);
 }
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL,
   timeout: 10000,
   headers: { "Content-Type": "application/json" },
 });
