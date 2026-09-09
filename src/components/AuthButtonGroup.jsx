@@ -6,18 +6,21 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Logout } from "react-iconly";
+import { ChevronDown, Logout, Setting } from "react-iconly";
 import { useAuth } from "@/components/utils/AuthProvider";
 
-const AuthButtonGroup = ({ buttonClass = ""}) => {
+const AuthButtonGroup = ({ buttonClass = "" }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
 
   if (!user) {
     // Tombol login dengan redirect ke halaman sekarang
-    const redirect = encodeURIComponent(location.pathname + location.search + location.hash);
+    const redirect = encodeURIComponent(
+      location.pathname + location.search + location.hash,
+    );
     return (
       <Link to={`/login?redirect=${redirect}`} className={buttonClass}>
         <Button size="custom" className="w-full">
@@ -35,7 +38,7 @@ const AuthButtonGroup = ({ buttonClass = ""}) => {
           <Button
             variant="ghost"
             size="custom"
-            className="rounded-sm font-semibold w-full"
+            className="w-full rounded-sm font-semibold"
           >
             <span>
               <Avatar className="size-8">
@@ -45,7 +48,7 @@ const AuthButtonGroup = ({ buttonClass = ""}) => {
                 </AvatarFallback>
               </Avatar>
             </span>
-            <span className="text-neutral-black font-semibold ml-2">
+            <span className="text-neutral-black ml-2 font-semibold">
               {user.first_name
                 ? user.first_name.slice(0, 12).charAt(0).toUpperCase() +
                   user.first_name.slice(1, 12)
@@ -56,10 +59,24 @@ const AuthButtonGroup = ({ buttonClass = ""}) => {
                   user.last_name.slice(1, 12)
                 : ""}
             </span>
-            <ChevronDown className="h-4 w-4 ml-2" />
+            <ChevronDown className="ml-2 h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
+          {user.role === "admin" && (
+            <>
+              <DropdownMenuItem asChild>
+                <Link
+                  to="/admin/destinations"
+                  className="text-neutral-black flex items-center gap-2"
+                >
+                  <Setting className="h-4 w-4" />
+                  Kelola Destinasi
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem onClick={logout} className="text-neutral-black">
             Logout
             <Logout className="text-neutral-black h-4 w-4" />

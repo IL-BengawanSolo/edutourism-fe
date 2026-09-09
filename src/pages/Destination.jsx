@@ -11,6 +11,7 @@ import { Search } from "react-iconly";
 import { useMediaQuery } from "react-responsive";
 import { SpinnerCircular } from "spinners-react";
 import PageLoader from "@/components/ui/PageLoader.jsx";
+import { Skeleton } from "@/components/ui/skeleton.jsx";
 import { useDebounce } from "@/hooks/use-debounce.js";
 import { Helmet } from "react-helmet-async";
 
@@ -272,7 +273,33 @@ const Destination = () => {
                 </div>
               )}
             </div>
-            {allDestinations.map((destination) => (
+            {allDestinations.length === 0 && hasMore && !mapLoading && (
+              <div className="flex flex-col gap-4">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="flex gap-4 rounded-2xl bg-white p-2.5"
+                  >
+                    <Skeleton className="h-40 w-40 rounded-2xl sm:h-54 sm:w-54" />
+                    <div className="flex flex-1 flex-col gap-3 py-2">
+                      <Skeleton className="h-5 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-2/3" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {allDestinations.length > 200 && (
+              <p className="py-2 text-center text-sm text-neutral-500">
+                Menampilkan 200 pertama — filter untuk hasil lebih spesifik.
+              </p>
+            )}
+            {(allDestinations.length > 200
+              ? allDestinations.slice(0, 200)
+              : allDestinations
+            ).map((destination) => (
               <Link
                 key={destination.slug}
                 to={`/destinations/${destination.slug}`}

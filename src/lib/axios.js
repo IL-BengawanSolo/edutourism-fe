@@ -9,3 +9,13 @@ export const axiosInstance = axios.create({
   timeout: 10000,
   headers: { "Content-Type": "application/json" },
 });
+
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = token.startsWith("Bearer ")
+      ? token
+      : `Bearer ${token}`;
+  }
+  return config;
+});

@@ -7,6 +7,10 @@ import prettier from "eslint-config-prettier";
 export default [
   { ignores: ["dist"] },
   {
+    files: ["scripts/**/*.{js,mjs}"],
+    languageOptions: { globals: globals.node },
+  },
+  {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,

@@ -123,6 +123,13 @@ const DestinationMap = ({
 
   const mapRef = useRef(null);
 
+  const validCenter = React.useMemo(() => {
+    const lat = Number(center?.[0]);
+    const lng = Number(center?.[1]);
+    if (Number.isFinite(lat) && Number.isFinite(lng)) return [lat, lng];
+    return [-7.560421, 110.826454];
+  }, [center]);
+
   // Normalize destinations: support array or single object
   const destinationList = React.useMemo(
     () =>
@@ -134,37 +141,73 @@ const DestinationMap = ({
     [destinations],
   );
 
+  const validDestinations = React.useMemo(
+    () =>
+      destinationList.filter((d) => {
+        const lat = Number(d.latitude);
+        const lng = Number(d.longitude);
+        return (
+          Number.isFinite(lat) && Number.isFinite(lng) && lat !== 0 && lng !== 0
+        );
+      }),
+    [destinationList],
+  );
+
   // Komponen untuk menyesuaikan peta berdasarkan destinasi
   const FitBounds = () => {
     const map = useMap();
 
     useEffect(() => {
-      if (destinationList.length > 0) {
-        const bounds = destinationList.map((destination) => [
-          destination.latitude,
-          destination.longitude,
-        ]);
-        map.fitBounds(bounds);
+      if (!map || !validDestinations || validDestinations.length === 0) return;
+      if (!map.getContainer || !document.contains(map.getContainer())) return;
+      const bounds = validDestinations
+        .map((d) => [Number(d.latitude), Number(d.longitude)])
+        .filter(
+          ([lat, lng]) =>
+            Number.isFinite(lat) &&
+            Number.isFinite(lng) &&
+            lat !== 0 &&
+            lng !== 0 &&
+            Math.abs(lat) <= 90 &&
+            Math.abs(lng) <= 180,
+        );
+      if (bounds.length === 0) return;
+      try {
+        if (bounds.length === 1) {
+          map.setView(bounds[0], 13, { animate: false });
+        } else {
+          map.fitBounds(bounds, {
+            padding: [24, 24],
+            maxZoom: 13,
+            animate: false,
+          });
+        }
+      } catch {
+        // ignore invalid bounds
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [map, destinationList]);
+    }, [map, validDestinations]);
 
     return null;
   };
 
   return (
     <MapContainer
-      center={center}
+      center={validCenter}
       zoom={12}
       scrollWheelZoom={false}
       minZoom={9}
       ref={mapRef}
     >
+      {/* Esri World Light Gray — gratis tanpa API key, background simpel */}
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        subdomains={"abcd"}
-        detectRetina={true}
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+        attribution="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ"
+        maxZoom={16}
+      />
+      <TileLayer
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+        maxZoom={16}
       />
 
       <FitBounds />
@@ -172,10 +215,13 @@ const DestinationMap = ({
       {geoJsonData && <GeoJSON data={geoJsonData} style={getStyle} />}
 
       <MarkerClusterGroup showCoverageOnHover={false}>
-        {destinationList.map((destination) => (
+        {validDestinations.map((destination) => (
           <Marker
             key={destination.slug}
-            position={[destination.latitude, destination.longitude]}
+            position={[
+              Number(destination.latitude),
+              Number(destination.longitude),
+            ]}
             icon={createDivIcon(destination.name)}
           >
             {!disablePopup && (
