@@ -29,7 +29,7 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    environment: "jsdom",
+    environment: "happy-dom",
     setupFiles: ["./src/test/setup.js"],
     include: ["src/**/*.{test,spec}.{js,jsx}"],
   },
@@ -42,8 +42,6 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("leaflet") || id.includes("react-leaflet"))
-              return "leaflet";
             if (id.includes("embla-carousel")) return "embla";
             if (id.includes("react-markdown")) return "markdown";
             if (id.includes("@radix-ui")) return "radix";
@@ -51,6 +49,7 @@ export default defineConfig({
             if (
               id.includes("react-dom") ||
               id.includes("react/") ||
+              id.includes("leaflet") ||
               id.includes("@fortawesome")
             )
               return "react-vendor";
